@@ -1,0 +1,28 @@
+form{
+    display: block;
+    margin: auto;
+    width: 80%;
+}
+input[type='text']{
+    width: 98%;
+}
+input[type='submit']{
+    margin: auto;
+    width: 20%;
+}
+.div-btn{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    width: 100%;
+}
+h1{
+    text-align: center;
+}
+.green{
+    color: green;
+}
+.red{
+    color: red;
+}

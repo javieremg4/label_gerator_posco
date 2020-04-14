@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altas Lotes</title>
+
+    <!--Styles-->
+    <link rel="stylesheet" href="../styles/properties.css">
+</head>
+<body>
+    <h1>Altas Lotes</h1>
+    <form id="form_properties" action="../server/tasks/set_properties.php" method="post">
+        <table>
+            <tr>
+                <th>Lot No.</th>
+                <th>Wgt.</th>
+                <th>Yield Point(YP)</th>
+                <th>Tensile Strength(TS)</th>
+                <th>Elongation(EL)</th>
+                <th>Top Coating</th>
+                <th>Bot Coating</th>
+            </tr>
+            <tr>
+                <th><input type="text" name="lot" id="lot"></th>
+                <th><input type="text" name="wgt" id="wgt"></th>
+                <th><input type="text" name="yp" id="yp"></th>
+                <th><input type="text" name="ts" id="ts"></th>
+                <th><input type="text" name="el" id="el"></th>
+                <th><input type="text" name="tc" id="tc"></th>
+                <th><input type="text" name="bc" id="bc"></th>
+            </tr>
+        </table>
+        <div class="div-btn">
+            <input type="submit" value="subir">
+        </div>
+    </form>
+</body>
+<div class='div-btn' id="answer"></div>
+<!--JQuery-->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+<script src="../js/properties.js"></script>
+</html>

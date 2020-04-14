@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Etiqueta</title>
+
+    <!--Styles-->
+    <link rel="stylesheet" href="../styles/label.css">
+</head>
+<body>
+    <form action='../server/tasks/suggest_part.php' id="form_label" autocomplete="off">
+        <!--Serial: <input type="text" name="serial" id="serial" disabled>-->
+        No. parte: 
+        <div style="background: red; width: 200px;">
+            <input type="text" id="no-parte">
+            <ul id='sug-part'></ul>
+        </div>
+        <!--<div id="datos_parte"></div>
+        Cantidad: <input type="number" name="cantidad" id="cantidad">
+        Fecha: <input type="date" name="fecha_consumo" id="fecha_consumo">
+        Origen: <input type="text" name="origen" id="origen">
+        No. Ran: <input type="text" name="no_ran" id="no_ran">
+        No. Lote: <input type="text" name="no_lote" id="no_lote">
+        <div id="datos_lote"></div>
+        <div class="div-btn">
+            <input type="submit" value="Generar">
+        </div>--->
+    </form>
+    <ul>
+        <li>elemento 1</li>
+        <li>elemento 2</li>
+        <li>elemento 3</li>
+    </ul>
+</body>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script>
+        $('html').on('click',function(){
+            if(document.getElementById('sug-part').hasChildNodes()){
+                while(document.getElementById('sug-part').hasChildNodes()){
+                    document.getElementById('sug-part').removeChild(document.getElementById('sug-part').firstChild);
+                }
+                $('#sug-part').removeClass('sug-part');
+            }
+        });
+        $('#sug-part').click(function(event){
+            event.stopPropagation();
+        });
+        $('#form_label').on('submit',function(event){
+            event.preventDefault();
+        });
+        $('ul#sug-part li').on('click',function(){
+            alert($(this).innerHTML);
+            $('#no-parte').value = $(this).innerHTML;
+        });
+        $('#no-parte').on('keyup',function(event){
+            var code = event.which || event.keyCode;
+            if(code === 40){
+                var list_part = document.getElementById('sug-part');
+                if(list_part.hasChildNodes()){
+                    var color = "rgba(238,238,238)";
+                    var part = list_part.firstChild;
+                    var bool = true;
+                    while(bool && part !== list_part.lastChild){
+                        if(part.style.background !== ""){
+                            bool = false;
+                        }else{
+                            part = part.nextSibling;
+                        } 
+                    }
+                    if(part === list_part.lastChild){
+                        if(part.style.background === ""){
+                            list_part.firstChild.style.background = color;
+                            document.getElementById('no-parte').value = list_part.firstChild.innerHTML;
+                        }else{
+                            part.style.background = "";
+                            list_part.firstChild.style.background = color;
+                            document.getElementById('no-parte').value = list_part.firstChild.innerHTML;
+                        }
+                    }else{
+                        part.style.background = "";
+                        part.nextSibling.style.background = color;
+                        document.getElementById('no-parte').value = part.nextSibling.innerHTML;
+                    }
+                }
+            }else if(code === 38){
+                var list_part = document.getElementById('sug-part');
+                if(list_part.hasChildNodes()){
+                    var color = "rgba(238,238,238)";
+                    var part = list_part.lastChild;
+                    var bool = true;
+                    while(bool && part !== list_part.firstChild){
+                        if(part.style.background !== ""){
+                            bool = false;
+                        }else{
+                            part = part.previousSibling;
+                        } 
+                    }
+                    if(part === list_part.firstChild){
+                        if(part.style.background === ""){
+                            list_part.lastChild.style.background = color;
+                            document.getElementById('no-parte').value = list_part.lastChild.innerHTML;
+                        }else{
+                            part.style.background = "";
+                            list_part.lastChild.style.background = color;
+                            document.getElementById('no-parte').value = list_part.lastChild.innerHTML;
+                        }
+                    }else{
+                        part.style.background = "";
+                        part.previousSibling.style.background = color;
+                        document.getElementById('no-parte').value = part.previousSibling.innerHTML;
+                    }
+                }
+            }else if(code === 13){
+                if(document.getElementById('sug-part').hasChildNodes()){
+                    while(document.getElementById('sug-part').hasChildNodes()){
+                        document.getElementById('sug-part').removeChild(document.getElementById('sug-part').firstChild);
+                    }
+                    $('#sug-part').removeClass('sug-part');
+                }
+            }else{
+                var noparte = "no-parte="+document.getElementById('no-parte').value;
+                $.ajax({
+                    type: 'post',
+                    url: '../server/tasks/suggest_part.php',
+                    data: noparte,
+                    success: function(result){
+                        $('#sug-part').html(result);
+                        $('#sug-part').addClass('sug-part');
+                    }
+                });
+            }
+        });
+    </script>
+</html>
