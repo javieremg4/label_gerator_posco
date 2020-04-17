@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altas partes</title>
+
+    <!--Styles-->
+    <link rel="stylesheet" href="../styles/properties.css">
+</head>
+<body>
+    <h1>Altas Partes</h1>
+    <form id="form_part" method="post">
+        <table>
+            <tr>
+                <th>No. Parte</th>
+                <th>Descripción</th>
+                <th>Especificación</th>
+                <th>Kg./Pc</th>
+            </tr>
+            <tr>
+                <td><input type="text" id="no-parte" maxlength="13"></td>
+                <td><input type="text" id="desc" maxlength="50"></td>
+                <td><input type="text" id="esp" maxlength="15"></td>
+                <td><input type="text" id="kgpc"></td>
+            </tr>
+        </table>
+        <div id="div-btn">
+            <input type="submit" value="Subir">
+        </div>
+    </form>
+    <div class="div-btn" id="res-part"></div>
+</body>
+    <!--JQuery-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="../js/part.js"></script>
+</html>

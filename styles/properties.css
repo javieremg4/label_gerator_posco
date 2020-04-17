@@ -1,7 +1,11 @@
 form{
     display: block;
     margin: auto;
+    text-align: center;
     width: 80%;
+}
+table{
+    margin: auto;
 }
 input[type='text']{
     width: 98%;

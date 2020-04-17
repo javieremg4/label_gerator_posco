@@ -18,22 +18,24 @@
         </div>
         <div id="datos-parte"></div>
         Cantidad: <input type="number" id="cantidad">
-        Fecha: <input type="date" id="fecha-consumo">
+        Fecha: <input type="date" id="fecha">
         Origen: <input type="text" id="origen" minlength="8" maxlength="8">
         No. Ran: <input type="text" id="no-ran" maxlength="8">
         <div style="background: yellow; width: 200px;">
             No. Lote: 
-            <input type="text" id="no-lote" maxlength="15">
+            <input type="text" id="no-lote" maxlength="15">7
             <ul id="sug-lote"></ul>        
         </div>
         <div id="datos-lote"></div>
         <div class="div-btn">
-            <input type="submit" value="Generar">
+            <input id="btn-submit" type="submit" value="Generar">
         </div>
     </form>
     <div id="res-label" style="color: green;"></div>
 </body>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="../js/validarFecha.js"></script>
     <script src="../js/label.js"></script>
+    <script src="../js/suggest_list.js"></script>
 </html>

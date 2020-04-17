@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1>Altas Lotes</h1>
-    <form id="form_properties" action="../server/tasks/set_properties.php" method="post">
+    <form id="form_properties" method="post">
         <table>
             <tr>
                 <th>Lot No.</th>
@@ -22,13 +22,13 @@
                 <th>Bot Coating</th>
             </tr>
             <tr>
-                <th><input type="text" name="lot" id="lot"></th>
-                <th><input type="text" name="wgt" id="wgt"></th>
-                <th><input type="text" name="yp" id="yp"></th>
-                <th><input type="text" name="ts" id="ts"></th>
-                <th><input type="text" name="el" id="el"></th>
-                <th><input type="text" name="tc" id="tc"></th>
-                <th><input type="text" name="bc" id="bc"></th>
+                <th><input type="text" id="lot" maxlength='15'></th>
+                <th><input type="text" id="wgt" maxlength='7'></th>
+                <th><input type="text" id="yp" maxlength='6'></th>
+                <th><input type="text" id="ts" maxlength='6'></th>
+                <th><input type="text" id="el" maxlength='6'></th>
+                <th><input type="text" id="tc" maxlength='6'></th>
+                <th><input type="text" id="bc" maxlength='6'></th>
             </tr>
         </table>
         <div class="div-btn">
@@ -36,7 +36,7 @@
         </div>
     </form>
 </body>
-<div class='div-btn' id="answer"></div>
+<div class='div-btn' id="res-lote"></div>
 <!--JQuery-->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
