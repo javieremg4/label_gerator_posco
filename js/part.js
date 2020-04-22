@@ -2,12 +2,21 @@ function part_review(){
     var no_parte = document.getElementById('no-parte').value;
     if(!white_review(no_parte,"No. parte: obligatorio")){ return false; }
     if(!char_limit(no_parte,13,"No. parte: Max. 13 caracteres")){ return false; }
+    var alphanumeric = /^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/;
+    if(no_parte.search(alphanumeric)){
+        alert("No. parte: valor inválido (solo alfanumerico)");
+        return false;
+    }
     var desc = document.getElementById('desc').value;
     if(!white_review(desc,"Descripción: obligatorio")){ return false; }
     if(!char_limit(desc,50,"Descripción: Max. 50 caracteres")){ return false; }
     var esp = document.getElementById('esp').value;
     if(!white_review(esp,"Especificación: obligatorio")){ return false; }
     if(!char_limit(esp,15,"Especificación: Max. 15 caracteres")){ return false; }
+    if(esp.search(alphanumeric)){
+        alert("Especificación: valor inválido (solo alfanumerico)");
+        return false;
+    }
     var kgpc = document.getElementById('kgpc').value;
     if(!white_review(kgpc,"Kg./Pc: obligatorio")){ return false; }
     if(parseFloat(kgpc)===0){
@@ -17,6 +26,10 @@ function part_review(){
     var expDecimal = /^(\d+|\d*.\d+)$/
     if(kgpc.search(expDecimal)){
         alert("Kg./Pc: valor inválido");
+        return false;
+    }
+    if(kgpc>9999.99){
+        alert("Kg./Pc: valor máximo 9999.99");
         return false;
     }
     return "no-parte="+no_parte+"&desc="+desc+"&esp="+esp+"&kgpc="+kgpc;

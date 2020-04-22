@@ -11,6 +11,7 @@ window.onload = function(){
         mes='0'+mes //agrega cero si es menor de 10
     } 
     document.getElementById('fecha').value=anio+"-"+mes+"-"+dia;
+    document.getElementById('div-btn-continue').style.display = 'none';
 }
 //***
 //jQuery: detectar «click» fuera de un elemento
@@ -22,7 +23,7 @@ $('html').on('click',function(){
     if(document.getElementById('sug-lote').hasChildNodes()){
         cleanList('sug-lote');
     }
-    consult_part_lote('no-lote');
+    consult_part_lote('inspec');
 });
 //***
 //function: validar los datos de la etiqueta
@@ -46,33 +47,6 @@ function label_review(){
         alert("Cantidad: Max. 4 caracteres");
         return false;
     }
-    var origen = document.getElementById('origen').value;
-    if(origen==="" || origen===null || origen.length===0 || !origen.search(whiteExp)){
-        alert("Origen: obligatorio");
-        return false;
-    }
-    if(origen.length !== 8){
-        alert("Origen: exactamente 8 caracteres");
-        return false;
-    }
-    var noran = document.getElementById('no-ran').value;
-    if(noran==="" || noran===null || noran.length===0 || !noran.search(whiteExp)){
-        alert("No. Ran: obligatorio");
-        return false;
-    }
-    if(noran.length > 8){
-        alert("No. Ran: Max. 8 caracteres");
-        return false;
-    }
-    var nolote = document.getElementById('no-lote').value;
-    if(nolote==="" || nolote===null || nolote.length===0 || !nolote.search(whiteExp)){
-        alert("No. Lote: obligatorio");
-        return false;
-    }
-    if(nolote.length > 15){
-        alert("No. Lote: Max. 15 caracteres");
-        return false;
-    }
     var fecha = document.getElementById('fecha').value;
     if(fecha==="" || fecha===null){
         alert("Fecha: obligatorio");
@@ -86,8 +60,43 @@ function label_review(){
         alert("Fecha: invalido");
         return false;
     }
-    console.log("registrar etiqueta");
-    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&origen="+origen+"&noran="+noran+"&nolote="+nolote;
+    var origen = document.getElementById('origen').value;
+    if(origen==="" || origen===null || origen.length===0 || !origen.search(whiteExp)){
+        alert("Origen: obligatorio");
+        return false;
+    }
+    if(origen.length > 50){
+        alert("Origen: Max. 50 caracteres");
+        return false;
+    }
+    var noran = document.getElementById('no-ran').value;
+    if(noran==="" || noran===null || noran.length===0 || !noran.search(whiteExp)){
+        alert("No. Ran: obligatorio");
+        return false;
+    }
+    if(noran.length > 7){
+        alert("No. Ran: Max. 7 caracteres");
+        return false;
+    }
+    var lote = document.getElementById('lote').value;
+    if(lote==="" || lote===null || lote.length===0 || !lote.search(whiteExp)){
+        alert("Lote: obligatorio");
+        return false;
+    }
+    if(lote.length !== 13){
+        alert("Lote: deben ser exactamente 13 caracteres");
+        return false;
+    }
+    var inspec = document.getElementById('inspec').value;
+    if(inspec==="" || inspec===null || inspec.length===0 || !inspec.search(whiteExp)){
+        alert("Inspección: obligatorio");
+        return false;
+    }
+    if(inspec.length > 15){
+        alert("Inspección: Max. 15 caracteres");
+        return false;
+    }
+    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&origen="+origen+"&noran="+noran+"&lote="+lote+"&inspec="+inspec;
 }   
 //***
 //code: evitar que se envie el formulario al dar enter
@@ -108,7 +117,15 @@ $('#form_label').on('submit',function(event){
             url: '../server/tasks/set_label.php',
             data: postData,
             success: function(result){
-                $('#res-label').html(result);
+                if(result.indexOf('Error') === -1){
+                    $('#codigo').html(result);
+                    $('#rpta-code').html('');
+                    document.getElementById('div-btn-continue').style.display = 'block';
+                }else{
+                    $('#rpta-code').html(result);
+                    $('#codigo').html('');
+                }
+                text_change();
             }
         });
     }
@@ -119,8 +136,20 @@ $('#no-parte').on('keyup',function(event){
     var code = event.which || event.keyCode;
     suggest_list(code,'no-parte','sug-part');
 });
-$('#no-lote').on('keyup',function(event){
+$('#inspec').on('keyup',function(event){
     var code = event.which || event.keyCode;
-    suggest_list(code,'no-lote','sug-lote');
+    suggest_list(code,'inspec','sug-lote');
 });
 //***
+$('#codigo').on("keyup",function(){
+    text_change();
+})
+$('#continue').on('click',function(){
+    
+})
+function text_change(){
+    $('#contador').html(document.getElementById('codigo').value.length);
+}
+function generate_bar_codes(){
+
+}

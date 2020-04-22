@@ -66,7 +66,7 @@ function suggest_list(code,idInput,idList){
             var postData = "";
             if(idInput==='no-parte' || idInput==='buscar-parte'){
                 postData = "no-parte="+input.value;
-            }else if(idInput==='no-lote' || idInput==='buscar-lote'){
+            }else if(idInput==='inspec' || idInput==='buscar-lote'){
                 postData = "no-lote="+input.value;
             }
             $.ajax({
@@ -86,7 +86,7 @@ function suggest_list(code,idInput,idList){
                             consult_part_lote(idInput);
                         });
                         //***
-                    }else if(idInput==='no-lote' || idInput==='buscar-lote'){
+                    }else if(idInput==='inspec' || idInput==='buscar-lote'){
                         //code: se agregan las sugerencias a la lista y los eventos
                         $('#sug-lote').html(result);
                         $('#sug-lote').addClass('sug-lote');
@@ -120,7 +120,7 @@ function cleanList(idList){
 function consult_part_lote(idInput){
     var input = document.getElementById(idInput);
     if(input.value !== ""){
-        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput === 'no-lote' || idInput === 'buscar-lote'){
+        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput === 'inspec' || idInput === 'buscar-lote'){
             var postData = "";
             switch (idInput) {
                 case 'no-parte':
@@ -129,7 +129,7 @@ function consult_part_lote(idInput){
                 case 'buscar-parte':
                     postData = "buscar-parte="+input.value;
                     break;
-                case 'no-lote':
+                case 'inspec':
                     postData = "no-lote="+input.value;
                     break;
                 case 'buscar-lote':
@@ -150,7 +150,7 @@ function consult_part_lote(idInput){
                             document.getElementById('buscar-parte').disabled = true;
                             $('#btn-cancel').on("click",function(){clean_data()});
                         }
-                    }else if(idInput === 'no-lote' || idInput === 'buscar-lote'){
+                    }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
                             $('#datos-lote').html(result);
                         if(idInput === 'buscar-lote'){
                             document.getElementById('buscar-lote').disabled = true;
@@ -163,7 +163,7 @@ function consult_part_lote(idInput){
     }else{
         if(idInput === 'no-parte' || idInput === 'buscar-parte'){
             $('#datos-parte').html("");
-        }else if(idInput === 'no-lote' || idInput === 'buscar-lote'){
+        }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
             $('#datos-lote').html("");
         }
     }

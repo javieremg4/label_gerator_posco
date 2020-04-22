@@ -2,7 +2,7 @@
     function data_lote($no_lote){
         $info = search_lote($no_lote);
         if(!(!$info)){
-            $data = "<table><tr><th>Inspeccion <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
+            $data = "<table><tr><th>Lot No. <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
             $data .= "<tr><td>".$info['no_lote'];
             $data .= "<td>".$info['peso_rollo'];
             $data .= "<td>".$info['yp'];
@@ -36,7 +36,7 @@
         }
     }
     function search_lote($no_lote){
-        require_once "connection.php";
+        require "connection.php";
         $query = "SELECT no_lote,peso_rollo,yp,ts,el,tc,bc FROM lote WHERE no_lote='$no_lote'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);

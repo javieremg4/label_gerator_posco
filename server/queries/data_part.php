@@ -34,7 +34,7 @@
         }
     }
     function search_part($no_parte){
-        require_once "connection.php";
+        require "connection.php";
         $query = "SELECT no_parte,`desc`,esp,kgpc FROM parte WHERE no_parte='$no_parte'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);

@@ -1,5 +1,5 @@
 <?php
-    function update_part($no_parte,$esp,$desc,$kgpc,$parte){
+    function update_part($no_parte,$desc,$esp,$kgpc,$parte){
         require_once "connection.php";
         $change_number = false;
         if($no_parte !== $parte){
