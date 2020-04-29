@@ -11,11 +11,24 @@ window.onload = function(){
         mes='0'+mes //agrega cero si es menor de 10
     } 
     document.getElementById('fecha').value=anio+"-"+mes+"-"+dia;
-    document.getElementById('div-btn-continue').style.display = 'none';
+    //document.getElementById('div-btn-continue').style.display = 'none';
 }
 //***
-//jQuery: detectar «click» fuera de un elemento
+//code: detectar «click» fuera de un elemento
 $('html').on('click',function(){
+    clean_search();
+});
+//***
+//code: perder el foco de un elemento
+$('#no-parte').on('blur',function(){
+    clean_search();
+});
+$('#inspec').on('blur',function(){
+    clean_search();
+});
+//***
+//function: elimina las listas y busca el input
+function clean_search(){
     if(document.getElementById('sug-part').hasChildNodes()){
         cleanList('sug-part');
     }
@@ -24,7 +37,7 @@ $('html').on('click',function(){
         cleanList('sug-lote');
     }
     consult_part_lote('inspec');
-});
+}
 //***
 //function: validar los datos de la etiqueta
 function label_review(){
@@ -117,7 +130,10 @@ $('#form_label').on('submit',function(event){
             url: '../server/tasks/set_label.php',
             data: postData,
             success: function(result){
-                if(result.indexOf('Error') === -1){
+                $('#server-label').html(result);
+                //generate_qr_code();
+                generate_bar_codes();
+                /*if(result.indexOf('Error') === -1){
                     $('#codigo').html(result);
                     $('#rpta-code').html('');
                     document.getElementById('div-btn-continue').style.display = 'block';
@@ -125,7 +141,7 @@ $('#form_label').on('submit',function(event){
                     $('#rpta-code').html(result);
                     $('#codigo').html('');
                 }
-                text_change();
+                text_change();*/
             }
         });
     }
@@ -133,23 +149,101 @@ $('#form_label').on('submit',function(event){
 //***
 //code: asignacion de la lista a los input
 $('#no-parte').on('keyup',function(event){
-    var code = event.which || event.keyCode;
-    suggest_list(code,'no-parte','sug-part');
+    if(!document.getElementById('no-parte').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('no-parte').value!=='0'){
+        var code = event.which || event.keyCode;
+        suggest_list(code,'no-parte','sug-part');
+    }else{
+        $('#sug-part').html('Sin sugerencias');
+        $('#sug-part').addClass('sug-part');
+    }
 });
 $('#inspec').on('keyup',function(event){
-    var code = event.which || event.keyCode;
-    suggest_list(code,'inspec','sug-lote');
+    if(!document.getElementById('inspec').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('inspec').value!=='0'){
+        var code = event.which || event.keyCode;
+        suggest_list(code,'inspec','sug-lote');
+    }else{
+        $('#sug-lote').html('Sin sugerencias');
+        $('#sug-lote').addClass('sug-lote');
+    }
 });
 //***
-$('#codigo').on("keyup",function(){
-    text_change();
-})
 $('#continue').on('click',function(){
-    
-})
+    generate_bar_codes();
+});
 function text_change(){
     $('#contador').html(document.getElementById('codigo').value.length);
 }
+function generate_qr_code(){
+    var qrcode = new QRCode(document.getElementById('qrcodejs'),{
+        width: 128,
+        height: 128,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.L
+    });
+    qrcode.makeCode(document.getElementById('codigo').value);
+}
 function generate_bar_codes(){
-
+    var msg = document.getElementById('no-parte').value
+    var text = 'P'+document.getElementById('no-parte').value;
+    JsBarcode('#part',text,{
+        format: "CODE128",
+		width: 2,
+		height: 30,
+		displayValue: false,
+		margin: 2
+    });
+    msg = document.getElementById('cantidad').value.padStart(4,'0');
+    text = 'Q'+msg;
+    JsBarcode('#quantity',text,{
+        format: "CODE128",// El formato
+		width: 2, // La anchura de cada barra
+		height: 30, // La altura del código
+		displayValue: true, // ¿Mostrar el valor (como texto) del código de barras?
+		text: msg, // Texto (no código) que acompaña al barcode
+		fontOptions: "bold", // Opciones de la fuente del texto del barcode
+		textAlign: "center", // En dónde poner el texto. center, left o right
+		textPosition: "top", // Poner el texto arriba (top) o abajo (bottom)
+		textMargin: 2, // Margen entre el texto y el código de barras
+		fontSize: 20, // Tamaño de la fuente
+		margin: 1 // Tamaño de los margenes, se puede especificar el valor de cada margen. marginTop, marginRight, marginBottom, marginLeft
+    });
+    msg = document.getElementById('no-ran').value;
+    text = '15K'+msg;
+    JsBarcode('#ran',text,{
+        format: "CODE128",
+		width: 2,
+		height: 30,
+		displayValue: false,
+		margin: 2
+    });
+    msg = document.getElementById('origen').value;
+    text = 'V'+msg;
+    JsBarcode('#origin',text,{
+        format: "CODE128",
+		width: 1.5,
+		height: 30,
+		displayValue: true,
+		text: msg,
+		fontOptions: "bold",
+		textAlign: "center",
+		textPosition: "top",
+		textMargin: 2,
+		fontSize: 20,
+		margin: 2
+    });
+    text = '4S0001';
+    JsBarcode('#serial',text,{
+        format: "CODE128",
+		width: 2,
+		height: 30,
+		displayValue: true,
+		text: "0001",
+		fontOptions: "bold",
+		textAlign: "center",
+		textPosition: "top",
+		textMargin: 2,
+		fontSize: 20,
+		margin: 2
+    });
 }

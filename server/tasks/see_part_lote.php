@@ -6,7 +6,6 @@
         }else{
             $result = update_part($_POST['buscar-parte']);
         }
-        echo (!empty($result)) ? $result : "No se encontró la parte";
     }else{
         require_once "../queries/data_lote.php";
         if(isset($_POST['no-lote'])){
@@ -14,6 +13,6 @@
         }else if(isset($_POST['buscar-lote'])){
             $result = view_data_lote($_POST['buscar-lote']);
         }
-        echo (!empty($result)) ? $result : "No se encontró el lote";
     }
+    echo $result;
 ?>

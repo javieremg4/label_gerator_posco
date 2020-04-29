@@ -10,7 +10,6 @@
 </head>
 <body>
     <form id="form_label" autocomplete="off">
-        <!--Serial: <input type="text" name="serial" id="serial" disabled>-->
         <div style="background: yellow; width: 200px;">
             No. parte: 
             <input type="text" id="no-parte" maxlength="13">
@@ -32,12 +31,81 @@
             <input id="btn-submit" type="submit" value="Generar">
         </div>
     </form>
-    <div id="rpta-code"></div>
-    Caracteres: <div id="contador"></div>
-    <textarea id="codigo" cols="180" rows="2" readonly></textarea>
-    <div id="div-btn-continue">
-        <button id="continue">Continuar</button>
+    <DIV id="server-label" style="border: 5px solid red;"></DIV>
+    <div class="content" id="content">
+        <div class="div-big-table">
+            <table class="big-table">
+                <tr class="h62">
+                    <td colspan="3" class="black-td f40 relative">
+                        <span class="span-text-top">NUM. PARTE<br>(P)</span>
+                        XXXXXXXXXXXXX
+                    </td>
+                    <td rowspan="2" class="qr-div">    
+                        <div id="rpta-label">Código QR</div>
+                    </td>
+                </tr>
+                <tr class="h62">
+                    <td colspan="3" class="relative">
+                        <img id="part"/>
+                        <span class="span-text-bottom">DRIVE ASSY-WS WIPER</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hide-br relative w40" id="td-quantity">
+                        <span class="span-text-top">CANTIDAD<br>(Q)</span>
+                        <img id="quantity"/>
+                    </td>
+                    <td rowspan="2" class="hide-br w10" >
+                        <span>RAN (15K)</span>
+                    </td>
+                    <td colspan="2">
+                        <img id="ran"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="f20">00/00/0000</td>
+                    <td colspan="2" class="black-td f32">XXXXXXXX</td>
+                </tr>
+            </table>
+        </div>
+        <div class="div-inline-table">
+            <table class="inline-table hide-br w60">
+                <tr>
+                    <td class="relative">   
+                        <span class="span-text-top">PROVEEDOR<br>(V)</span>    
+                        <img id="origin"/>            
+                    </td>
+                </tr>
+                <tr>
+                    <td class="relative"> 
+                        <span class="span-text-top">SERIAL<br>(4S)</span>       
+                        <img id="serial"/>
+                    </td>
+                </tr>
+            </table>
+            <table class="inline-table f20 w40">
+                <tr>
+                    <td>EL %<br>41</td>
+                    <td>NA</td>
+                </tr>
+                <tr>
+                    <td>YP(Mpa)<br>220</td>
+                    <td>TS(Mpa)<br>354</td>
+                </tr>
+                <tr>
+                    <td>03:00</td>
+                    <td></td>
+                </tr>    
+            </table>
+        </div>
     </div>
+    <div id="label"></div>
+    <div id="qrcode"></div>
+    <div>
+        <button id="continue">Generar códigos de barra</button>
+        <button id="pdf">Generar pdf</button>
+    </div>
+
 </body>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
@@ -46,4 +114,30 @@
     <script src="../js/suggest_list.js"></script>
     <script src="../js/qrcode.js"></script>
     <script src="../js/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            document.getElementById('td-quantity').style.borderRight.hidden = true;
+            doc = new jsPDF('p', 'pt', 'letter');
+            // We'll make our own renderer to skip this editor
+            var specialElementHandlers = {
+                '#editor': function(element, renderer) {
+                return true;
+                }
+            };
+
+            $('#pdf').click(function() {
+                html2canvas($('#content'), {
+                onrendered: function(canvas) {
+                    var img = canvas.toDataURL("image/png");
+                    //var doc = new jsPDF();
+                    doc.addImage(img, 'PNG', 20, 20);
+                    doc.save('test.pdf');
+                }
+                });
+            });
+        });
+    </script>
 </html>

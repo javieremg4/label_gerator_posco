@@ -3,9 +3,9 @@ function suggest_list(code,idInput,idList){
     var input = document.getElementById(idInput);
     var list = document.getElementById(idList);
     if(code === 40){ //code: abajo
-        if(list.hasChildNodes()){
+        var part = list.firstChild;
+        if(part.nodeType === 1){
             var color = "rgb(204,204,204)";
-            var part = list.firstChild;
             var bool = true;
             while(bool && part !== list.lastChild){
                 if(part.style.background !== ""){
@@ -30,9 +30,9 @@ function suggest_list(code,idInput,idList){
             }
         }
     }else if(code === 38){ //code: arriba
-        if(list.hasChildNodes()){
+        var part = list.lastChild;
+        if(part.nodeType === 1){
             var color = "rgb(204,204,204)";
-            var part = list.lastChild;
             var bool = true;
             while(bool && part !== list.firstChild){
                 if(part.style.background !== ""){

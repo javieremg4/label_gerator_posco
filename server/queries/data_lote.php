@@ -1,7 +1,8 @@
 <?php
     function data_lote($no_lote){
-        $info = search_lote($no_lote);
-        if(!(!$info)){
+        $array = search_lote($no_lote);
+        if($array[0]){
+            $info = $array[1];
             $data = "<table><tr><th>Lot No. <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
             $data .= "<tr><td>".$info['no_lote'];
             $data .= "<td>".$info['peso_rollo'];
@@ -12,13 +13,13 @@
             $data .= "<td>".$info['bc'];
             $data .= "</table>";
             return $data;
-        }else{
-            return "";
         }
+        return $array[1];
     }
     function  view_data_lote($no_lote){
-        $info = search_lote($no_lote);
-        if(!(!$info)){
+        $array = search_lote($no_lote);
+        if($array[0]){
+            $info = $array[1];
             $data = "<table><tr><th>Inspeccion <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
             $data .= "<tr><td><input type='text' id='lot' value='".$info['no_lote']."' maxlength='15'>";
             $data .= "<td><input type='text' id='wgt' value='".$info['peso_rollo']."' maxlength='7'>";
@@ -31,19 +32,23 @@
             $data .= "<input type='submit' id='btn-update' value='Guardar Cambios'>";
             $data .= "<button id='btn-cancel'>Cancelar</button>";
             return $data;      
-        }else{
-            return "";
         }
+        return $array[1];
     }
     function search_lote($no_lote){
         require "connection.php";
         $query = "SELECT no_lote,peso_rollo,yp,ts,el,tc,bc FROM lote WHERE no_lote='$no_lote'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
-        if($result && mysqli_num_rows($result)===1){
-            return mysqli_fetch_array($result);
-        }else{
-            return false;
+        if($result){
+            if(mysqli_num_rows($result)===1){
+                return array(true,mysqli_fetch_array($result));
+            }else if(mysqli_num_rows($result)<=0){
+                return array(false,"No se encontró el Lote. Revise el número ingresado");
+            }else{
+                return array(false,"Ese No. Lote existe más de una vez. Consulte al Administrador");
+            }
         }
+        return array(false,"No se pudieron consultar los datos del Lote");
     }
 ?>
