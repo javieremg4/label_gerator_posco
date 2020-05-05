@@ -4,7 +4,7 @@ function suggest_list(code,idInput,idList){
     var list = document.getElementById(idList);
     if(code === 40){ //code: abajo
         var part = list.firstChild;
-        if(part.nodeType === 1){
+        if(part!==null && part.nodeType === 1){
             var color = "rgb(204,204,204)";
             var bool = true;
             while(bool && part !== list.lastChild){
@@ -31,7 +31,7 @@ function suggest_list(code,idInput,idList){
         }
     }else if(code === 38){ //code: arriba
         var part = list.lastChild;
-        if(part.nodeType === 1){
+        if(part!==null && part.nodeType === 1){
             var color = "rgb(204,204,204)";
             var bool = true;
             while(bool && part !== list.firstChild){

@@ -24,18 +24,17 @@ li:hover{
 } 
 /*------*/
 /*---Estilos etiqueta---*/
-.content{
+.letter{
     font-family: monospace;
+    font-weight: bold;
 }
 .div-big-table{
-    /*border: 1px solid blue;*/
     box-sizing: border-box;
     height: 230px;
-    overflow: scroll;
+    overflow: hidden;
     width: 615px;
 }
 .div-inline-table{
-    /*border: 1px solid blue;*/
     box-sizing: border-box;
     display: flex;
     height: 130px;
@@ -43,9 +42,7 @@ li:hover{
     width: 615px;
 }
 .big-table{
-    border: 2px solid black;
     border-collapse: collapse;
-    border-bottom: hidden;
     width: 100%;
     height: 100%;
 }
@@ -55,7 +52,6 @@ li:hover{
     height: 100%;
 }
 td{
-    border: 2px solid black;
     text-align: center;
     padding: 0;
 }
@@ -81,16 +77,33 @@ td{
     color: white; 
 }
 .qr-div{
-    border-left: hidden; 
     height: 125px; 
     width: 125px;
 }
 .relative{ position: relative; }
-.hide-br{ border-right: hidden; }
 .f40{ font-size: 40px; }
 .f32{ font-size: 32px; }
 .f20{ font-size: 20px; }
+.f18{ font-size: 18px; }
 .h62{ height: 62px; }
 .w60{ width: 60%; }
 .w40{ width: 40%; }
 .w10{ width: 10%; }
+.inline-table td{
+    border: 1px solid black;
+}
+.inline-table.w40{
+    border-left-style: none;
+}
+.top{
+    border-top: 2px solid black;
+}
+.rig{
+    border-right: 2px solid black;
+}
+.bot{
+    border-bottom: 2px solid black;
+}
+.lef{
+    border-left: 2px solid black;
+}

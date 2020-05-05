@@ -1,11 +1,18 @@
 $('#buscar-lote').on('keyup',function(event){
-    if(!document.getElementById('buscar-lote').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('buscar-lote').value!=='0'){
-        var code = event.which || event.keyCode;
-        suggest_list(code,'buscar-lote','sug-lote');
+    if($('#buscar-lote').val()!==''){
+        if(!$('#buscar-lote').val().search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#buscar-lote').val()!=='0'){
+            var code = event.which || event.keyCode;
+            suggest_list(code,'buscar-lote','sug-lote');
+        }else{
+            $('#sug-lote').html('Sin sugerencias');
+            $('#sug-lote').addClass('sug-lote');
+        }
     }else{
-        $('#sug-lote').html('Sin sugerencias');
-        $('#sug-lote').addClass('sug-lote');
+        if(document.getElementById('sug-lote').hasChildNodes()){
+            cleanList('sug-lote');
+        }
     }
+    
 });
 //code: detectar «click» fuera de un elemento
 $('html').on('click',function(){

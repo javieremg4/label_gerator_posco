@@ -1,11 +1,17 @@
 //code: se agrega la lista al input
 $('#buscar-parte').on('keyup',function(event){
-    if(!document.getElementById('buscar-parte').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('buscar-parte').value!=='0'){
-        var code = event.which || event.keyCode;
-        suggest_list(code,'buscar-parte','sug-part');
+    if($('#buscar-parte').val()!==''){
+        if(!$('#buscar-parte').val().search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#buscar-parte').val()!=='0'){
+            var code = event.which || event.keyCode;
+            suggest_list(code,'buscar-parte','sug-part');
+        }else{
+            $('#sug-part').html('Sin sugerencias');
+            $('#sug-part').addClass('sug-part');
+        }
     }else{
-        $('#sug-part').html('Sin sugerencias');
-        $('#sug-part').addClass('sug-part');
+        if(document.getElementById('sug-part').hasChildNodes()){
+            cleanList('sug-part');
+        }
     }
 });
 //***

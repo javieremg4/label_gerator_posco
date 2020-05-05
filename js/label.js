@@ -11,7 +11,6 @@ window.onload = function(){
         mes='0'+mes //agrega cero si es menor de 10
     } 
     document.getElementById('fecha').value=anio+"-"+mes+"-"+dia;
-    //document.getElementById('div-btn-continue').style.display = 'none';
 }
 //***
 //code: detectar «click» fuera de un elemento
@@ -51,6 +50,11 @@ function label_review(){
         alert("No. parte: Max. 13 caracteres");
         return false;
     }
+    var alphanumeric = /^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/;
+    if(noparte.search(alphanumeric)){
+        alert("No. parte: valor inválido (solo alfanumerico)");
+        return false;
+    }
     var cantidad = document.getElementById('cantidad').value;
     if(cantidad<1){
         alert("Cantidad: inválido");
@@ -82,13 +86,21 @@ function label_review(){
         alert("Origen: Max. 50 caracteres");
         return false;
     }
+    if(origen.search(alphanumeric)){
+        alert("Origen: valor inválido (solo alfanumerico)");
+        return false;
+    }
     var noran = document.getElementById('no-ran').value;
     if(noran==="" || noran===null || noran.length===0 || !noran.search(whiteExp)){
         alert("No. Ran: obligatorio");
         return false;
     }
-    if(noran.length > 7){
-        alert("No. Ran: Max. 7 caracteres");
+    if(noran.length > 8){
+        alert("No. Ran: Max. 8 caracteres");
+        return false;
+    }
+    if(noran.search(alphanumeric)){
+        alert("No. Ran: valor inválido (solo alfanumerico)");
         return false;
     }
     var lote = document.getElementById('lote').value;
@@ -100,6 +112,10 @@ function label_review(){
         alert("Lote: deben ser exactamente 13 caracteres");
         return false;
     }
+    if(lote.search(alphanumeric)){
+        alert("Lote: valor inválido (solo alfanumerico)");
+        return false;
+    }
     var inspec = document.getElementById('inspec').value;
     if(inspec==="" || inspec===null || inspec.length===0 || !inspec.search(whiteExp)){
         alert("Inspección: obligatorio");
@@ -107,6 +123,10 @@ function label_review(){
     }
     if(inspec.length > 15){
         alert("Inspección: Max. 15 caracteres");
+        return false;
+    }
+    if(inspec.search(alphanumeric)){
+        alert("Inspección: valor inválido (solo alfanumerico)");
         return false;
     }
     return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&origen="+origen+"&noran="+noran+"&lote="+lote+"&inspec="+inspec;
@@ -130,18 +150,19 @@ $('#form_label').on('submit',function(event){
             url: '../server/tasks/set_label.php',
             data: postData,
             success: function(result){
-                $('#server-label').html(result);
+                $('#server-answer').html(result);
                 //generate_qr_code();
                 generate_bar_codes();
-                /*if(result.indexOf('Error') === -1){
-                    $('#codigo').html(result);
-                    $('#rpta-code').html('');
-                    document.getElementById('div-btn-continue').style.display = 'block';
-                }else{
-                    $('#rpta-code').html(result);
-                    $('#codigo').html('');
-                }
-                text_change();*/
+                $('#pdf').click(function() {
+                    html2canvas($('#to-pdf'), {
+                    onrendered: function(canvas) {
+                        var img = canvas.toDataURL("image/png");
+                        var doc = new jsPDF('p', 'pt', 'letter');
+                        doc.addImage(img, 'PNG', 20, 20);
+                        doc.save('test.pdf');
+                    }
+                    });
+                });
             }
         });
     }
@@ -149,30 +170,35 @@ $('#form_label').on('submit',function(event){
 //***
 //code: asignacion de la lista a los input
 $('#no-parte').on('keyup',function(event){
-    if(!document.getElementById('no-parte').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('no-parte').value!=='0'){
-        var code = event.which || event.keyCode;
-        suggest_list(code,'no-parte','sug-part');
+    if($('#no-parte').val()!==''){
+        if(!document.getElementById('no-parte').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#no-parte').val()!=='0'){
+            var code = event.which || event.keyCode;
+            suggest_list(code,'no-parte','sug-part');
+        }else{
+            $('#sug-part').html('Sin sugerencias');
+            $('#sug-part').addClass('sug-part');
+        }
     }else{
-        $('#sug-part').html('Sin sugerencias');
-        $('#sug-part').addClass('sug-part');
-    }
-});
-$('#inspec').on('keyup',function(event){
-    if(!document.getElementById('inspec').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/) && document.getElementById('inspec').value!=='0'){
-        var code = event.which || event.keyCode;
-        suggest_list(code,'inspec','sug-lote');
-    }else{
-        $('#sug-lote').html('Sin sugerencias');
-        $('#sug-lote').addClass('sug-lote');
+        clean_search();
     }
 });
 //***
-$('#continue').on('click',function(){
-    generate_bar_codes();
+//code: ejecuta la accion al teclear en el input
+$('#inspec').on('keyup',function(event){
+    if($('#inspec').val()!==''){
+        if(!document.getElementById('inspec').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#inspec').val()!=='0'){
+            var code = event.which || event.keyCode;
+            suggest_list(code,'inspec','sug-lote');
+        }else{
+            $('#sug-lote').html('Sin sugerencias');
+            $('#sug-lote').addClass('sug-lote');
+        }
+    }else{
+        clean_search();
+    }
 });
-function text_change(){
-    $('#contador').html(document.getElementById('codigo').value.length);
-}
+//***
+//function: genera el qr con js (ahorita no se usa)
 function generate_qr_code(){
     var qrcode = new QRCode(document.getElementById('qrcodejs'),{
         width: 128,
@@ -183,9 +209,10 @@ function generate_qr_code(){
     });
     qrcode.makeCode(document.getElementById('codigo').value);
 }
+//***
+//function: genera el codigo de barras con js
 function generate_bar_codes(){
-    var msg = document.getElementById('no-parte').value
-    var text = 'P'+document.getElementById('no-parte').value;
+    var text = 'P'+$('#part').attr('alt');
     JsBarcode('#part',text,{
         format: "CODE128",
 		width: 2,
@@ -193,7 +220,7 @@ function generate_bar_codes(){
 		displayValue: false,
 		margin: 2
     });
-    msg = document.getElementById('cantidad').value.padStart(4,'0');
+    var msg = $('#quantity').attr('alt');
     text = 'Q'+msg;
     JsBarcode('#quantity',text,{
         format: "CODE128",// El formato
@@ -208,8 +235,7 @@ function generate_bar_codes(){
 		fontSize: 20, // Tamaño de la fuente
 		margin: 1 // Tamaño de los margenes, se puede especificar el valor de cada margen. marginTop, marginRight, marginBottom, marginLeft
     });
-    msg = document.getElementById('no-ran').value;
-    text = '15K'+msg;
+    text = '15K'+$('#ran').attr('alt');
     JsBarcode('#ran',text,{
         format: "CODE128",
 		width: 2,
@@ -217,7 +243,7 @@ function generate_bar_codes(){
 		displayValue: false,
 		margin: 2
     });
-    msg = document.getElementById('origen').value;
+    msg = $('#origin').attr('alt');
     text = 'V'+msg;
     JsBarcode('#origin',text,{
         format: "CODE128",
@@ -232,13 +258,14 @@ function generate_bar_codes(){
 		fontSize: 20,
 		margin: 2
     });
-    text = '4S0001';
+    msg = $('#serial').attr('alt');
+    text = '4S'+msg;
     JsBarcode('#serial',text,{
         format: "CODE128",
 		width: 2,
 		height: 30,
 		displayValue: true,
-		text: "0001",
+		text: msg,
 		fontOptions: "bold",
 		textAlign: "center",
 		textPosition: "top",
@@ -247,3 +274,4 @@ function generate_bar_codes(){
 		margin: 2
     });
 }
+//***

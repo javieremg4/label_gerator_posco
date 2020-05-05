@@ -16,7 +16,7 @@
     }
     function search_equal_data(){
         require "connection.php";
-        $query = "SELECT fecha_lote,fecha_rollo,bloque,hora_abasto FROM datos_fijos WHERE id='1'";
+        $query = "SELECT fecha_lote,fecha_rollo,bloque,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto FROM datos_fijos WHERE id='1'";
         $result = mysqli_query($connection,$query);
         if($result){
             if(mysqli_num_rows($result)===1){

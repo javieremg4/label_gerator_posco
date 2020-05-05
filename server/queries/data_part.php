@@ -1,6 +1,6 @@
 <?php
     function data_part($no_parte){
-        $array = search_part($no_parte);
+        $array = search_part($no_parte,"no_parte,`desc`,esp,kgpc");
         if($array[0]){
             $info = $array[1];
             $data = "<table>
@@ -15,7 +15,7 @@
         return $array[1];
     }
     function update_part($no_parte){
-        $array = search_part($no_parte);
+        $array = search_part($no_parte,"no_parte,`desc`,esp,kgpc");
         if($array[0]){
             $info = $array[1];
             $data = "<table><tr><th>No. Parte <th>Descripción<th>Especificación<th>Kg./Pc";
@@ -30,9 +30,9 @@
         }
         return $array[1];
     }
-    function search_part($no_parte){
+    function search_part($no_parte,$campos){
         require "connection.php";
-        $query = "SELECT no_parte,`desc`,esp,kgpc FROM parte WHERE no_parte='$no_parte'";
+        $query = "SELECT $campos FROM parte WHERE no_parte='$no_parte'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         if($result){
