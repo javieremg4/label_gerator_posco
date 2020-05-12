@@ -3,7 +3,5 @@
         require_once "../queries/update_part.php";
         $result = update_part(trim($_POST['no-parte']),trim($_POST['desc']),trim($_POST['esp']),trim($_POST['kgpc']),trim($_POST['parte']));
         echo $result;
-    }else{
-        echo "No se recibieron todos los datos";
     }
 ?>

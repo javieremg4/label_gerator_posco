@@ -44,6 +44,6 @@
                 return array(false,"Ese No. Parte existe más de una vez. Consulte al Administrador");
             }
         }
-        return array(false,"No se pudieron consultar los datos de la Parte");
+        return array(false,"No se pudieron consultar los datos de la Parte. Consulte al Administrador");
     }
 ?>

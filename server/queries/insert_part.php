@@ -8,16 +8,14 @@
                 mysqli_close($connection);
                 return "Error: ya existe una Parte con el No. ".$no_parte;
             }
-        }else{
+            $query = "INSERT INTO parte (no_parte,`desc`,esp,kgpc) VALUES ('$no_parte','$desc','$esp','$kgpc')";
+            $result = mysqli_query($connection,$query);
             mysqli_close($connection);
-            return "Error: la Parte no se registro";
+            if($result){
+                return "Parte registrada con éxito";
+            }
         }
-        $query = "INSERT INTO parte (no_parte,`desc`,esp,kgpc) VALUES ('$no_parte','$desc','$esp','$kgpc')";
-        $result = mysqli_query($connection,$query);
         mysqli_close($connection);
-        if($result){
-            return "Parte registrada con éxito";
-        }
         return "Error: la Parte no se registro";
     }
 ?>

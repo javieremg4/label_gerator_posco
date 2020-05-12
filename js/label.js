@@ -15,6 +15,7 @@ window.onload = function(){
 //***
 //code: detectar «click» fuera de un elemento
 $('html').on('click',function(){
+    console.log("X:"+window.event.clientX+", Y:"+window.event.clientY);
     clean_search();
 });
 //***
@@ -55,6 +56,7 @@ function label_review(){
         alert("No. parte: valor inválido (solo alfanumerico)");
         return false;
     }
+
     var cantidad = document.getElementById('cantidad').value;
     if(cantidad<1){
         alert("Cantidad: inválido");
@@ -64,6 +66,7 @@ function label_review(){
         alert("Cantidad: Max. 4 caracteres");
         return false;
     }
+
     var fecha = document.getElementById('fecha').value;
     if(fecha==="" || fecha===null){
         alert("Fecha: obligatorio");
@@ -77,6 +80,8 @@ function label_review(){
         alert("Fecha: invalido");
         return false;
     }
+
+    /*---Validación del input origen
     var origen = document.getElementById('origen').value;
     if(origen==="" || origen===null || origen.length===0 || !origen.search(whiteExp)){
         alert("Origen: obligatorio");
@@ -90,6 +95,8 @@ function label_review(){
         alert("Origen: valor inválido (solo alfanumerico)");
         return false;
     }
+    ---*/
+
     var noran = document.getElementById('no-ran').value;
     if(noran==="" || noran===null || noran.length===0 || !noran.search(whiteExp)){
         alert("No. Ran: obligatorio");
@@ -103,6 +110,7 @@ function label_review(){
         alert("No. Ran: valor inválido (solo alfanumerico)");
         return false;
     }
+
     var lote = document.getElementById('lote').value;
     if(lote==="" || lote===null || lote.length===0 || !lote.search(whiteExp)){
         alert("Lote: obligatorio");
@@ -116,6 +124,7 @@ function label_review(){
         alert("Lote: valor inválido (solo alfanumerico)");
         return false;
     }
+    
     var inspec = document.getElementById('inspec').value;
     if(inspec==="" || inspec===null || inspec.length===0 || !inspec.search(whiteExp)){
         alert("Inspección: obligatorio");
@@ -129,7 +138,7 @@ function label_review(){
         alert("Inspección: valor inválido (solo alfanumerico)");
         return false;
     }
-    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&origen="+origen+"&noran="+noran+"&lote="+lote+"&inspec="+inspec;
+    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&noran="+noran+"&lote="+lote+"&inspec="+inspec;    //+"&origen="+origen
 }   
 //***
 //code: evitar que se envie el formulario al dar enter
@@ -154,13 +163,28 @@ $('#form_label').on('submit',function(event){
                 //generate_qr_code();
                 generate_bar_codes();
                 $('#pdf').click(function() {
-                    html2canvas($('#to-pdf'), {
-                    onrendered: function(canvas) {
-                        var img = canvas.toDataURL("image/png");
-                        var doc = new jsPDF('p', 'pt', 'letter');
-                        doc.addImage(img, 'PNG', 20, 20);
-                        doc.save('test.pdf');
+                    //Asignar el src de la imagen del qr
+                    var qr_b64 = "";
+                    if($('#qr_img').length){
+                        qr_b64 = $('#qr_img').attr('src');
                     }
+                    /*//Generar el canvas del qr con html2canvas
+                    html2canvas($('#thisQR')[0],{ dpi: 360, scrollY: -window.scrollY }).then(function(canvas){
+                        qr = canvas.toDataURL("image/png");
+                    });*/
+                    //Generar el canvas de toda la etiqueta
+                    html2canvas($('#to-pdf')[0],{ scrollX: 0, scrollY: -window.scrollY }).then(function(canvas){
+                        var label = canvas.toDataURL("image/png");
+                        //Crear el pdf
+                        var doc = new jsPDF('p', 'pt', 'letter');
+                        //Poner la imagen de la etiqueta en el pdf
+                        doc.addImage(label, 'PNG', 0 ,10);
+                        //Poner la imagen del qr arriba de la otra imagen
+                        if(qr_b64 !== ''){
+                            doc.addImage(qr_b64, 'PNG', 367, 12);
+                        }
+                        //Guardar el pdf
+                        doc.save('test.pdf');
                     });
                 });
             }
@@ -247,7 +271,7 @@ function generate_bar_codes(){
     text = 'V'+msg;
     JsBarcode('#origin',text,{
         format: "CODE128",
-		width: 1.5,
+		width: 2,
 		height: 30,
 		displayValue: true,
 		text: msg,

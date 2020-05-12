@@ -1,30 +1,62 @@
 window.onload = function(){
-    var getData = "view=1";
     $.ajax({
-        type: 'get',
+        type: 'GET',
         url: '../server/tasks/view_equal_data.php',
-        data: getData,
+        data: null,
         success: function(result){
             $('#form_data').html(result);
         }
     });
 }
 function equal_data_review(){
-    var fecha_rollo = document.getElementById('fecha-rollo').value;
-    if(!white_review(fecha_rollo,"Fecha Rollo: obligatorio")){ return false; };
-    if(!char_limit(fecha_rollo,13,"Fecha Rollo: Max. 13 caracteres")){ return false; };
+    //Validación input fecha-lote
     var fecha_lote = document.getElementById('fecha-lote').value;
     if(!white_review(fecha_lote,"Fecha Lote: obligatorio")){ return false; };
-    if(!char_limit(fecha_lote,13,"Fecha Lote: Max. 13 caracteres")){ return false; };
+    if(fecha_lote.length!==13){
+        alert("Fecha Lote: deben ser exactamente 13 caracteres");
+        return false;
+    }
+    var dateExp = /^\d(\d|\s|\:|\-|\_){11}\d$/;
+    if(fecha_lote.search(dateExp)){
+        alert("Fecha Lote: valor inválido");
+        return false;
+    }
+    //Validación input fecha-rollo
+    var fecha_rollo = document.getElementById('fecha-rollo').value;
+    if(!white_review(fecha_rollo,"Fecha Rollo: obligatorio")){ return false; };
+    if(fecha_rollo.length!==13){
+        alert("Fecha Rollo: deben ser exactamente 13 caracteres");
+        return false;
+    }
+    if(fecha_rollo.search(dateExp)){
+        alert("Fecha Rollo: valor inválido");
+        return false;
+    }
+    //Validación input bloque
     var bloque = document.getElementById('bloque').value;
     if(!white_review(bloque,"Bloque: obligatorio")){ return false; };
     if(!char_limit(bloque,10,"Bloque: Max. 10 caracteres")){ return false; };
+    var blockExp = /^[a-zA-Z\d](\w|\s|\:|\-){0,8}[a-zA-Z\d]$/;
+    if(bloque.search(blockExp)){
+        alert("Bloque: valor inválido");
+        return false;
+    }
+    //Validación input hora
     var hora = document.getElementById('hora').value;
     if(hora===null || hora===''){
         alert("Hora abasto: obligatorio");
         return false;
     }
-    return "fecha-rollo="+fecha_rollo+"&fecha-lote="+fecha_lote+"&bloque="+bloque+"&hora="+hora;
+    //Validación input origen
+    var origen = document.getElementById('origen').value;
+    if(!char_limit(origen,8,"Origen: Max. 8 caracteres")){ return false; }
+    var alphanumeric = /^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/;
+    if(origen.search(alphanumeric)){
+        alert("Origen: valor inválido (solo alfanumerico)");
+        return false;
+    }
+
+    return "fecha-rollo="+fecha_rollo+"&fecha-lote="+fecha_lote+"&bloque="+bloque+"&hora="+hora+"&origen="+origen;
 }
 function char_limit(variable,limit,msg){
     if(variable.length>limit){

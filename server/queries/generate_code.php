@@ -1,5 +1,5 @@
 <?php
-    function generate_code($part_data,$quantity,$origin,$ran,$lot_data,$lote,$inspec,$equal_data){
+    function generate_code($part_data,$quantity,$ran,$lot_data,$lote,$inspec,$equal_data){
 
         $code = "";
         $error = "";
@@ -34,7 +34,7 @@
         $code .= $lote;
 
         //Funciona
-        $origin = str_pad($origin,50,' ');
+        $origin = str_pad($equal_data['origen'],50,' ');
         $continue = review_length($origin,50,'Origen');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $origin;
@@ -202,7 +202,7 @@
         // displaying
         unlink($pngAbsoluteFilePath);
 
-        return '<img src="'.$base64.'" />';
+        return "<img id='qr_img' src='".$base64."' />";
         
     }
 ?>

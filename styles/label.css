@@ -24,9 +24,14 @@ li:hover{
 } 
 /*------*/
 /*---Estilos etiqueta---*/
+.server-answer{
+    justify-content: center;
+}
 .letter{
     font-family: monospace;
     font-weight: bold;
+    margin: 0 25%;
+    width: 615px;
 }
 .div-big-table{
     box-sizing: border-box;

@@ -1,15 +1,15 @@
 <?php
-    function generate_label($parte,$cantidad,$fecha,$origen,$ran,$lote,$inspec){
+    function generate_label($parte,$cantidad,$fecha,$ran,$lote,$inspec){
         require_once "data_lote.php";
         $lot_data = search_lote($inspec,'*');
         if($lot_data[0]){
             require_once "data_part.php";
-            $part_data = search_part($parte,"id_parte,no_parte,esp,kgpc");
+            $part_data = search_part($parte,'id_parte,no_parte,esp,kgpc');
             if($part_data[0]){
                 require_once "equal_data.php";
-                $equal_data = search_equal_data();
-                if(!$equal_data){
-                    return false;
+                $equal_data = search_equal_data("id,fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");
+                if(!$equal_data[0]){
+                    return $equal_data[1];
                 }
             }else{
                 return $part_data[1];
@@ -19,9 +19,10 @@
         }
         $part_data = $part_data[1];
         $lot_data = $lot_data[1];
+        $equal_data = $equal_data[1];
 
         require_once "generate_code.php";
-        $qr = generate_code($part_data,$cantidad,$origen,$ran,$lot_data,$lote,$inspec,$equal_data);
+        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$lote,$inspec,$equal_data);
         if(is_array($qr)){
             return $qr[1];
         }
@@ -29,7 +30,7 @@
         $label = "";
 
         require_once "insert_label.php";
-        $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$lote,$cantidad,$fecha,$origen);
+        $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$lote,$cantidad,$fecha,$equal_data['id']);
         if(is_array($serial_label)){
             $label .= "<script>alert('".$serial_label[1]."');</script>";
             $serial_alt = "0000";
@@ -47,7 +48,7 @@
                             ".$part_data['no_parte']."
                         </td>
                         <td rowspan='2' class='qr-div'>    
-                            <div id='rpta-label'>".$qr."</div>
+                            <div id='rpta-label' data-html2canvas-ignore='true'>".$qr."</div>
                         </td>
                     </tr>
                     <tr class='h62 bot'>
@@ -81,7 +82,7 @@
                     <tr>
                         <td class='relative'>   
                             <span class='span-text-top'>PROVEEDOR<br>(V)</span>    
-                            <img id='origin' alt='".$origen."' />            
+                            <img id='origin' alt='".$equal_data['origen']."' />            
                         </td>
                     </tr>
                     <tr>

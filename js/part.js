@@ -1,4 +1,5 @@
 function part_review(){
+
     var no_parte = document.getElementById('no-parte').value;
     if(!white_review(no_parte,"No. parte: obligatorio")){ return false; }
     if(!char_limit(no_parte,13,"No. parte: Max. 13 caracteres")){ return false; }
@@ -7,6 +8,7 @@ function part_review(){
         alert("No. parte: valor inválido (solo alfanumerico)");
         return false;
     }
+
     var desc = document.getElementById('desc').value;
     if(!white_review(desc,"Descripción: obligatorio")){ return false; }
     if(!char_limit(desc,50,"Descripción: Max. 50 caracteres")){ return false; }
@@ -17,6 +19,7 @@ function part_review(){
         alert("Especificación: valor inválido (solo alfanumerico)");
         return false;
     }
+
     var kgpc = document.getElementById('kgpc').value;
     if(!white_review(kgpc,"Kg./Pc: obligatorio")){ return false; }
     if(parseFloat(kgpc)===0){
@@ -32,6 +35,7 @@ function part_review(){
         alert("Kg./Pc: valor máximo 9999.99");
         return false;
     }
+    
     return "no-parte="+no_parte+"&desc="+desc+"&esp="+esp+"&kgpc="+kgpc;
 }
 function char_limit(variable,limit,msg){

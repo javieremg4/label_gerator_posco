@@ -49,6 +49,6 @@
                 return array(false,"Ese No. Lote existe más de una vez. Consulte al Administrador");
             }
         }
-        return array(false,"No se pudieron consultar los datos del Lote");
+        return array(false,"No se pudieron consultar los datos del Lote. Consulte al Administrador");
     }
 ?>
