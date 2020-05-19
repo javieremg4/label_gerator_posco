@@ -3,7 +3,8 @@
         $array = search_lote($no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc');
         if($array[0]){
             $info = $array[1];
-            $data = "<table><tr><th>Lot No. <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
+            $data = "<table class='table-style'>
+                    <tr><th>Lot No. <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
             $data .= "<tr><td>".$info['no_lote'];
             $data .= "<td>".$info['peso_rollo'];
             $data .= "<td>".$info['yp'];

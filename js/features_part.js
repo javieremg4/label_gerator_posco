@@ -34,7 +34,6 @@ $('#form_features_part').on('keypress',function(event){
 function clean_data(){
     $('#datos-parte').html("");
     document.getElementById('buscar-parte').value = "";
-    document.getElementById('buscar-parte').disabled = false;
 }
 //***
 //code: enviar la info al servidor
@@ -42,14 +41,27 @@ $('#form_features_part').on('submit',function(event){
     event.preventDefault();
     var postData = part_review();
     if(postData !== false){
-        postData += "&parte="+document.getElementById('buscar-parte').value;
+
+        //Validación del no. de parte
+        if(npart_g!==$('#no-parte').val()){
+            var msg = "¿Desea cambiar el No. Parte: "+npart_g+" por "+$('#no-parte').val()+"?\n"
+                      +"Las etiquetas generadas con el No. Parte anterior no se modificarán";
+            msg = confirm(msg);
+            if(!msg){ return false; }
+        }
+        //***
+
+        postData += "&parte="+npart_g;
         $.ajax({
             type: 'post',
             url: '../server/tasks/change_part.php',
             data: postData,
             success: function(result){
-                $('#res-parte').html(result);
+                $('#server_answer').html(result);
                 clean_data();
+            },
+            error: function(){
+                alert("No se pudo actualizar la Parte. Consulte al Administrador");
             }
         });
     }

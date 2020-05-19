@@ -3,18 +3,34 @@
         $array = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");
         if($array[0]){
             $info = $array[1];
-            $data = "<table>";
-            $data .= "<tr><th>Fecha de creación de lote<th>Fecha de ingreso de rollo a planta<th>Bloque<th>Hora de abasto<th>Origen<tr>";
-            $data .= "<td><input type='text' id='fecha-lote' value='".$info['fecha_lote']."' minlength='13' maxlength='13'>";
-            $data .= "<td><input type='text' id='fecha-rollo' value='".$info['fecha_rollo']."' minlength='13' maxlength='13'>";
-            $data .= "<td><input type='text' id='bloque' value='".$info['bloque']."' maxlength='10'>";
-            $data .= "<td><input type='time' id='hora' value='".$info['hora_abasto']."'>";
-            $data .= "<td><input type='text' id='origen' value='".$info['origen']."' maxlength='8'>";
-            $data .= "</table>";
-            $data .= "<div id='div-btn'><input type='submit' value='Actualizar'></div>";
+            $data = "<div class='div-union'>";
+            $data .= "<div class='div-part third'>
+                        Fecha de creación de lote
+                        <input type='text' id='fecha-lote' value='".$info['fecha_lote']."' minlength='13' maxlength='13'>
+                    </div>";
+            $data .= "<div class='div-part third'>
+                        Fecha de ingreso de rollo
+                        <input type='text' id='fecha-rollo' value='".$info['fecha_rollo']."' minlength='13' maxlength='13'>
+                    </div>";
+            $data .= "<div class='div-part third'>
+                        Bloque
+                        <input type='text' id='bloque' value='".$info['bloque']."' maxlength='10'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Hora de abasto
+                        <input type='time' id='hora' value='".$info['hora_abasto']."'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Origen
+                        <input type='text' id='origen' value='".$info['origen']."' maxlength='8'>
+                    </div>";
+            $data .= "</div>";
+            $data .= "<div class='div-center'>
+                        <input type='submit' id='btn-equal' value='Actualizar'>
+                    </div>";
             return $data;
         }
-        return false;
+        return $array[1];
     }
     function search_equal_data($campos){
         require "connection.php";
@@ -27,6 +43,6 @@
                 return array(true,mysqli_fetch_array($result));
             }
         }
-        return array(false,"No se pudieron consultar los datos fijos de la etiqueta. Consulte al Administrador");
+        return array(false,"No se pudieron consultar los datos fijos de la etiqueta.");
     }
 ?>

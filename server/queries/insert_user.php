@@ -16,6 +16,6 @@
             }
         }
         mysqli_close($connection); 
-        return "No se Pudo Conectar al Servidor. Consulte al Administrador";
+        return "No se Pudo Registrar el Usuario";
     }
 ?>

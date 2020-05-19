@@ -1,9 +1,9 @@
 <?php
     function data_part($no_parte){
-        $array = search_part($no_parte,"no_parte,`desc`,esp,kgpc");
+        $array = search_part($no_parte,"no_parte,`desc`,kgpc,esp");
         if($array[0]){
             $info = $array[1];
-            $data = "<table>
+            $data = "<table class='table-style'>
                     <tr><th>Parte BLK<th>Descripción<th>Kg./Pc<th>SPEC";
             $data .= "<tr><td>".$info['no_parte'];
             $data .= "<td>".$info['desc'];
@@ -15,17 +15,29 @@
         return $array[1];
     }
     function update_part($no_parte){
-        $array = search_part($no_parte,"no_parte,`desc`,esp,kgpc");
+        $array = search_part($no_parte,"no_parte,`desc`,kgpc,esp");
         if($array[0]){
             $info = $array[1];
-            $data = "<table><tr><th>No. Parte <th>Descripción<th>Especificación<th>Kg./Pc";
-            $data .= "<tr><td><input type='text' id='no-parte' maxlength='13' value='".$info['no_parte']."'>";
-            $data .= "<td><input type='text' id='desc' maxlength='50' value='".$info['desc']."'>";
-            $data .= "<td><input type='text' id='esp' maxlength='15' value='".$info['esp']."'>";
-            $data .= "<td><input type='text' id='kgpc' value='".$info['kgpc']."'>";
-            $data .= "</table>";
-            $data .= "<input type='submit' id='btn-update' value='Guardar Cambios'>";
-            $data .= "<button id='btn-cancel'>Cancelar</button>";
+            $data .= "<div class='div-part'>
+                        No. Parte 
+                        <input type='text' id='no-parte' maxlength='13' value='".$info['no_parte']."'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Descripción
+                        <input type='text' id='desc' maxlength='50' value='".$info['desc']."'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Kg./Pc
+                        <input type='text' id='kgpc' value='".$info['kgpc']."'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Especificación
+                        <input type='text' id='esp' maxlength='15' value='".$info['esp']."'>
+                    </div>";
+            $data .= "<div class='div-center'>
+                        <input type='submit' id='btn-part' value='Guardar Cambios'>
+                        <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
+                    </div>";
             return $data;      
         }
         return $array[1];

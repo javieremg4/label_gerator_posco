@@ -1,3 +1,8 @@
+//Variable globales para identificar cual parte o lote quiere actualizar el usuario
+//Se asignan al dar enter o clic en los elementos de la lista desplegable
+var npart_g = "soy una variable global";
+var nlot_g = "soy una variable global";
+//***
 //function: evaluar las teclas pulsadas en el input
 function suggest_list(code,idInput,idList){
     var input = document.getElementById(idInput);
@@ -74,31 +79,50 @@ function suggest_list(code,idInput,idList){
                 url: '../server/tasks/suggest_part_lote.php',
                 data: postData,
                 success: function(result){
-                    if(idInput==='no-parte' || idInput==='buscar-parte'){
-                        //code: se agregan las sugerencias a la lista y los eventos
-                        $('#sug-part').html(result);
-                        $('#sug-part').addClass('sug-part');
-                        $('ul#sug-part li').on('click',function(){
-                            input.value = this.innerHTML;
-                            if(list.hasChildNodes()){
-                                cleanList(idList);
-                            }
-                            consult_part_lote(idInput);
-                        });
-                        //***
-                    }else if(idInput==='inspec' || idInput==='buscar-lote'){
-                        //code: se agregan las sugerencias a la lista y los eventos
-                        $('#sug-lote').html(result);
-                        $('#sug-lote').addClass('sug-lote');
-                        $('ul#sug-lote li').on('click',function(){
-                            input.value = this.innerHTML;
-                            if(list.hasChildNodes()){
-                                cleanList(idList);
-                            }
-                            consult_part_lote(idInput);
-                        });
-                        //***
+                    if(result.indexOf("Error:")===-1 && result.indexOf("Falló")===-1){
+                        if(idInput==='no-parte' || idInput==='buscar-parte'){
+                            //code: se agregan las sugerencias a la lista y los eventos
+                            
+                            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+                            $('#sug-part').width($('#'+idInput).width());
+                            //***
+                            
+                            $('#sug-part').html(result);
+                            $('#sug-part').addClass('sug-part');
+                            $('ul#sug-part li').on('click',function(){
+                                input.value = this.innerHTML;
+                                if(list.hasChildNodes()){
+                                    cleanList(idList);
+                                }
+                                consult_part_lote(idInput);
+                            });
+                            //***
+                        }else if(idInput==='inspec' || idInput==='buscar-lote'){
+                            //code: se agregan las sugerencias a la lista y los eventos
+                            
+                            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+                            $('#sug-lote').width($('#'+idInput).width());
+                            //***
+
+                            $('#sug-lote').html(result);
+                            $('#sug-lote').addClass('sug-lote');
+                            $('ul#sug-lote li').on('click',function(event){
+                                console.log("evento click en lista")
+                                event.stopPropagation();
+                                input.value = this.innerHTML;
+                                if(list.hasChildNodes()){
+                                    cleanList(idList);
+                                }
+                                consult_part_lote(idInput);
+                            })
+                            //***
+                        }
+                    }else{
+                        alert("La lista de sugerencias no esta disponible. Consulte al Administrador");
                     }
+                },
+                error: function(){
+                    alert("La lista de sugerencias no esta disponible. Consulte al Administrador");
                 }
             });
         }else{
@@ -147,15 +171,34 @@ function consult_part_lote(idInput){
                     if(idInput === 'no-parte' || idInput === 'buscar-parte'){
                         $('#datos-parte').html(result);
                         if(idInput === 'buscar-parte'){
-                            document.getElementById('buscar-parte').disabled = true;
+
+                            //Asignación variable global
+                            npart_g = input.value;
+                            //***
+
                             $('#btn-cancel').on("click",function(){clean_data()});
                         }
                     }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
                             $('#datos-lote').html(result);
                         if(idInput === 'buscar-lote'){
-                            document.getElementById('buscar-lote').disabled = true;
+
+                            //Asignación variable global
+                            nlot_g = input.value;
+                            //***
+
                             $('#btn-cancel').on("click",function(){clean_data()});
                         }
+                    }
+                },
+                error: function(){
+                    var msg = "No se pudieron consultar los datos. Consulte al Administrador";
+                    if(idInput === 'no-parte' || idInput === 'buscar-parte'){
+                        $('#datos-parte').html(msg);
+                    }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
+                        $('#datos-lote').html(msg);
+                    }else{
+                        console.log(msg);
+                        window.location = "error.html";
                     }
                 }
             });

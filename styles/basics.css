@@ -1,0 +1,76 @@
+/*Basicos*/
+*{
+    font-family: sans-serif;
+    font-weight: bold;
+}
+form{
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+input,.btn-cancel{
+    border: 1px solid #d1d1d1;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    width: 95%;
+}
+input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
+    font-weight: normal;
+}
+input[type='submit']{
+    background: #3b5998;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    height: 30px;
+    width: 30%;
+}
+.btn-cancel,input[type="reset"]{
+    background: rgb(170, 170, 170);
+    font-size: 14px;
+    margin-left: 10px;
+    width: 20%;
+}
+.div-union{    
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    width: 100%;
+}
+.div-part,.div-left{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.div-center{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.div-msg{
+    border-radius: 5px;
+    margin: 0 35%;
+    padding: 3px;
+    text-align: center;
+    width: 30%;
+}
+.div-red{
+    color: red;
+    background:#e46b6b61;
+}
+.div-green{
+    color: green;
+    background: rgb(177, 255, 177);
+}
+h1{
+    text-align: center;
+    margin: 0;
+}
+.f32{
+    font-size: 32px;
+}
+.f14{
+    font-size: 14px;
+}

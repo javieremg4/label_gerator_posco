@@ -12,10 +12,10 @@
             $result = mysqli_query($connection,$query);
             mysqli_close($connection);
             if($result){
-                return "Parte registrada con éxito";
+                return "Parte No. ".$no_parte." registrada con éxito";
             }
         }
         mysqli_close($connection);
-        return "Error: la Parte no se registro";
+        return "Error: la Parte no se registró";
     }
 ?>

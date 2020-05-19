@@ -1,0 +1,21 @@
+form{
+    margin: 9px 0;
+    padding: 10px;
+    width: 40%;
+}
+input[type="radio"]{
+    width: 10%;
+}
+.div-part{
+    width: 50%;
+}
+@media (max-width: 850px){
+    form{ width: 60%; }
+}
+@media (max-width: 512px){
+    form{ width: 98%; }
+    .div-msg{ 
+        margin: 0 25%;
+        width: 50%;
+    }
+}

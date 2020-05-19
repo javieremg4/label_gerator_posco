@@ -1,0 +1,28 @@
+form{
+    margin: 9px 0;
+    padding: 10px;
+    width: 60%;
+}
+.div-part{
+    text-align: center;
+    width: 25%;
+}
+.div-left{
+    width: 30%;
+}
+p{
+    margin: 0 0 5px;
+}
+@media (max-width: 1024px){
+    form{ width: 80%; }
+}
+@media (max-width: 768px){
+    .div-msg{ 
+        margin: 0 25%;
+        width: 50%;
+    }
+}
+@media (max-width: 512px){
+    form{ width: 98%; }
+    .div-part, .div-left{ width: 50%; }
+}

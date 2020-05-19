@@ -1,3 +1,7 @@
+<?php   
+    include '../server/tasks/session_validate.php'; 
+    session_validate("ignore");    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +15,7 @@
 <body>
     
     <h1>Actualizar Lote</h1>
-    <form id="form_lot" method="post" autocomplete="off">
+    <form id="form_lot" autocomplete="off">
         <div id="div-lote" style="background: yellow; width: 200px;">
             Buscar lote:
             <input type="text" id="buscar-lote">
@@ -24,6 +28,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
     <script src="../js/suggest_list.js"></script>
-    <script src="../js/properties.js"></script>
     <script src="../js/lot.js"></script>
+    <script src="../js/features_lot.js"></script>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>...</title>
+</head>
+<body>
+    <p>Error: Página no encontrada</p>
+    Será redirigido en <span id="seg"></span> ...
+    <script>
+        var seg = 3;
+        function count_reverse(){
+            if(seg===0){ 
+                window.location="index.php"; 
+            }else{
+                document.getElementById('seg').innerHTML = seg;
+                seg -= 1;
+                setTimeout("count_reverse()",1000);
+            }
+        }
+        window.onload = count_reverse();
+    </script>
+</body>
+</html>
