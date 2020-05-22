@@ -1,6 +1,6 @@
 <?php
     function equal_data(){
-        $array = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");
+        $array = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%H:%i') AS hora_abasto");
         if($array[0]){
             $info = $array[1];
             $data = "<div class='div-union'>";

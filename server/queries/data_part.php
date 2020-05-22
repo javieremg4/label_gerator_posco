@@ -22,6 +22,9 @@
                         No. Parte 
                         <input type='text' id='no-parte' maxlength='13' value='".$info['no_parte']."'>
                     </div>";
+                    if (get_magic_quotes_gpc()!=1){
+                        $info['desc']=addslashes($info['desc']);
+                    }
             $data .= "<div class='div-part'>
                         Descripción
                         <input type='text' id='desc' maxlength='50' value='".$info['desc']."'>

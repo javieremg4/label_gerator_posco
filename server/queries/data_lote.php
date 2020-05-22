@@ -21,17 +21,38 @@
         $array = search_lote($no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc');
         if($array[0]){
             $info = $array[1];
-            $data = "<table><tr><th>Inspeccion <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
-            $data .= "<tr><td><input type='text' id='lot' value='".$info['no_lote']."' maxlength='15'>";
-            $data .= "<td><input type='text' id='wgt' value='".$info['peso_rollo']."' maxlength='7'>";
-            $data .= "<td><input type='text' id='yp' value='".$info['yp']."' maxlength='6'>";
-            $data .= "<td><input type='text' id='ts' value='".$info['ts']."' maxlength='6'>";
-            $data .= "<td><input type='text' id='el' value='".$info['el']."' maxlength='6'>";  
-            $data .= "<td><input type='text' id='tc' value='".$info['tc']."' maxlength='6'>";
-            $data .= "<td><input type='text' id='bc' value='".$info['bc']."' maxlength='6'>";
-            $data .= "</table>";
-            $data .= "<input type='submit' id='btn-update' value='Guardar Cambios'>";
-            $data .= "<button id='btn-cancel'>Cancelar</button>";
+            $data = "<div class='div-part'>
+                        Inspeccion
+                        <input type='text' id='lot' value='".$info['no_lote']."' maxlength='15'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        Peso (MT)
+                        <input type='text' id='wgt' value='".$info['peso_rollo']."' maxlength='7'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        YP
+                        <input type='text' id='yp' value='".$info['yp']."' maxlength='6'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        TS
+                        <input type='text' id='ts' value='".$info['ts']."' maxlength='6'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        EL
+                        <input type='text' id='el' value='".$info['el']."' maxlength='6'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        TOP
+                        <input type='text' id='tc' value='".$info['tc']."' maxlength='6'>
+                    </div>";
+            $data .= "<div class='div-part'>
+                        BOTTOM
+                        <input type='text' id='bc' value='".$info['bc']."' maxlength='6'>
+                    </div>";
+            $data .= "<div class='div-center'>
+                        <input type='submit' id='btn-lot' value='Guardar Cambios'>
+                        <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
+                    </div>";
             return $data;      
         }
         return $array[1];

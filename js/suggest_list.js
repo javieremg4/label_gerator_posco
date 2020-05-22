@@ -107,7 +107,6 @@ function suggest_list(code,idInput,idList){
                             $('#sug-lote').html(result);
                             $('#sug-lote').addClass('sug-lote');
                             $('ul#sug-lote li').on('click',function(event){
-                                console.log("evento click en lista")
                                 event.stopPropagation();
                                 input.value = this.innerHTML;
                                 if(list.hasChildNodes()){
@@ -197,7 +196,6 @@ function consult_part_lote(idInput){
                     }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
                         $('#datos-lote').html(msg);
                     }else{
-                        console.log(msg);
                         window.location = "error.html";
                     }
                 }

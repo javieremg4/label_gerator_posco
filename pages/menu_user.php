@@ -15,6 +15,7 @@
 <body>
     <nav class="menu-main">
         <a href="label.php">Nueva Etiqueta</a>
+        <a href="show_labels.php">Ver Etiquetas</a>
         <a href="part.php">Nueva Parte</a>
         <a href="lot.php">Nuevo Lote</a>
         <a href="change_features_part.php">Actualizar una Parte</a>
@@ -22,10 +23,10 @@
         <a href="../server/tasks/close_session.php">Cerrar sesión</a>
     </nav>
     <div class="div-msg f32" id='user_name'></div>
-
-</body>
+    
     <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
     <script src="../js/user_name.js"></script>
+</body>
 </html>

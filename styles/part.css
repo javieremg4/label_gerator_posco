@@ -1,28 +1,35 @@
 form{
     margin: 9px 0;
-    padding: 10px;
     width: 60%;
 }
 .div-part{
     text-align: center;
     width: 25%;
 }
+/*change_features_part*/
 .div-left{
     width: 30%;
 }
-p{
-    margin: 0 0 5px;
+.pre{
+    text-align: center;
+    white-space: pre;
 }
+/******/
 @media (max-width: 1024px){
     form{ width: 80%; }
 }
 @media (max-width: 768px){
     .div-msg{ 
-        margin: 0 25%;
-        width: 50%;
+        margin: 0 20%;
+        width: 60%;
     }
+    input[type="submit"]{ font-size: 13px; }
 }
 @media (max-width: 512px){
     form{ width: 98%; }
     .div-part, .div-left{ width: 50%; }
+    .btn-cancel,input[type="submit"],input[type="reset"]{
+        font-size: 14px;
+        width: 50%;
+    }
 }

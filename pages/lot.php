@@ -54,9 +54,10 @@
             </div>
         </form>
     </div>
+
+    <!--js-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="../js/lot.js"></script>
 </body>
-<!--js-->
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
-<script src="../js/lot.js"></script>
 </html>

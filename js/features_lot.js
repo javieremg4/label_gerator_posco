@@ -40,6 +40,16 @@ function clean_data(){
 $('#form_lot').on('submit',function(event){
     event.preventDefault();
     var postData = lote_review();
+
+    //Validación del no. de lote
+    if(nlot_g!==$('#lot').val()){
+        var msg = "¿Desea cambiar el No. Lote: "+nlot_g+" por "+$('#lot').val()+"?\n"
+                    +"Las etiquetas generadas con el No. Lote anterior no se modificarán";
+        msg = confirm(msg);
+        if(!msg){ return false; }
+    }
+    //***
+
     if(postData !== false){
         postData += "&no-lote="+document.getElementById('buscar-lote').value;
         $.ajax({
@@ -47,8 +57,26 @@ $('#form_lot').on('submit',function(event){
             url: '../server/tasks/change_lote.php',
             data: postData,
             success: function(result){
-                $('#res-lote').html(result);
-                clean_data();
+                $('#server_answer').html(result);
+                if(result.indexOf("Error")!==-1 || result.indexOf("Falló")!==-1){
+                    $('#server_answer').addClass('div-red');
+                    $('#btn-lot').attr("disabled",true);
+                    setTimeout(() => {
+                    $('#server_answer').html("");
+                    $('#server_answer').removeClass('div-red');
+                    $('#btn-lot').attr("disabled",false);
+                    }, 7000);
+                }else{
+                    $('#server_answer').addClass('div-green');
+                    clean_data();
+                    setTimeout(() => {
+                    $('#server_answer').html("");
+                    $('#server_answer').removeClass('div-green');
+                    }, 7000);
+                }
+            },
+            error: function(){
+                alert("No se pudo actualizar el Lote. Consulte al Administrador");
             }
         });
     }

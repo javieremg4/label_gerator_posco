@@ -27,17 +27,19 @@
     <div class="div-center">
         <form id="form_features_part" autocomplete="off">
             <div class="div-left">
-                <p>Ingrese el No. parte para buscar</p>
-                <input type="text" id="buscar-parte">
+                <span>Ingrese el No. parte para buscar</span>
+                <input type="text" id="buscar-parte" maxlength="13">
                 <ul id="sug-part"></ul>
             </div>
             <div class="div-union" id="datos-parte"></div>
         </form>
     </div>
-</body>
+    <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
     <script src="../js/suggest_list.js"></script>
     <script src="../js/part.js"></script>
     <script src="../js/features_part.js"></script>
+
+</body>
 </html>

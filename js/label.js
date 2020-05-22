@@ -21,10 +21,6 @@ window.onload = function(){
     }
     }
 }
-//***
-/*window.addEventListener('resize',function(){
-    console.log(window.innerWidth);
-})*/
 //code: detectar «click» fuera de un elemento
 $('html').on('click',function(){
     clean_lists();
@@ -185,7 +181,7 @@ $('#form_label').on('submit',function(event){
                 if(result==="back-error"){
                     window.location = "../pages/error.html";
                 }else{
-                    $('#server-answer').html(result);
+                    $('#server_answer').html(result);
                     //generate_qr_code();
                     generate_bar_codes();
                     $('#pdf').click(function() {

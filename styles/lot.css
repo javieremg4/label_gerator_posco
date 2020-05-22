@@ -1,6 +1,5 @@
 form{
     margin: 9px 0;
-    padding: 10px;
     width: 60%;
 }
 .div-union{
@@ -10,6 +9,15 @@ form{
     text-align: center;
     width: 20%;
 }
+/*change_features_lot*/
+.div-left{
+    width: 25%;
+}
+.pre{
+    text-align: center;
+    white-space: pre;
+}
+/******/
 @media (max-width: 1280px){
     form{ width: 80%; }
 }
@@ -25,7 +33,10 @@ form{
     }
 }
 @media (max-width: 512px){
-    .div-part{ width: 50%; }
+    .div-part,.div-left{ width: 50%; }
+    .btn-cancel,input[type="submit"],input[type="reset"]{
+        width: 50%;
+    }
 }
 @media (max-width: 320px){
     .yp{ width: 40%; }

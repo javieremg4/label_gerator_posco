@@ -57,11 +57,12 @@
                 <div class="div-center seventy" id="datos-lote"></div>
             </div>
             <div class="div-center">
-                <input class="w40" id="btn-submit" type="submit" value="Generar">
+                <input class="w40" type="submit" value="Generar">
             </div>
         </form>
     </div>
-    <div id="server-answer"></div>
+
+    <div id="server_answer"></div>
     
     <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

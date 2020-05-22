@@ -23,6 +23,8 @@ function part_review(){
     var desc = document.getElementById('desc').value;
     if(!white_review(desc,"Descripción: obligatorio")){ return false; }
     if(!char_limit(desc,50,"Descripción: Max. 50 caracteres")){ return false; }
+    if(!/^[^'"<>&]*$/.test(desc)){ showQuitMsg("Descripción: valor inválido"); return false; }
+
     var esp = document.getElementById('esp').value;
     if(!white_review(esp,"Especificación: obligatorio")){ return false; }
     if(!char_limit(esp,15,"Especificación: Max. 15 caracteres")){ return false; }

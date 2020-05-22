@@ -30,7 +30,7 @@ $('#form_features_part').on('keypress',function(event){
     }
 });
 //***
-//function: limpiar el input el div con los datos
+//function: limpiar el input y el div con los datos
 function clean_data(){
     $('#datos-parte').html("");
     document.getElementById('buscar-parte').value = "";
@@ -58,7 +58,22 @@ $('#form_features_part').on('submit',function(event){
             data: postData,
             success: function(result){
                 $('#server_answer').html(result);
-                clean_data();
+                if(result.indexOf("Error")!==-1 || result.indexOf("Falló")!==-1){
+                    $('#server_answer').addClass('div-red');
+                    $('#btn-part').attr("disabled",true);
+                    setTimeout(() => {
+                    $('#server_answer').html("");
+                    $('#server_answer').removeClass('div-red');
+                    $('#btn-part').attr("disabled",false);
+                    }, 7000);
+                }else{
+                    $('#server_answer').addClass('div-green');
+                    clean_data();
+                    setTimeout(() => {
+                    $('#server_answer').html("");
+                    $('#server_answer').removeClass('div-green');
+                    }, 7000);
+                }
             },
             error: function(){
                 alert("No se pudo actualizar la Parte. Consulte al Administrador");
