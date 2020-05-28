@@ -5,13 +5,17 @@ $('#buscar-parte').on('keyup',function(event){
             var code = event.which || event.keyCode;
             suggest_list(code,'buscar-parte','sug-part');
         }else{
+            
+            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+            $('#sug-part').width($('#buscar-parte').width());
+            //***
+            
             $('#sug-part').html('Sin sugerencias');
             $('#sug-part').addClass('sug-part');
         }
     }else{
-        if(document.getElementById('sug-part').hasChildNodes()){
-            cleanList('sug-part');
-        }
+        cleanList('sug-part');
+        $('#datos-parte').html("");
     }
 });
 //***
@@ -19,6 +23,14 @@ $('#buscar-parte').on('keyup',function(event){
 $('html').on('click',function(){
     if(document.getElementById('sug-part').hasChildNodes()){
         cleanList('sug-part');
+    }
+});
+//***
+//code: perder el foco de un elemento
+$('#buscar-parte').on('blur',function(event){
+    if(document.getElementById('sug-part').hasChildNodes()){
+        document.getElementById('buscar-parte').focus();
+        //$('#buscar-parte').focus();
     }
 });
 //***
@@ -33,7 +45,7 @@ $('#form_features_part').on('keypress',function(event){
 //function: limpiar el input y el div con los datos
 function clean_data(){
     $('#datos-parte').html("");
-    document.getElementById('buscar-parte').value = "";
+    $('#buscar-parte').val("");
 }
 //***
 //code: enviar la info al servidor
@@ -45,7 +57,7 @@ $('#form_features_part').on('submit',function(event){
         //Validación del no. de parte
         if(npart_g!==$('#no-parte').val()){
             var msg = "¿Desea cambiar el No. Parte: "+npart_g+" por "+$('#no-parte').val()+"?\n"
-                      +"Las etiquetas generadas con el No. Parte anterior no se modificarán";
+                      +"Las etiquetas generadas con el No. Parte anterior se modificarán";
             msg = confirm(msg);
             if(!msg){ return false; }
         }

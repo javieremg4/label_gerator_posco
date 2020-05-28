@@ -25,6 +25,14 @@ $('#form_show_labels').on("submit",function(e){
         showQuitMsg("Fecha: obligatorio");
         return false;
     }
+    if(!validarFormatoFecha($('#date-consult').val())){
+        showQuitMsg("Fecha: formato inválido");
+        return false;
+    }
+    if(!existeFecha($('#date-consult').val())){
+        showQuitMsg("Fecha: valor inválido");
+        return false;
+    }
     $.ajax({
         method: "POST",
         data: "date="+$('#date-consult').val(),

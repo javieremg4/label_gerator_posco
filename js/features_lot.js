@@ -4,21 +4,28 @@ $('#buscar-lote').on('keyup',function(event){
             var code = event.which || event.keyCode;
             suggest_list(code,'buscar-lote','sug-lote');
         }else{
+
+            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+            $('#sug-lote').width($('#buscar-lote').width());
+            //***
+
             $('#sug-lote').html('Sin sugerencias');
             $('#sug-lote').addClass('sug-lote');
         }
     }else{
-        if(document.getElementById('sug-lote').hasChildNodes()){
-            cleanList('sug-lote');
-        }
+        cleanList('sug-lote');
+        $('#datos-lote').html("");
     }
     
 });
 //code: detectar «click» fuera de un elemento
 $('html').on('click',function(){
-    if(document.getElementById('sug-lote').hasChildNodes()){
-        cleanList('sug-lote');
-    }
+    cleanList('sug-lote');
+});
+//***
+//code: perder el foco de un elemento
+$('#buscar-lote').on('blur',function(event){
+    document.getElementById('buscar-lote').focus();
 });
 //***
 //code: evitar que se envie el formulario al dar enter

@@ -1,7 +1,7 @@
 //Variable globales para identificar cual parte o lote quiere actualizar el usuario
 //Se asignan al dar enter o clic en los elementos de la lista desplegable
-var npart_g = "soy una variable global";
-var nlot_g = "soy una variable global";
+var npart_g = null;
+var nlot_g = null;
 //***
 //function: evaluar las teclas pulsadas en el input
 function suggest_list(code,idInput,idList){
@@ -69,7 +69,7 @@ function suggest_list(code,idInput,idList){
     }else{
         if(input.value !== ""){
             var postData = "";
-            if(idInput==='no-parte' || idInput==='buscar-parte'){
+            if(idInput==='no-parte' || idInput==='buscar-parte' || idInput==='eliminar-parte'){
                 postData = "no-parte="+input.value;
             }else if(idInput==='inspec' || idInput==='buscar-lote'){
                 postData = "no-lote="+input.value;
@@ -80,7 +80,7 @@ function suggest_list(code,idInput,idList){
                 data: postData,
                 success: function(result){
                     if(result.indexOf("Error:")===-1 && result.indexOf("Falló")===-1){
-                        if(idInput==='no-parte' || idInput==='buscar-parte'){
+                        if(idInput==='no-parte' || idInput==='buscar-parte' || idInput==='eliminar-parte'){
                             //code: se agregan las sugerencias a la lista y los eventos
                             
                             //Asignar el ancho de la lista dinámicamente a partir del ancho del input
@@ -143,7 +143,7 @@ function cleanList(idList){
 function consult_part_lote(idInput){
     var input = document.getElementById(idInput);
     if(input.value !== ""){
-        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput === 'inspec' || idInput === 'buscar-lote'){
+        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte' || idInput === 'inspec' || idInput === 'buscar-lote'){
             var postData = "";
             switch (idInput) {
                 case 'no-parte':
@@ -151,6 +151,9 @@ function consult_part_lote(idInput){
                     break;
                 case 'buscar-parte':
                     postData = "buscar-parte="+input.value;
+                    break;
+                case 'eliminar-parte':
+                    postData = "eliminar-parte="+input.value;
                     break;
                 case 'inspec':
                     postData = "no-lote="+input.value;
@@ -167,24 +170,29 @@ function consult_part_lote(idInput){
                 url: '../server/tasks/see_part_lote.php',
                 data: postData,
                 success: function(result){
-                    if(idInput === 'no-parte' || idInput === 'buscar-parte'){
+                    if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte'){
                         $('#datos-parte').html(result);
-                        if(idInput === 'buscar-parte'){
 
-                            //Asignación variable global
-                            npart_g = input.value;
-                            //***
+                        //Asignación variable global
+                        npart_g = input.value;
+                        //***
+                        
+                        if(idInput==='no-parte' && $('#cantidad').length){
+                            var array = result.split("<td>");
+                            $('#cantidad').val(array[4]);
+                        }
 
+                        if(idInput === 'buscar-parte' || idInput==='eliminar-parte'){
                             $('#btn-cancel').on("click",function(){clean_data()});
                         }
                     }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
-                            $('#datos-lote').html(result);
-                        if(idInput === 'buscar-lote'){
+                        $('#datos-lote').html(result);
 
-                            //Asignación variable global
-                            nlot_g = input.value;
-                            //***
+                        //Asignación variable global
+                        nlot_g = input.value;
+                        //***
 
+                        if(idInput==='buscar-lote'){
                             $('#btn-cancel').on("click",function(){clean_data()});
                         }
                     }
@@ -202,7 +210,7 @@ function consult_part_lote(idInput){
             });
         }
     }else{
-        if(idInput === 'no-parte' || idInput === 'buscar-parte'){
+        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte'){
             $('#datos-parte').html("");
         }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
             $('#datos-lote').html("");

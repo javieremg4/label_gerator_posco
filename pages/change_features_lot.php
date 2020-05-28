@@ -1,6 +1,6 @@
 <?php   
     include '../server/tasks/session_validate.php'; 
-    session_validate("ignore");    
+    session_validate("admin");    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,12 +16,7 @@
     <link rel="stylesheet" href="../styles/lot.css">
 </head>
 <body class="f14">
-    <nav class="menu-main">
-        <?php
-            echo ($_SESSION['user_role']==="admin") ? "<a class='w150' href='menu_admin.php'>Volver</a>" : "<a class='w150' href='menu_user.php'>Volver</a>";
-        ?>
-        <a class='w150' href="../server/tasks/close_session.php">Cerrar sesión</a>
-    </nav>
+    <?php include '../server/tasks/select_menu.php'; ?>
     <h1>Actualizar Lote</h1>
     <div class="div-msg" id="server_answer"></div>
     <div class="div-center">
@@ -41,5 +36,6 @@
     <script src="../js/suggest_list.js"></script>
     <script src="../js/lot.js"></script>
     <script src="../js/features_lot.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

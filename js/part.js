@@ -48,8 +48,18 @@ function part_review(){
         showQuitMsg("Kg./Pc: valor máximo 9999.99");
         return false;
     }
+
+    var snppz = document.getElementById('snppz').value;
+    if(snppz<1){
+        showQuitMsg("SNP PZ: valor inválido");
+        return false;
+    }
+    if(snppz.length>4){
+        showQuitMsg("SNP PZ: Max. 4 caracteres");
+        return false;
+    }
     
-    return "no-parte="+no_parte+"&desc="+desc+"&esp="+esp+"&kgpc="+kgpc;
+    return "no-parte="+no_parte+"&desc="+desc+"&esp="+esp+"&kgpc="+kgpc+"&snppz="+snppz;
 }
 function char_limit(variable,limit,msg){
     if(variable.length>limit){

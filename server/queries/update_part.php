@@ -1,9 +1,9 @@
 <?php
-    function update_part($no_parte,$desc,$esp,$kgpc,$parte){
+    function update_part($no_parte,$desc,$esp,$kgpc,$snppz,$parte){
         require_once "connection.php";
         $change_number = false;
         if($no_parte !== $parte){
-            $query = "SELECT id_parte FROM parte WHERE no_parte='$no_parte'";
+            $query = "SELECT id_parte FROM parte WHERE activo='1' AND no_parte='$no_parte'";
             $result = mysqli_query($connection,$query);
             if($result){
                 if(mysqli_num_rows($result)>0){
@@ -16,7 +16,7 @@
             }
             $change_number = true;
         }
-        $query = "UPDATE parte SET no_parte='$no_parte',esp='$esp',`desc`='$desc',kgpc='$kgpc' WHERE no_parte='$parte'";
+        $query = "UPDATE parte SET no_parte='$no_parte',esp='$esp',`desc`='$desc',kgpc='$kgpc',snppz='$snppz' WHERE no_parte='$parte'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         if($result){

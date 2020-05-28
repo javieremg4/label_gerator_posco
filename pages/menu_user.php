@@ -11,22 +11,42 @@
     <!--css-->
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/basics.css">
+    <link rel="stylesheet" href="../styles/show_label.css">
 </head>
 <body>
-    <nav class="menu-main">
+    <button id="btn-menu" class="btn-menu">Menú</button>
+    
+    <nav class="menu-main" id="menu">
+        <a class="active" href="menu_user.php">Inicio</a>
         <a href="label.php">Nueva Etiqueta</a>
-        <a href="show_labels.php">Ver Etiquetas</a>
         <a href="part.php">Nueva Parte</a>
         <a href="lot.php">Nuevo Lote</a>
-        <a href="change_features_part.php">Actualizar una Parte</a>
-        <a href="change_features_lot.php">Actualizar un Lote</a>
         <a href="../server/tasks/close_session.php">Cerrar sesión</a>
     </nav>
-    <div class="div-msg f32" id='user_name'></div>
+
+    <div class="div-msg f32" id='user_name'>
+        <?php echo "Bienvenido ".$_SESSION['user_name']; ?>
+    </div>
+
+    <div class="div-msg" id="val-msg"></div>
+    <div class="div-center">
+        <form id="form_show_labels">
+            <div class="div-left">
+                <span>Ingrese la fecha para buscar:</span>
+                <input type="date" id="date-consult">
+            </div>
+            <div class="div-center">
+                <input type="submit" value="Consultar">
+            </div>
+        </form>
+    </div>
+    <div class="div-center f14" id="label-panel"></div>
     
     <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
-    <script src="../js/user_name.js"></script>
+    <script src="../js/validarFecha.js"></script>
+    <script src="../js/show_labels.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

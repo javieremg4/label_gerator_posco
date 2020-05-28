@@ -18,6 +18,11 @@ td, th{
 .div-left{
     width: 50%; 
 }
+span{
+    display: block;
+    margin: 0 0 5px;
+    width: 200%;
+}
 @media (max-width: 1024px){
     form{ width: 50%; }
 }

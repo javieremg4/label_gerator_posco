@@ -43,7 +43,7 @@
         $continue = review_numeric($part_data['kgpc'],'Kg./Pc de la Parte');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         } 
         $bale_wgt = str_pad(totWgt($quantity,$part_data['kgpc']),7,'0',STR_PAD_LEFT);
         $continue = review_length($bale_wgt,7,'Peso de la Paca de Plantillas');
@@ -72,7 +72,7 @@
         $continue = review_numeric($lot_data['peso_rollo'],'Peso total del Rollo');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         } 
         $roll_wgt = str_pad(truncateValue($lot_data['peso_rollo'],2),7,'0',STR_PAD_LEFT);
         $continue = review_length($roll_wgt,7,'Peso total del Rollo');
@@ -83,7 +83,7 @@
         $continue = review_numeric($lot_data['yp'],'YP del Lote');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         } 
         $yp = str_pad(truncateValue($lot_data['yp'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($yp,6,'YP');
@@ -94,7 +94,7 @@
         $continue = review_numeric($lot_data['ts'],'TS del Lote');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         } 
         $ts = str_pad(truncateValue($lot_data['ts'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($ts,6,'TS');
@@ -105,7 +105,7 @@
         $continue = review_numeric($lot_data['el'],'EL del Lote');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         }
         $el = str_pad(truncateValue($lot_data['el'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($el,6,'EL');
@@ -116,7 +116,7 @@
         $continue = review_numeric($lot_data['tc'],'TOP del Lote');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         }
         $tc = str_pad(truncateValue($lot_data['tc'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($tc,6,'TOP');
@@ -127,7 +127,7 @@
         $continue = review_numeric($lot_data['bc'],'BOTTOM del Lote');
         if(is_array($continue)){
             $error .= $continue[1];
-            return array(false,$error);
+            //return array(false,$error);
         }
         $bc = str_pad(truncateValue($lot_data['bc'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($bc,6,'BOTTOM');
@@ -137,9 +137,13 @@
         if(!empty($error)){
             return array(false,$error);
         }
-        //echo "Caracteres: <div id='contador'></div><textarea id='codigo' cols='180' rows='2'>".$code."</textarea><hr>";
 
-        return generate_qr_code($code);
+        /* Caja de palabras
+        echo "Caracteres: <div id='contador'></div><textarea id='codigo' cols='180' rows='2'>".$code."</textarea><hr>";
+        */
+        $qr_code = generate_qr_code($code);
+
+        return (!$qr_code) ? array(false,"Error: No se pudo generar el código QR. Consulte al Administrador") : $qr_code;
     }
     function truncateValue($number, $digitos){
         $multiplicador = pow (10,$digitos);
@@ -165,44 +169,44 @@
         return true;
     }
     function generate_qr_code($code){
+
+        //Inclusión de la librería que genera el código qr
         require_once "../phpqrcode/qrlib.php";
 
-        // how to save PNG codes to server
-    
+        //Directorio donde estará el archivo
         $tempDir = '../qr/';
-    
-        $codeContents = 'This Goes From File';
-    
-        // we need to generate filename somehow, 
-        // with md5 or with database ID used to obtains $codeContents...
-        $fileName = '005_file_'.md5($code).'.png';
+
+        //Se genera el nombre del archivo
+        $fileName = md5($code).'.png';
+
+        //Se revisa si existe el directorio sí no se crea
+        if(!is_dir($tempDir)){
+            if(!mkdir($tempDir, 0777)){
+                return false;
+            }
+        }
     
         $pngAbsoluteFilePath = $tempDir.$fileName;
-        $urlRelativeFilePath = "../server/qr/".$fileName;
     
-        // generating
-        if (!file_exists($pngAbsoluteFilePath)) {
+        // Generando la imagen con el qr
+        if(!file_exists($pngAbsoluteFilePath)){
             QRcode::png($code, $pngAbsoluteFilePath,QR_ECLEVEL_L, 2.5);
-            //echo 'File generated!';
-            //echo '<hr />';
-        } else {
-            //echo 'File already generated! We can use this cached file to speed up site on common codes!';
-            //echo '<hr />';
+        }else{
+            return false;
         }
 
         // Cargando la imagen
         $data = file_get_contents($pngAbsoluteFilePath);
+        if($data === false) { return false; }
 
         // Decodificando la imagen en base64
-        $base64 = 'data:image/png;base64,' . base64_encode($data);
+        $base64 = base64_encode($data);
+        if(!$base64){ return false; }
+        $base64 = 'data:image/png;base64,'.$base64;
     
-        //echo 'Server PNG File: '.$pngAbsoluteFilePath;
-        //echo '<hr />';
-    
-        // displaying
+        // Eliminando la imagen
         unlink($pngAbsoluteFilePath);
 
         return "<img id='qr_img' src='".$base64."' />";
-        
     }
 ?>

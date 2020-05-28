@@ -58,13 +58,13 @@ $('#login_form').on('submit',function(event){
                     window.location = '../pages/menu_admin.php';
                 }else{
                     $('#server_answer').html(result);
-                    /*$('#btn-login').attr("disabled",true);
+                    $('#btn-login').attr("disabled",true);
                     $('#server_answer').addClass('div-red');
                     setTimeout(() => {
                         $('#server_answer').html("");
                         $('#server_answer').removeClass('div-red');
                         $('#btn-login').attr("disabled",false);
-                    }, 5000);*/
+                    }, 5000);
                 }
             },
             error: function(){

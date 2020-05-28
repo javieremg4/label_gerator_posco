@@ -15,8 +15,8 @@ window.onload = function(){
     for(var i=0; i < document.forms[0].elements.length; i++) {
         var campo = document.forms[0].elements[i];
         if(campo.type != "hidden") {
-        campo.focus();
-        break;
+            campo.focus();
+            break;
         }
     }
     }
@@ -29,11 +29,13 @@ $('html').on('click',function(){
 //code: perder el foco de un elemento
 $('#no-parte').on('blur',function(event){
     if(document.getElementById('sug-part').hasChildNodes()){
+        //clean_lists();
         document.getElementById('no-parte').focus();
     }
 });
 $('#inspec').on('blur',function(event){
     if(document.getElementById('sug-lote').hasChildNodes()){
+        //clean_lists();
         document.getElementById('inspec').focus();
     }
 });
@@ -155,9 +157,11 @@ function label_review(){
 function showQuitMsg(msg){
     $('#validation-msg').html(msg);
     $('#validation-msg').addClass('div-red');
+    $('#btn-label').attr("disabled",true);
     setTimeout(() => {
         $('#validation-msg').html("");
         $('#validation-msg').removeClass('div-red');
+        $('#btn-label').attr("disabled",false);
     }, 5000);
 }
 //code: evitar que se envie el formulario al dar enter
@@ -181,34 +185,44 @@ $('#form_label').on('submit',function(event){
                 if(result==="back-error"){
                     window.location = "../pages/error.html";
                 }else{
-                    $('#server_answer').html(result);
-                    //generate_qr_code();
-                    generate_bar_codes();
-                    $('#pdf').click(function() {
-                        //Asignar el src de la imagen del qr
-                        var qr_b64 = "";
-                        if($('#qr_img').length){
-                            qr_b64 = $('#qr_img').attr('src');
+                    if(result.indexOf("Error:")!==-1 || result.indexOf("Falló")!==-1){
+                        $('#validation-msg').html(result);
+                        $('#validation-msg').addClass('div-red');
+                        $('#btn-label').attr("disabled",true);
+                        setTimeout(() => {
+                            $('#validation-msg').html("");
+                            $('#validation-msg').removeClass('div-red');
+                            $('#btn-label').attr("disabled",false);
+                        }, 7000);
+                    }else{
+                        $('#server_answer').html(result);
+                        //generate_qr_code();
+                        if($('#qr_img').length && $('#pdf').length){
+                            generate_bar_codes();
+                            $('#pdf').click(function(){
+                                //Asignar el src de la imagen del qr
+                                var qr_b64 = $('#qr_img').attr('src');
+                                /*//Generar el canvas del qr con html2canvas
+                                html2canvas($('#thisQR')[0],{ dpi: 360, scrollY: -window.scrollY }).then(function(canvas){
+                                    qr = canvas.toDataURL("image/png");
+                                });*/
+                                //Generar el canvas de toda la etiqueta
+                                html2canvas($('#to-pdf')[0],{ scrollX: 0, scrollY: -window.scrollY }).then(function(canvas){
+                                    var label = canvas.toDataURL("image/png");
+                                    //Crear el pdf
+                                    var doc = new jsPDF('p', 'pt', 'letter');
+                                    //Poner la imagen de la etiqueta en el pdf
+                                    doc.addImage(label, 'PNG', 0 ,10);
+                                    //Poner la imagen del qr arriba de la otra imagen
+                                    if(qr_b64 !== ''){
+                                        doc.addImage(qr_b64, 'PNG', 367, 12);
+                                    }
+                                    //Guardar el pdf
+                                    doc.save('test.pdf');
+                                });
+                            });
                         }
-                        /*//Generar el canvas del qr con html2canvas
-                        html2canvas($('#thisQR')[0],{ dpi: 360, scrollY: -window.scrollY }).then(function(canvas){
-                            qr = canvas.toDataURL("image/png");
-                        });*/
-                        //Generar el canvas de toda la etiqueta
-                        html2canvas($('#to-pdf')[0],{ scrollX: 0, scrollY: -window.scrollY }).then(function(canvas){
-                            var label = canvas.toDataURL("image/png");
-                            //Crear el pdf
-                            var doc = new jsPDF('p', 'pt', 'letter');
-                            //Poner la imagen de la etiqueta en el pdf
-                            doc.addImage(label, 'PNG', 0 ,10);
-                            //Poner la imagen del qr arriba de la otra imagen
-                            if(qr_b64 !== ''){
-                                doc.addImage(qr_b64, 'PNG', 367, 12);
-                            }
-                            //Guardar el pdf
-                            doc.save('test.pdf');
-                        });
-                    });
+                    }
                 }
             },
             error: function(){
@@ -233,6 +247,7 @@ $('#no-parte').on('keyup',function(event){
         }
     }else{
         clean_lists();
+        $('#datos-parte').html("");
     }
 });
 //***
@@ -251,6 +266,7 @@ $('#inspec').on('keyup',function(event){
         }
     }else{
         clean_lists();
+        $('#datos-lote').html("");
     }
 });
 //***

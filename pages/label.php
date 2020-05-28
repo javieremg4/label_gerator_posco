@@ -15,12 +15,7 @@
     <link rel="stylesheet" href="../styles/suggest_list.css">
 </head>
 <body class="f14">
-    <nav class="menu-main">
-        <?php
-            echo ($_SESSION['user_role']==="admin") ? "<a class='w150' href='menu_admin.php'>Volver</a>" : "<a class='w150' href='menu_user.php'>Volver</a>";
-        ?>
-        <a class='w150' href="../server/tasks/close_session.php">Cerrar sesión</a>
-    </nav>
+    <?php include '../server/tasks/select_menu.php'; ?>
     <div class="div-msg" id="validation-msg"></div>
     <div class="div-center">
         <form id="form_label" autocomplete="off">
@@ -57,7 +52,7 @@
                 <div class="div-center seventy" id="datos-lote"></div>
             </div>
             <div class="div-center">
-                <input class="w40" type="submit" value="Generar">
+                <input id="btn-label" type="submit" value="Generar">
             </div>
         </form>
     </div>
@@ -67,6 +62,7 @@
     <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="../js/menu.js"></script>
     <script src="../js/suggest_list.js"></script>
     <script src="../js/validarFecha.js"></script>
     <script src="../js/label.js"></script>

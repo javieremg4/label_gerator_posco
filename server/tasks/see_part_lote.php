@@ -1,10 +1,12 @@
 <?php
-    if(isset($_POST['no-parte']) || isset($_POST['buscar-parte'])){
+    if(isset($_POST['no-parte']) || isset($_POST['buscar-parte']) || isset($_POST['eliminar-parte'])){
         require_once "../queries/data_part.php";
         if(isset($_POST['no-parte'])){
-            $result = data_part($_POST['no-parte']);
-        }else{
+            $result = data_part($_POST['no-parte'],null);
+        }else if(isset($_POST['buscar-parte'])){
             $result = update_part($_POST['buscar-parte']);
+        }else if(isset($_POST['eliminar-parte'])){
+            $result = data_part($_POST['eliminar-parte'],true);
         }
         echo $result;
     }else{

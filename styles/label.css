@@ -8,6 +8,10 @@ form{
 .seventy{
     width: 70%;
 }
+.ovx{
+    overflow-x: auto;
+    width: 100%;
+}
 .thirty{
     width: 30%;
 }
@@ -24,6 +28,7 @@ th{
 }
 .table-style th,.table-style td{
     border: 1px solid black;
+    padding: 2px;
 }
 
 /*---Estilos etiqueta---*/
@@ -120,28 +125,20 @@ td{
 }
 /*------*/
 @media (max-width: 1024px){
-    form{
-        width: 80%;
-    }
+    form{ width: 80%; }
 }
 @media (max-width: 768px){
     form{
         font-size: 12px;
         width: 98%;
     }
-    input{
-        font-size: 12px;
-    }
+    input{ font-size: 12px; }
 }
 @media (max-width: 512px){
     .table-style{
         font-size: 10px;
         margin-bottom: 10px;
     }
-    .seventy{
-        width: 100%;
-    }
-    .quarter,.thirty{
-        width: 50%;
-    }
+    .seventy{ width: 100%; }
+    .quarter,.thirty{ width: 50%; }
 }
