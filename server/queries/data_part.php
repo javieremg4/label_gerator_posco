@@ -24,7 +24,7 @@
         if(isset($array[2],$btn)){
             $data = $array[1];
             $data .= "<div class='div-center mt10'>
-                        <input type='submit' id='btn-submit' value='Eliminar'>
+                        <input type='submit' id='btn-submit' value='Eliminar Partes'>
                         <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
                     </div>";
             return $data;

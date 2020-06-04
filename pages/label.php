@@ -16,6 +16,7 @@
 </head>
 <body class="f14">
     <?php include '../server/tasks/select_menu.php'; ?>
+    <h1>Nueva Etiqueta</h1>
     <div class="div-msg" id="validation-msg"></div>
     <div class="div-center">
         <form id="form_label" autocomplete="off">
@@ -56,7 +57,6 @@
             </div>
         </form>
     </div>
-
     <div id="server_answer"></div>
     
     <!--js-->

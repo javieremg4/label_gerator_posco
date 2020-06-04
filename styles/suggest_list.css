@@ -3,21 +3,21 @@
     border: 1px solid black;
     box-shadow: 4px 4px grey;
 }
-ul{
+ul.sug-part,ul.sug-lote{
     background-color: white;
     list-style: none;
     margin: 0;
     padding: 0;
     position: fixed;
 }
-li{
+ul.sug-part > li,ul.sug-lote > li{
     padding-left: 5px;
 }
-li:hover{
+ul.sug-part > li:hover,ul.sug-lote > li:hover{
     background: rgb(204,204,204);
     padding: rgb(204,204,204);
 }
-ul:hover{
+ul.sug-part:hover,ul.sug-lote:hover{
     cursor: pointer;
 } 
 /*------*/

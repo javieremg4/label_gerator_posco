@@ -17,7 +17,7 @@
 </head>
 <body class="f14">
     <?php include '../server/tasks/select_menu.php'; ?>
-    <h1>Actualizar Parte</h1>
+    <h1>Actualizar una Parte</h1>
     <div class="div-msg" id="server_answer"></div>
     <div class="div-center">
         <form id="form_features_part" autocomplete="off">
@@ -29,6 +29,7 @@
             <div class="div-union" id="datos-parte"></div>
         </form>
     </div>
+    
     <!--js-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>

@@ -20,7 +20,7 @@ input,.btn-cancel{
 input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     font-weight: normal;
 }
-.btn-menu, input[type='submit']{
+.btn-menu, .btn-send-lots, input[type='submit']{
     background: #3b5998;
     border-radius: 5px;
     color: white;
@@ -36,6 +36,7 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
 }
 .btn-cancel, input[type="reset"]{
     background: rgb(170, 170, 170);
+    cursor: pointer;
     font-size: 14px;
     margin-left: 10px;
     width: 20%;
@@ -71,13 +72,25 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     color: green;
     background: rgb(177, 255, 177);
 }
+.ovx{
+    overflow-x: auto;
+    width: 100%;
+}
+.table-style{
+    border-collapse: collapse;
+    text-align: center;
+}
+.table-style th{
+    background: #29487d;
+    color: white;
+}
+.table-style th,.table-style td{
+    border: 1px solid black;
+    padding: 2px;
+}
 h1{
     text-align: center;
     margin: 0;
 }
-.f32{
-    font-size: 32px;
-}
-.f14{
-    font-size: 14px;
-}
+.f32{ font-size: 32px; }
+.f14{ font-size: 14px; }

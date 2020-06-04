@@ -3,17 +3,7 @@ form{
     width: 30%;
 }
 .table-style{
-    border-collapse: collapse;
-    text-align: center;
     width: 80%;
-}
-th{
-    background: #29487d;
-    color: white;
-}
-td, th{
-    border: 1px solid black;
-    padding: 2px;
 }
 .div-left{
     width: 50%; 

@@ -15,7 +15,7 @@
 </head>
 <body class="f14">
     <?php include '../server/tasks/select_menu.php'; ?>
-    <h1>Actualizar Datos</h1>
+    <h1>Actualizar Datos Fijos</h1>
     <div class="div-msg" id="server_answer"></div> 
     <div class="div-center">
         <form id="form_data">

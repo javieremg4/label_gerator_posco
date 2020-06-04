@@ -1,9 +1,10 @@
 <?php
-    function data_lote($no_lote){
+    function data_lote($no_lote,$btn){
         $array = search_lote($no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc');
         if($array[0]){
             $info = $array[1];
-            $data = "<table class='table-style'>
+            $data = "<div class='ovx'>";
+            $data .= "<table class='table-style'>
                     <tr><th>Lot No. <th>Peso (MT)<th>YP<th>TS<th>EL<th>TOP<th>BOTTOM";
             $data .= "<tr><td>".$info['no_lote'];
             $data .= "<td>".$info['peso_rollo'];
@@ -13,6 +14,21 @@
             $data .= "<td>".$info['tc'];
             $data .= "<td>".$info['bc'];
             $data .= "</table>";
+            $data .= "</div>";
+            if(isset($btn)){
+                $data .= "<div class='div-center mt10'>
+                        <input type='submit' id='btn-lot' value='Eliminar'>
+                        <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
+                    </div>";
+            }
+            return $data;
+        }
+        if(isset($array[2],$btn)){
+            $data = $array[1];
+            $data .= "<div class='div-center mt10'>
+                        <input type='submit' id='btn-submit' value='Eliminar Lotes'>
+                        <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
+                    </div>";
             return $data;
         }
         return $array[1];
@@ -59,7 +75,7 @@
     }
     function search_lote($no_lote,$campos){
         require "connection.php";
-        $query = "SELECT $campos FROM lote WHERE no_lote='$no_lote'";
+        $query = "SELECT $campos FROM lote WHERE activo='1' AND no_lote='$no_lote'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         if($result){
@@ -68,7 +84,7 @@
             }else if(mysqli_num_rows($result)<=0){
                 return array(false,"No se encontró el Lote. Revise el número ingresado");
             }else{
-                return array(false,"Ese No. Lote existe más de una vez. Consulte al Administrador");
+                return array(false,"Ese No. Lote existe ".mysqli_num_rows($result)." veces. Consulte al Administrador",mysqli_num_rows($result));
             }
         }
         return array(false,"No se pudieron consultar los datos del Lote. Consulte al Administrador");

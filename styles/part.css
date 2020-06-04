@@ -25,22 +25,8 @@ span{
 /******/
 /*delete_part*/
 .table-style{
-    border-collapse: collapse;
-    margin: 0 10%;
-    text-align: center;
-    width: 80%;
-}
-th{
-    background: #29487d;
-    color: white;
-}
-.table-style th,.table-style td{
-    border: 1px solid black;
-    padding: 2px;
-}
-.ovx{
-    overflow-x: auto;
-    width: 100%;
+    margin: 0 1%;
+    width: 98%;
 }
 .mt10{ margin-top: 10px; }
 /******/
@@ -60,9 +46,5 @@ th{
     .btn-cancel,input[type="submit"],input[type="reset"]{
         font-size: 14px;
         width: 50%;
-    }
-    .table-style{ 
-        margin: 0 1%;
-        width: 98%;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+    include "session_modules.php";
     if(isset($_POST['no-parte']) || isset($_POST['buscar-parte']) || isset($_POST['eliminar-parte'])){
         require_once "../queries/data_part.php";
         if(isset($_POST['no-parte'])){
@@ -12,11 +13,12 @@
     }else{
         require_once "../queries/data_lote.php";
         if(isset($_POST['no-lote'])){
-            $result = data_lote($_POST['no-lote']);
-            echo $result;
+            $result = data_lote($_POST['no-lote'],null);
         }else if(isset($_POST['buscar-lote'])){
             $result = view_data_lote($_POST['buscar-lote']);
-            echo $result;
+        }else if(isset($_POST['eliminar-lote'])){
+            $result = data_lote($_POST['eliminar-lote'],true);
         }
+        echo $result;
     }
 ?>

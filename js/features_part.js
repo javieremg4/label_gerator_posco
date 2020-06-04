@@ -69,22 +69,26 @@ $('#form_features_part').on('submit',function(event){
             url: '../server/tasks/change_part.php',
             data: postData,
             success: function(result){
-                $('#server_answer').html(result);
-                if(result.indexOf("Error")!==-1 || result.indexOf("Falló")!==-1){
-                    $('#server_answer').addClass('div-red');
-                    $('#btn-part').attr("disabled",true);
-                    setTimeout(() => {
-                    $('#server_answer').html("");
-                    $('#server_answer').removeClass('div-red');
-                    $('#btn-part').attr("disabled",false);
-                    }, 7000);
+                if(result==="back-error"){
+                    window.location = "../pages/error.html";
                 }else{
-                    $('#server_answer').addClass('div-green');
-                    clean_data();
-                    setTimeout(() => {
-                    $('#server_answer').html("");
-                    $('#server_answer').removeClass('div-green');
-                    }, 7000);
+                    $('#server_answer').html(result);
+                    if(result.indexOf("Error")!==-1 || result.indexOf("Falló")!==-1){
+                        $('#server_answer').addClass('div-red');
+                        $('#btn-part').attr("disabled",true);
+                        setTimeout(() => {
+                        $('#server_answer').html("");
+                        $('#server_answer').removeClass('div-red');
+                        $('#btn-part').attr("disabled",false);
+                        }, 7000);
+                    }else{
+                        $('#server_answer').addClass('div-green');
+                        clean_data();
+                        setTimeout(() => {
+                        $('#server_answer').html("");
+                        $('#server_answer').removeClass('div-green');
+                        }, 7000);
+                    }
                 }
             },
             error: function(){

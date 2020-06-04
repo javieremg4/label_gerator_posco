@@ -15,14 +15,13 @@
 </head>
 <body>
     <button id="btn-menu" class="btn-menu">Menú</button>
-    
-    <nav class="menu-main" id="menu">
-        <a class="active" href="menu_user.php">Inicio</a>
-        <a href="label.php">Nueva Etiqueta</a>
-        <a href="part.php">Nueva Parte</a>
-        <a href="lot.php">Nuevo Lote</a>
-        <a href="../server/tasks/close_session.php">Cerrar sesión</a>
-    </nav>
+    <ul class="nav" id="menu">
+        <li><a href="menu_user.php">Inicio</a></li>
+        <li><a href="label.php">Nueva Etiqueta</a></li>
+        <li><a href="part.php">Nueva Parte</a></li>
+        <li><a href="lot.php">Nuevo Lote</a></li>
+        <li><a href="../server/tasks/close_session.php">Cerrar sesión</a></li>
+    </ul>
 
     <div class="div-msg f32" id='user_name'>
         <?php echo "Bienvenido ".$_SESSION['user_name']; ?>

@@ -13,7 +13,7 @@ function lote_review(){
     var lot = document.getElementById('lot').value;
     if(!white_review(lot,"Lot No: obligatorio")){ return false; }
     if(!char_limit(lot,15,"Lot No: Max. 15 caracteres")){ return false; };
-    var alphanumeric = /^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/;
+    var alphanumeric = /^\d([A-Z\d]|[A-Z\d]\-)*([A-Z]|\d)$/;
     if(lot.search(alphanumeric)){
         showQuitMsg("Lot No: valor inválido (solo alfanumerico)");
         return false;

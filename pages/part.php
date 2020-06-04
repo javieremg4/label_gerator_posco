@@ -16,7 +16,7 @@
 </head>
 <body class="f14">
     <?php include '../server/tasks/select_menu.php'; ?>
-    <h1>Altas Partes</h1>
+    <h1>Nueva Parte</h1>
     <div class="div-msg" id="server_answer"></div>
     <div class="div-center">
         <form id="form_part">

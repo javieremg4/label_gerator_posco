@@ -8,10 +8,6 @@ form{
 .seventy{
     width: 70%;
 }
-.ovx{
-    overflow-x: auto;
-    width: 100%;
-}
 .thirty{
     width: 30%;
 }
@@ -19,16 +15,7 @@ input{
     height: 20px;
 }
 .table-style{
-    border-collapse: collapse;
     width: 100%;
-}
-th{
-    background: #29487d;
-    color: white;
-}
-.table-style th,.table-style td{
-    border: 1px solid black;
-    padding: 2px;
 }
 
 /*---Estilos etiqueta---*/

@@ -23,6 +23,13 @@ span{
     white-space: pre;
 }
 /******/
+/*delete_lot*/
+.table-style{
+    margin: 0 1%;
+    width: 98%;
+}
+.mt10{ margin-top: 10px; }
+/******/
 @media (max-width: 1280px){
     form{ width: 80%; }
 }
