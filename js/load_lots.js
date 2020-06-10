@@ -87,7 +87,6 @@ function insert_lot(){
         }
         lotsArray[i-1] = lot;
     }
-    console.log(lotsArray);
     $.ajax({
         url: '../server/tasks/add_lots.php',
         type: 'post',

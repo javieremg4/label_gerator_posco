@@ -1,5 +1,5 @@
 <?php
-    include "session_modules.php";
+    require "session_modules.php";
     if(isset($_POST['n']) || isset($_POST['date'])){
         require_once "../queries/consult_labels.php";
         if(!empty($_POST['n']) && is_numeric($_POST['n'])){

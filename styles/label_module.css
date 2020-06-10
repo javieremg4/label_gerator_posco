@@ -1,0 +1,47 @@
+form{
+    margin: 15px 0;
+    width: 60%;
+}
+input{
+    height: 20px;
+}
+.btn-pdf{
+    width: 150px;
+    margin-bottom: 10px;
+}
+.quarter{
+    width: 25%;
+}
+.seventy{
+    width: 70%;
+}
+.thirty{
+    width: 30%;
+}
+.table-style{
+    width: 100%;
+}
+
+@media (max-width: 1024px){
+    form{ width: 80%; }
+}
+@media (max-width: 768px){
+    form{
+        /*font-size: 12px;*/
+        width: 98%;
+    }
+    /*input{ font-size: 12px; }*/
+}
+@media (max-width: 512px){
+    .table-style{
+        /*font-size: 10px;*/
+        margin-bottom: 10px;
+    }
+    .seventy{ min-width: 100%; }
+    .quarter,.thirty{ width: 50%; }
+}
+@media (max-width: 649px) {
+    div#to-pdf,.btn-pdf{
+        display:none;
+    }
+}

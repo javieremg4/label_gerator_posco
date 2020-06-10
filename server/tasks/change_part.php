@@ -1,6 +1,6 @@
 <?php
     if(isset($_POST['no-parte'],$_POST['desc'],$_POST['esp'],$_POST['kgpc'],$_POST['snppz'],$_POST['parte'])){
-        include "session_modules.php";
+        require "session_modules.php";
         require_once "../queries/update_part.php";
         if (get_magic_quotes_gpc()!=1){
             $_POST['desc']=addslashes($_POST['desc']);

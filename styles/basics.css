@@ -20,7 +20,7 @@ input,.btn-cancel{
 input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     font-weight: normal;
 }
-.btn-menu, .btn-send-lots, input[type='submit']{
+.btn-menu, .btn-send-lots, .btn-pdf, input[type='submit']{
     background: #3b5998;
     border-radius: 5px;
     color: white;
@@ -91,6 +91,10 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
 h1{
     text-align: center;
     margin: 0;
+}
+.auto{
+    font-style: italic;
+    text-decoration: underline;
 }
 .f32{ font-size: 32px; }
 .f14{ font-size: 14px; }

@@ -1,35 +1,10 @@
-form{
-    margin: 15px 0;
-    width: 60%;
-}
-.quarter{
-    width: 25%;
-}
-.seventy{
-    width: 70%;
-}
-.thirty{
-    width: 30%;
-}
-input{
-    height: 20px;
-}
-.table-style{
-    width: 100%;
-}
-
 /*---Estilos etiqueta---*/
-.server-answer{
-    justify-content: center;
+#server_answer{
+    text-align: center;
 }
 .letter{
-    font-family: monospace;
-    font-weight: bold;
-    /* Centrar la etiqueta 
-    margin: 0 25%;
-    */
-    width: 615px;
-    
+    font-weight: normal;
+    width: 625px;  
 }
 .div-big-table{
     box-sizing: border-box;
@@ -54,13 +29,15 @@ input{
     border-collapse: collapse;
     height: 100%;
 }
-td{
+table.big-table td, table.inline-table td{
+    font-weight: normal;
     text-align: center;
     padding: 0;
 }
 .span-text-top{
     font-size: 13px; 
     left: 0; 
+    margin: 0;
     padding: 5px; 
     position: absolute; 
     text-align: left; 
@@ -70,7 +47,7 @@ td{
 .span-text-bottom{
     font-size: 13px; 
     left: 0; 
-    padding: 5px 5px 3px;
+    padding: 5px 5px 1px;
     position: absolute; 
     bottom: 0;
     z-index: 998;
@@ -111,21 +88,3 @@ td{
     border-left: 2px solid black;
 }
 /*------*/
-@media (max-width: 1024px){
-    form{ width: 80%; }
-}
-@media (max-width: 768px){
-    form{
-        font-size: 12px;
-        width: 98%;
-    }
-    input{ font-size: 12px; }
-}
-@media (max-width: 512px){
-    .table-style{
-        font-size: 10px;
-        margin-bottom: 10px;
-    }
-    .seventy{ width: 100%; }
-    .quarter,.thirty{ width: 50%; }
-}

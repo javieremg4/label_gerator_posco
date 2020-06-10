@@ -1,5 +1,5 @@
 <?php   
-    include '../server/tasks/session_validate.php'; 
+    require '../server/tasks/session_validate.php'; 
     session_validate("admin");    
 ?>
 <!DOCTYPE html>

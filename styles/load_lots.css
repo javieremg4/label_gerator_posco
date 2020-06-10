@@ -9,6 +9,7 @@ input[type='file']{
     border: 0;
     margin-bottom: 5px;
     padding: 0;
+    width: 100%;
 }
 .table-style{
     margin: 10px 20%;
@@ -35,6 +36,10 @@ input[type='file']{
     padding: 10px;
     width: auto;
     white-space: pre;
+}
+.cp:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 .f12{ font-size: 12px; }
 @media (max-width: 900px){

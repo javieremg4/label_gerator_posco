@@ -205,6 +205,66 @@ function consult_part_lote(idInput){
                             if(idInput === 'buscar-lote' || idInput === 'eliminar-lote'){
                                 $('#btn-cancel').on("click",function(){clean_data()});
                             }
+                            
+                            //test_lot
+                            if(idInput==='inspec'){
+                                console.log("Prueba con números");
+                                const lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
+                                const guion = /\-/;
+                                const case1 = /^9A[A-Z\d]+\-[A-Z\d]+$/;
+                                const case1_1 = /^9A[A-Z\d]+$/;
+                                const case2 = /^98[A-Z\d]+\-[A-Z\d]+$/;
+                                const case3 = /^\d{2}[A-Z\d]+\-[A-Z\d]+$/;
+                                const quit1 = /-[A-Z\d]+/;
+                                if(lotExp.test(nlot_g)){
+                                    var nlot;
+                                    var ninspec;
+                                    if(guion.test(nlot_g)){
+                                        if(case1.test(nlot_g)){
+                                            console.log("Caso 1");                                           
+                                            nlot = nlot_g.replace(quit1,'');
+                                            ninspec = nlot;
+                                            nlot = nlot.replace('9A','');
+                                            console.log("Lote: "+nlot);         
+                                            console.log("Inspección: "+ninspec);
+                                        /*Los números que cumplen con el caso 2 también cumplen con el caso 3 
+                                        por lo que debe evaluarse primero el caso 2*/
+                                        }else if(case2.test(nlot_g)){
+                                            console.log("Caso 2");
+                                            nlot = nlot_g.replace('-','');
+                                            ninspec = nlot_g.replace(quit1,'');
+                                            console.log("Lote: "+nlot);
+                                            console.log("Inspección: "+ninspec)
+                                        }else if(case3.test(nlot_g)){
+                                            console.log("Caso 3");
+                                            nlot = nlot_g;
+                                            ninspec = nlot_g.replace(quit1,'');
+                                            console.log("Lote: "+nlot_g);                                                                                                               
+                                            console.log("Inspección: "+ninspec)
+                                        }
+                                    }else{
+                                        /*if(case1_1.test(nlot_g)){
+                                            console.log("Caso 4");
+                                            nlot = nlot_g.replace('9A','');
+                                            console.log("Lote: "+nlot);
+                                            console.log("Inspección: "+nlot_g)
+                                        }else{*/
+                                            nlot = nlot_g;
+                                            ninspec = nlot_g;
+                                            console.log("Caso 4");
+                                            console.log("Lote: "+nlot_g);
+                                            console.log("Inspección: "+nlot_g)
+                                        //}
+                                    }
+                                }
+                                if($('#nlot').length){
+                                    $('#nlot').val(nlot);
+                                }
+                                if($('#ninspec').length){
+                                    $('#ninspec').val(ninspec);
+                                }
+                            }
+                            //***
                         }
                     }
                 },

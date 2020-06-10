@@ -1,5 +1,5 @@
 <?php
-    include '../server/tasks/session_validate.php'; 
+    require '../server/tasks/session_validate.php'; 
     session_validate("admin"); 
 ?>
 <!DOCTYPE html>
@@ -14,14 +14,14 @@
     <link rel="stylesheet" href="../styles/load_lots.css">
 </head>
 <body class="f14">
-    <?php include '../server/tasks/select_menu.php'; ?>
+    <?php require '../server/tasks/select_menu.php'; ?>
     <h1>Cargar Lotes</h1>
     <div class="div-msg" id="validation-msg"></div>
     <div class="div-center">
         <form enctype="multipart/form-data" id="form_load_lots">
             <!-- File input field -->
             <input type="file" name="file" id="file">
-            <span class="i f12">Sólo se permite .csv</span>
+            <span class="i f12">Nota: Sólo se permite .csv</span>
             <div class="div-center mt10">
                 <input type="submit"id="btn-submit" value="Ver registros">
                 <button class="btn-cancel" id="clean_all">Limpiar</button>

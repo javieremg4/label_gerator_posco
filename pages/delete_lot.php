@@ -1,5 +1,5 @@
 <?php
-    include '../server/tasks/session_validate.php'; 
+    require '../server/tasks/session_validate.php'; 
     session_validate("admin"); 
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/lot.css">
 </head>
 <body class="f14">
-    <?php include '../server/tasks/select_menu.php'; ?>
+    <?php require '../server/tasks/select_menu.php'; ?>
     <h1>Eliminar un Lote</h1>
     <div class="div-msg" id="server_answer"></div>
     <div class="div-center">

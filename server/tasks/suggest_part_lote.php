@@ -1,5 +1,5 @@
 <?php
-    include "session_modules.php";
+    require "session_modules.php";
     if(isset($_POST['no-lote'])){
         require_once "../queries/consult_lote.php";
         if(!empty($_POST['no-lote'])){

@@ -212,7 +212,7 @@ $('#form_label').on('submit',function(event){
                                     //Crear el pdf
                                     var doc = new jsPDF('p', 'pt', 'letter');
                                     //Poner la imagen de la etiqueta en el pdf
-                                    doc.addImage(label, 'PNG', 0 ,10);
+                                    doc.addImage(label, 'PNG', -6 ,10);
                                     //Poner la imagen del qr arriba de la otra imagen
                                     if(qr_b64 !== ''){
                                         doc.addImage(qr_b64, 'PNG', 367, 12);
@@ -284,66 +284,89 @@ function generate_qr_code(){
 //***
 //function: genera el codigo de barras con js
 function generate_bar_codes(){
-    var text = 'P'+$('#part').attr('alt');
-    JsBarcode('#part',text,{
-        format: "CODE128",
-		width: 2,
-		height: 30,
-		displayValue: false,
-		margin: 2
-    });
-    var msg = $('#quantity').attr('alt');
-    text = 'Q'+msg;
-    JsBarcode('#quantity',text,{
-        format: "CODE128",// El formato
-		width: 2, // La anchura de cada barra
-		height: 30, // La altura del código
-		displayValue: true, // ¿Mostrar el valor (como texto) del código de barras?
-		text: msg, // Texto (no código) que acompaña al barcode
-		fontOptions: "bold", // Opciones de la fuente del texto del barcode
-		textAlign: "center", // En dónde poner el texto. center, left o right
-		textPosition: "top", // Poner el texto arriba (top) o abajo (bottom)
-		textMargin: 2, // Margen entre el texto y el código de barras
-		fontSize: 20, // Tamaño de la fuente
-		margin: 1 // Tamaño de los margenes, se puede especificar el valor de cada margen. marginTop, marginRight, marginBottom, marginLeft
-    });
-    text = '15K'+$('#ran').attr('alt');
-    JsBarcode('#ran',text,{
-        format: "CODE128",
-		width: 2,
-		height: 30,
-		displayValue: false,
-		margin: 2
-    });
-    msg = $('#origin').attr('alt');
-    text = 'V'+msg;
-    JsBarcode('#origin',text,{
-        format: "CODE128",
-		width: 2,
-		height: 30,
-		displayValue: true,
-		text: msg,
-		fontOptions: "bold",
-		textAlign: "center",
-		textPosition: "top",
-		textMargin: 2,
-		fontSize: 20,
-		margin: 2
-    });
-    msg = $('#serial').attr('alt');
-    text = '4S'+msg;
-    JsBarcode('#serial',text,{
-        format: "CODE128",
-		width: 2,
-		height: 30,
-		displayValue: true,
-		text: msg,
-		fontOptions: "bold",
-		textAlign: "center",
-		textPosition: "top",
-		textMargin: 2,
-		fontSize: 20,
-		margin: 2
-    });
+    var bar_fail = "";
+    if($('#part').length && $('#part').attr('alt') !== undefined){
+        var text = 'P'+$('#part').attr('alt');
+        JsBarcode('#part',text,{
+            format: "CODE128",
+            width: 2,
+            height: 30,
+            displayValue: false,
+            margin: 2
+        });
+    }else{
+        bar_fail += "\nparte";
+    }
+    if($('#quantity').length && $('#quantity').attr('alt') !== undefined){
+        var msg = $('#quantity').attr('alt');
+        text = 'Q'+msg;
+        JsBarcode('#quantity',text,{
+            format: "CODE128",// El formato
+            width: 2, // La anchura de cada barra
+            height: 30, // La altura del código
+            displayValue: true, // ¿Mostrar el valor (como texto) del código de barras?
+            text: msg, // Texto (no código) que acompaña al barcode
+            fontOptions: "bold", // Opciones de la fuente del texto del barcode
+            textAlign: "center", // En dónde poner el texto. center, left o right
+            textPosition: "top", // Poner el texto arriba (top) o abajo (bottom)
+            textMargin: 2, // Margen entre el texto y el código de barras
+            fontSize: 20, // Tamaño de la fuente
+            margin: 1 // Tamaño de los margenes, se puede especificar el valor de cada margen. marginTop, marginRight, marginBottom, marginLeft
+        });
+    }else{
+        bar_fail += "\ncantidad";
+    }
+    if($('#ran').length && $('#ran').attr('alt') !== undefined){
+        text = '15K'+$('#ran').attr('alt');
+        JsBarcode('#ran',text,{
+            format: "CODE128",
+            width: 2,
+            height: 30,
+            displayValue: false,
+            margin: 2
+        });
+    }else{
+        bar_fail += "\nran";
+    }
+    if($('#origin').length && $('#origin').attr('alt') !== undefined){
+        msg = $('#origin').attr('alt');
+        text = 'V'+msg;
+        JsBarcode('#origin',text,{
+            format: "CODE128",
+            width: 2,
+            height: 30,
+            displayValue: true,
+            text: msg,
+            fontOptions: "bold",
+            textAlign: "center",
+            textPosition: "top",
+            textMargin: 2,
+            fontSize: 20,
+            margin: 2
+        });
+    }else{
+        bar_fail += "\norigen";
+    }
+    if($('#serial').length && $('#serial').attr('alt') !== undefined){
+        msg = $('#serial').attr('alt');
+        text = '4S'+msg;
+        JsBarcode('#serial',text,{
+            format: "CODE128",
+            width: 2,
+            height: 30,
+            displayValue: true,
+            text: msg,
+            fontOptions: "bold",
+            textAlign: "center",
+            textPosition: "top",
+            textMargin: 2,
+            fontSize: 20,
+            margin: 2
+        });
+    }else{
+        bar_fail += "\nserial";
+    }
+    if(bar_fail!==""){
+        alert("No se pudieron generar los códigos de barras de:"+bar_fail+"\nConsulte al Administrador");
+    }
 }
-//***

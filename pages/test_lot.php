@@ -7,13 +7,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generar Etiqueta</title>
+    <title>Prueba con números</title>
     <!--css-->
     <link rel="stylesheet" href="../styles/basics.css">
-    <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/menu.css">    
     <link rel="stylesheet" href="../styles/suggest_list.css">
     <link rel="stylesheet" href="../styles/label_module.css">
     <link rel="stylesheet" href="../styles/label.css">
+
 </head>
 <body class="f14">
     <?php require '../server/tasks/select_menu.php'; ?>
@@ -41,17 +42,25 @@
                 <div class="div-part quarter">
                     No. Ran <input type="text" id="no-ran" maxlength="8">
                 </div>
-                <div class="div-part quarter">
+                <!--<div class="div-part quarter">
                     Lote <input type="text" id="lote" minlength="13" maxlength="13">
-                </div>
+                </div>-->
             </div>
             <div class="div-union">
                 <div class="div-part thirty">
-                    Inspección 
-                    <input type="text" id="inspec" maxlength="15">
+                    Seleccione el No. Lote:
+                    <input type="text" id="inspec" maxlength="22">
                     <ul id="sug-lote"></ul>        
                 </div>
                 <div class="div-center seventy" id="datos-lote"></div>
+            </div>
+            <div class="div-union">
+                <div class="div-part quarter">
+                    Lote <input type="text" id="nlot" minlength="13" maxlength="13">
+                </div>
+                <div class="div-part quarter">
+                    Inspección <input type="text" id="ninspec" minlength="13" maxlength="13">
+                </div>
             </div>
             <div class="div-center">
                 <input id="btn-label" type="submit" value="Generar">

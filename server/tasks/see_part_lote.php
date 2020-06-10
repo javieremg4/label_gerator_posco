@@ -1,5 +1,5 @@
 <?php
-    include "session_modules.php";
+    require "session_modules.php";
     if(isset($_POST['no-parte']) || isset($_POST['buscar-parte']) || isset($_POST['eliminar-parte'])){
         require_once "../queries/data_part.php";
         if(isset($_POST['no-parte'])){

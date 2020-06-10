@@ -1,5 +1,5 @@
 <?php   
-    include '../server/tasks/session_validate.php'; 
+    require '../server/tasks/session_validate.php'; 
     session_validate("ignore");    
 ?>
 <!DOCTYPE html>
@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="../styles/lot.css">
 </head>
 <body class="f14">
-    <?php include '../server/tasks/select_menu.php'; ?>
+    <?php require '../server/tasks/select_menu.php'; ?>
     <h1>Nuevo Lote</h1>
     <div class="div-msg" id="server_answer"></div>
     <div class="div-center">
         <form id="form_properties">
             <div class="div-union">
                 <div class="div-part">
-                    Lot No.<input type="text" id="lot" maxlength='15'>
+                    Lot No.<input type="text" id="lot" maxlength='22'>
                 </div>
                 <div class="div-part">
                     Wgt.<input type="text" id="wgt" maxlength='7'>

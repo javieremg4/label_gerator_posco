@@ -1,6 +1,6 @@
 <?php
     if(isset($_POST['lots_array'])){
-        include "session_modules.php";
+        require "session_modules.php";
         $lots_array = json_decode($_POST['lots_array'],true);
         require_once '../queries/insert_lot.php';
         $data = "<div class='ovx'><table class='table-style'><tr><th>Reg.<th>Resultado";
@@ -20,7 +20,7 @@
             $i+=1;
         }
         $data .= "</div>";
-        $alert = "<div class='result-report'>No. de Registros: ".($i-1)."\nLotes registrados: ".$correct."\nErrores:".$fail."</div>";
+        $alert = "<div class='result-report'>No. de Registros: ".($i-1)."\nLotes registrados: ".$correct."\nErrores: ".$fail."</div>";
         echo $alert;
         echo $data;
     }

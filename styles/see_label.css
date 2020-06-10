@@ -1,0 +1,41 @@
+body{
+    text-align: center;
+}
+.btn-pdf{
+    width: 150px;
+    margin-bottom: 10px;
+}
+.div-union{
+    font-size: 16px;
+    width: 60%;
+}
+.all{
+    width: 100%;
+}
+.half{
+    font-weight: normal;
+    width: 50%;
+}
+.table-style{
+    width: 100%;
+}
+h2{
+    text-align: center;
+    width: 100%;
+}
+span{
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}
+@media (max-width: 1024px){
+    .div-union{ width: 80%; }
+}
+@media (max-width: 649px) {
+    div#to-pdf,.btn-pdf{
+        display: none;
+    }
+}
+@media (max-width: 512px){
+    .div-union{ width: 98%; }
+}

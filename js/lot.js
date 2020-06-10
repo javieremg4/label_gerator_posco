@@ -12,10 +12,10 @@ window.onload = function(){
 function lote_review(){
     var lot = document.getElementById('lot').value;
     if(!white_review(lot,"Lot No: obligatorio")){ return false; }
-    if(!char_limit(lot,15,"Lot No: Max. 15 caracteres")){ return false; };
-    var alphanumeric = /^\d([A-Z\d]|[A-Z\d]\-)*([A-Z]|\d)$/;
-    if(lot.search(alphanumeric)){
-        showQuitMsg("Lot No: valor inválido (solo alfanumerico)");
+    if(!char_limit(lot,22,"Lot No: Max. 22 caracteres")){ return false; };
+    var lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
+    if(lot.search(lotExp)){
+        showQuitMsg("Lot No: valor inválido (solo alfanumérico con máx. 1 guion medio)");
         return false;
     }
     var wgt = document.getElementById('wgt').value;
