@@ -1,7 +1,7 @@
 <?php
     function consult_labels($limit,$date){
         require_once "connection.php";
-        $query ="select e.serial,p.no_parte,l.no_lote,e.ran,e.lote,e.cantidad,DATE_FORMAT(e.fecha_consumo,'%d/%m/%Y') as fecha_consumo,df.origen from etiqueta e,parte p,lote l,datos_fijos df where e.id_parte=p.id_parte and e.id_inspec=l.id_lote and e.id_fijos=df.id ";
+        $query ="select l.serial,p.no_parte,l.ran,l.lote,l.inspec,l.cantidad,DATE_FORMAT(l.fecha_consumo,'%d/%m/%Y') as fecha_consumo,df.origen from etiqueta l,parte p,datos_fijos df where l.id_parte=p.id_parte and l.id_fijos=df.id ";
         if(!empty($limit)){
             $query .=  "order by serial desc limit ".$limit;
         }else{
@@ -13,13 +13,13 @@
                 $data = "<table class='table-style'>
                         <tr><th>Serial<th>No. Parte<th>No. Inspección<th>Ran<th>Lote<th>Cantidad<th>Fecha<th>Origen<th>Acciones";
                 while($info = mysqli_fetch_array($result)){
-                    $data .= "<tr><td>".$info['serial']."<td>".$info['no_parte']."<td>".$info['no_lote']."<td>".$info['ran']."<td>".$info['lote']."<td>".$info['cantidad']."<td>".$info['fecha_consumo']."<td>".$info['origen'];           
+                    $data .= "<tr><td>".$info['serial']."<td>".$info['no_parte']."<td>".$info['inspec']."<td>".$info['ran']."<td>".$info['lote']."<td>".$info['cantidad']."<td>".$info['fecha_consumo']."<td>".$info['origen'];           
                     $data .= "<td><a class='auto' href='see_label.php?lbl=".base64_encode($info['serial'])."'>Ver info.</a>";
                 }
                 $data .= "</table>";
                 return $data;
             }else{
-                return "No se encontraron etiquetas";
+                return "No se encontraron etiquetas con esa fecha";
             }
         }
         return "No se pudieron consultar las Etiquetas. Consulte al Administrador";
@@ -27,10 +27,17 @@
 
     function consult_label($serial){
         require "connection.php";
-        $query = "select l.id_parte,l.id_inspec,l.ran,l.lote,l.cantidad,l.fecha_consumo,df.fecha_lote,df.fecha_rollo,df.bloque,df.hora_abasto,df.origen from etiqueta l,datos_fijos df where l.serial=".$serial." and l.id_fijos=df.id";
+        $query = "select l.id_parte,l.id_inspec,l.ran,l.lote,l.inspec,l.cantidad,l.fecha_consumo,df.fecha_lote,df.fecha_rollo,df.bloque,df.hora_abasto,df.origen from etiqueta l,datos_fijos df where l.serial=".$serial." and l.id_fijos=df.id";
         $lbl_data = mysqli_query($connection,$query);
         if($lbl_data = mysqli_fetch_array($lbl_data)){
             $continue = true;
+            $div3 = "<div class='div-part half'>".
+                        "<span>RAN</span>".$lbl_data['ran'].
+                        "<span>Inspección</span>".$lbl_data['inspec'].
+                        "<span>Lote</span>".$lbl_data['lote'].
+                        "<span>Cantidad</span>".$lbl_data['cantidad'].
+                        "<span>Fecha Consumo</span>".$lbl_data['fecha_consumo'].
+                    "</div>";
             $div4 = "<div class='div-part half'>".
                         "<span>Origen</span>".$lbl_data['origen'].
                         "<span>Fecha Lote</span>".$lbl_data['fecha_lote'].
@@ -65,13 +72,6 @@
                                 "<tr><td>".$lot_data['peso_rollo']."<td>".$lot_data['yp']."<td>".$lot_data['ts']."<td>".$lot_data['el']."<td>".$lot_data['tc']."<td>".$lot_data['bc'].
                             "</table>".
                         "</div>";   
-                $div3 = "<div class='div-part half'>".
-                            "<span>RAN</span>".$lbl_data['ran'].
-                            "<span>Inspección</span>".$lot_data['no_lote'].
-                            "<span>Lote</span>".$lbl_data['lote'].
-                            "<span>Cantidad</span>".$lbl_data['cantidad'].
-                            "<span>Fecha Consumo</span>".$lbl_data['fecha_consumo'].
-                        "</div>";
             }else{
                 $continue = false;
                 $div2 = "<span>Lote #".$lot_data['no_lote']."</span>".
@@ -87,7 +87,7 @@
                  </div>";
             if($continue){
                 require "generate_label.php";
-                echo generate_label(false,$serial,$part_data['no_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lot_data['no_lote']); 
+                echo generate_label(false,$serial,$part_data['no_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lbl_data['inspec'],$lot_data['no_lote']); 
             }            
             
         }else{

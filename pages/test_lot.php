@@ -42,9 +42,6 @@
                 <div class="div-part quarter">
                     No. Ran <input type="text" id="no-ran" maxlength="8">
                 </div>
-                <!--<div class="div-part quarter">
-                    Lote <input type="text" id="lote" minlength="13" maxlength="13">
-                </div>-->
             </div>
             <div class="div-union">
                 <div class="div-part thirty">

@@ -6,6 +6,7 @@ form{
 }
 input{
     margin: 5px 0;
+    text-transform: none !important;
     width: 100%;
 }
 input[type='submit']{

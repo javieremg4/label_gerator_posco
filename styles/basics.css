@@ -1,24 +1,24 @@
 /*Basicos*/
 *{
+    box-sizing: border-box;
     font-family: sans-serif;
     font-weight: bold;
 }
 form{
     border: 1px solid #d1d1d1;
     border-radius: 5px;
-    box-sizing: border-box;
     padding: 10px;
 }
 input,.btn-cancel{
     border: 1px solid #d1d1d1;
     border-radius: 3px;
-    box-sizing: border-box;
     outline-color: lightblue;
     padding-left: 5px;
     width: 95%;
 }
 input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     font-weight: normal;
+    text-transform: uppercase;
 }
 .btn-menu, .btn-send-lots, .btn-pdf, input[type='submit']{
     background: #3b5998;
@@ -59,10 +59,11 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
 }
 .div-msg{
     border-radius: 5px;
-    margin: 0 35%;
+    margin: 0 1%;
     padding: 3px;
     text-align: center;
-    width: 30%;
+    width: auto;
+    z-index: 996;
 }
 .div-red{
     color: red;
@@ -72,6 +73,21 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     color: green;
     background: rgb(177, 255, 177);
 }
+/*Nuevo mensaje*/
+.div-msg{
+    padding: 5px 25px 5px 10px;
+    position: relative;
+}
+label{
+    cursor: pointer;   
+    font-size: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+}
+/********/
 .ovx{
     overflow-x: auto;
     width: 100%;

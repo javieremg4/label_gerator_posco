@@ -54,7 +54,7 @@ function clean_lists(){
 //***
 //function: validar los datos de la etiqueta
 function label_review(){
-    var noparte = document.getElementById('no-parte').value;
+    var noparte = document.getElementById('no-parte').value.toUpperCase();
     var whiteExp = /^\s+$/;
     if(noparte==="" || noparte===null || noparte.length===0 || !noparte.search(whiteExp)){
         showQuitMsg("No. parte: obligatorio");
@@ -64,7 +64,7 @@ function label_review(){
         showQuitMsg("No. parte: Max. 13 caracteres");
         return false;
     }
-    var alphanumeric = /^([a-zA-Z\d]|[a-zA-Z\d]\-)*[a-zA-Z\d]$/;
+    var alphanumeric = /^([A-Z\d]|[A-Z\d]\-)*[A-Z\d]$/;
     if(noparte.search(alphanumeric)){
         showQuitMsg("No. parte: valor inválido (solo alfanumerico)");
         return false;
@@ -94,23 +94,7 @@ function label_review(){
         return false;
     }
 
-    /*---Validación del input origen
-    var origen = document.getElementById('origen').value;
-    if(origen==="" || origen===null || origen.length===0 || !origen.search(whiteExp)){
-        alert("Origen: obligatorio");
-        return false;
-    }
-    if(origen.length > 50){
-        alert("Origen: Max. 50 caracteres");
-        return false;
-    }
-    if(origen.search(alphanumeric)){
-        alert("Origen: valor inválido (solo alfanumerico)");
-        return false;
-    }
-    ---*/
-
-    var noran = document.getElementById('no-ran').value;
+    var noran = document.getElementById('no-ran').value.toUpperCase();
     if(noran==="" || noran===null || noran.length===0 || !noran.search(whiteExp)){
         showQuitMsg("No. Ran: obligatorio");
         return false;
@@ -120,38 +104,58 @@ function label_review(){
         return false;
     }
     if(noran.search(alphanumeric)){
-        showQuitMsg("No. Ran: valor inválido (solo alfanumerico)");
+        showQuitMsg("<pre>No. Ran: valor inválido \n(solo alfanumerico)</pre>");
         return false;
     }
 
-    var lote = document.getElementById('lote').value;
-    if(lote==="" || lote===null || lote.length===0 || !lote.search(whiteExp)){
+    const lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
+
+    var inspec = document.getElementById('inspec').value.toUpperCase();
+
+    if(inspec==="" || inspec===null || inspec.length===0 || !inspec.search(whiteExp)){
+        showQuitMsg("Seleccione un No. Lote");
+        return false;
+    }
+    if(inspec.length > 22){
+        showQuitMsg("No. Lote: Máx. 22 caracteres");
+        return false;
+    }
+    if(inspec.search(lotExp)){
+        showQuitMsg("<pre>No. Lote: valor inválido \n(solo alfanumérico con máx. 1 guion medio)</pre>");
+        return false;
+    }
+
+    var nolote = document.getElementById('no-lote').value.toUpperCase();
+
+    if(nolote==="" || nolote===null || nolote.length===0 || !nolote.search(whiteExp)){
         showQuitMsg("Lote: obligatorio");
         return false;
     }
-    if(lote.length !== 13){
-        showQuitMsg("Lote: deben ser exactamente 13 caracteres");
+    if(nolote.length > 13){
+        showQuitMsg("Lote: Máx 13 caracteres");
         return false;
     }
-    if(lote.search(alphanumeric)){
-        showQuitMsg("Lote: valor inválido (solo alfanumerico)");
+    if(nolote.search(lotExp)){
+        showQuitMsg("<pre>Lote: valor inválido \n(solo alfanumérico con máx. 1 guion medio)</pre>");
         return false;
     }
     
-    var inspec = document.getElementById('inspec').value;
-    if(inspec==="" || inspec===null || inspec.length===0 || !inspec.search(whiteExp)){
+    var noinspec = document.getElementById('no-inspec').value.toUpperCase();
+    
+    if(noinspec==="" || noinspec===null || noinspec.length===0 || !noinspec.search(whiteExp)){
         showQuitMsg("Inspección: obligatorio");
         return false;
     }
-    if(inspec.length > 15){
+    if(noinspec.length > 15){
         showQuitMsg("Inspección: Max. 15 caracteres");
         return false;
     }
-    if(inspec.search(alphanumeric)){
-        showQuitMsg("Inspección: valor inválido (solo alfanumerico)");
+    if(noinspec.search(lotExp)){
+        showQuitMsg("<pre>Inspección: valor inválido \n(solo alfanumérico con máx. 1 guion medio)</pre>");
         return false;
     }
-    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&noran="+noran+"&lote="+lote+"&inspec="+inspec;    //+"&origen="+origen
+    
+    return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&noran="+noran+"&nolote="+nolote+"&noinspec="+noinspec+"&inspec="+inspec;
 }   
 //***
 function showQuitMsg(msg){
@@ -172,11 +176,39 @@ $('#form_label').on('keypress',function(event){
     }
 });
 //***
+function quitMsgEvent(idElement,result,assignClass){
+    if($('#'+idElement).length){
+        if($('#'+idElement).hasClass('div-red')){
+            $('#'+idElement).removeClass('div-red');
+        }else if($('#'+idElement).hasClass('div-green')){
+            $('#'+idElement).removeClass('div-green');
+        }
+        $('#'+idElement).html(result+"<label id='quit-msg'>&times</label>");
+        $('#'+idElement).addClass(assignClass);
+        $('#quit-msg').on('click',function(){
+            $('#'+idElement).html("");
+            $('#'+idElement).removeClass(assignClass);
+        });
+    }
+}
 //code: enviar la info al servidor
 $('#form_label').on('submit',function(event){
     event.preventDefault();
+    /*Para quitar el mensaje si el usuario no lo quito*/
+    if($('#validation-msg').html()===""){
+        $('#validation-msg').removeClass('div-red');
+        $('#validation-msg').removeClass('div-green');
+        $('#validation-msg').html("");
+    }
+    /********/
+    /*Para quitar la etiqueta con el boton de pdf*/
+    $('#server_answer').html("");
+    /********/
     var postData = label_review();
     if(postData !== false){
+        /*var msg= "¿Está seguro que los datos son correctos?";
+        msg = confirm(msg);
+        if(!msg){ return false; }*/
         $.ajax({
             type: 'post',
             url: '../server/tasks/set_label.php',
@@ -185,24 +217,21 @@ $('#form_label').on('submit',function(event){
                 if(result==="back-error"){
                     window.location = "../pages/error.html";
                 }else{
-                    if(result.indexOf("Error:")!==-1 || result.indexOf("Falló")!==-1){
-                        $('#validation-msg').html(result);
-                        $('#validation-msg').addClass('div-red');
-                        $('#btn-label').attr("disabled",true);
-                        setTimeout(() => {
-                            $('#validation-msg').html("");
-                            $('#validation-msg').removeClass('div-red');
-                            $('#btn-label').attr("disabled",false);
-                        }, 7000);
+                    console.log(result.indexOf("Error:")>-1);
+                    console.log(result.indexOf("Administrador")>-1);
+                    if(result.indexOf("La etiqueta se registró con éxito")===-1){
+                        quitMsgEvent('validation-msg',result,'div-red');
                     }else{
-                        $('#server_answer').html(result);
+                        var array = result.split("||");
+                        quitMsgEvent('validation-msg',array[0],'div-green');
+                        $('#server_answer').html(array[1]);
                         //generate_qr_code();
                         if($('#qr_img').length && $('#pdf').length){
                             generate_bar_codes();
                             $('#pdf').click(function(){
                                 //Asignar el src de la imagen del qr
                                 var qr_b64 = $('#qr_img').attr('src');
-                                /*//Generar el canvas del qr con html2canvas
+                               /* //Generar el canvas del qr con html2canvas
                                 html2canvas($('#thisQR')[0],{ dpi: 360, scrollY: -window.scrollY }).then(function(canvas){
                                     qr = canvas.toDataURL("image/png");
                                 });*/
@@ -226,7 +255,7 @@ $('#form_label').on('submit',function(event){
                 }
             },
             error: function(){
-                alert("No se pudo generar la etiqueta. Consulte al Administrador");
+                quitMsgEvent('validation-msg',"No se pudo generar la etiqueta. Consulte al Administrador",'div-red');
             }
         });
     }
@@ -367,6 +396,6 @@ function generate_bar_codes(){
         bar_fail += "\nserial";
     }
     if(bar_fail!==""){
-        alert("No se pudieron generar los códigos de barras de:"+bar_fail+"\nConsulte al Administrador");
+        quitMsgEvent("validation-msg","<pre>No se pudieron generar los códigos de barras de:"+bar_fail+"\nConsulte al Administrador</pre>","div-red");
     }
 }

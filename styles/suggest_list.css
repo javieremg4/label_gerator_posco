@@ -8,7 +8,7 @@ ul.sug-part,ul.sug-lote{
     list-style: none;
     margin: 0;
     padding: 0;
-    position: fixed;
+    position: absolute;
     z-index: 999;
 }
 ul.sug-part > li,ul.sug-lote > li{

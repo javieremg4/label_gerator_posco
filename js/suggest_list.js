@@ -216,9 +216,9 @@ function consult_part_lote(idInput){
                                 const case2 = /^98[A-Z\d]+\-[A-Z\d]+$/;
                                 const case3 = /^\d{2}[A-Z\d]+\-[A-Z\d]+$/;
                                 const quit1 = /-[A-Z\d]+/;
+                                var nlot = "";
+                                var ninspec = "";
                                 if(lotExp.test(nlot_g)){
-                                    var nlot;
-                                    var ninspec;
                                     if(guion.test(nlot_g)){
                                         if(case1.test(nlot_g)){
                                             console.log("Caso 1");                                           
@@ -257,11 +257,11 @@ function consult_part_lote(idInput){
                                         //}
                                     }
                                 }
-                                if($('#nlot').length){
-                                    $('#nlot').val(nlot);
+                                if($('#no-lote').length){
+                                    $('#no-lote').val(nlot);
                                 }
-                                if($('#ninspec').length){
-                                    $('#ninspec').val(ninspec);
+                                if($('#no-inspec').length){
+                                    $('#no-inspec').val(ninspec);
                                 }
                             }
                             //***

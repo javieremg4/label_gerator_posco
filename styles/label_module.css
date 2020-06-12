@@ -21,20 +21,16 @@ input{
 .table-style{
     width: 100%;
 }
-
 @media (max-width: 1024px){
     form{ width: 80%; }
 }
 @media (max-width: 768px){
     form{
-        /*font-size: 12px;*/
         width: 98%;
     }
-    /*input{ font-size: 12px; }*/
 }
 @media (max-width: 512px){
     .table-style{
-        /*font-size: 10px;*/
         margin-bottom: 10px;
     }
     .seventy{ min-width: 100%; }

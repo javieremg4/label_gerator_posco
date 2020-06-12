@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Altas partes</title>
+    <title>Nueva Parte</title>
 
     <!--css-->
     <link rel="stylesheet" href="../styles/basics.css">
@@ -17,7 +17,9 @@
 <body class="f14">
     <?php require '../server/tasks/select_menu.php'; ?>
     <h1>Nueva Parte</h1>
-    <div class="div-msg" id="server_answer"></div>
+    <div class="div-center">
+        <div class="div-msg" id="server_answer"></div>
+    </div>
     <div class="div-center">
         <form id="form_part">
             <div class="div-union">

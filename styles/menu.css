@@ -9,6 +9,8 @@
     font-size: 14px;
     height: 45px;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 997;
 }
 .nav > li {
     flex: 1;

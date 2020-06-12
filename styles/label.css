@@ -7,13 +7,11 @@
     width: 625px;  
 }
 .div-big-table{
-    box-sizing: border-box;
     height: 230px;
     overflow: hidden;
     width: 615px;
 }
 .div-inline-table{
-    box-sizing: border-box;
     display: flex;
     height: 130px;
     overflow: hidden;

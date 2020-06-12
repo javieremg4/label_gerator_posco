@@ -1,8 +1,8 @@
 <?php
     //insert es una bandera que indica si la etiqueta se va a insertar en la BDD o no
-    function generate_label($insert,$serial,$parte,$cantidad,$fecha,$ran,$lote,$inspec){
+    function generate_label($insert,$serial,$noparte,$cantidad,$fecha,$ran,$nolote,$noinspec,$inspec){
         require_once "data_part.php";
-        $part_data = search_part($parte,'id_parte,no_parte,esp,kgpc');
+        $part_data = search_part($noparte,'id_parte,no_parte,esp,kgpc');
         if($part_data[0]){
             require_once "data_lote.php";
             $lot_data = search_lote($inspec,'*');
@@ -13,17 +13,17 @@
                     return $equal_data[1];
                 }
             }else{
-                return $part_data[1];
+                return $lot_data[1];
             }
         }else{
-            return $lot_data[1];
+            return $part_data[1];
         }
         $part_data = $part_data[1];
         $lot_data = $lot_data[1];
         $equal_data = $equal_data[1];
 
         require_once "generate_code.php";
-        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$lote,$inspec,$equal_data);
+        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$nolote,$noinspec,$equal_data);
         if(is_array($qr)){
             return $qr[1];
         }
@@ -32,12 +32,11 @@
 
         if($insert){
             require_once "insert_label.php";
-            $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$lote,$cantidad,$fecha,$equal_data['id']);
+            $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$nolote,$noinspec,$cantidad,$fecha,$equal_data['id']);
             if(is_array($serial_label)){
-                $label .= "<script>alert('".$serial_label[1]."');</script>";
-                $serial_alt = "0000";
+                return $serial_label[1];
             }else{
-                $label .= "<script>alert('La etiqueta se registró con éxito');</script>";
+                $label .= "La etiqueta se registró con éxito||";
                 $serial_alt = $serial_label;
             }
         }else if(!empty($serial)){

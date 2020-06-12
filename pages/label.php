@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Etiqueta</title>
+    
     <!--css-->
     <link rel="stylesheet" href="../styles/basics.css">
     <link rel="stylesheet" href="../styles/menu.css">
@@ -18,7 +19,9 @@
 <body class="f14">
     <?php require '../server/tasks/select_menu.php'; ?>
     <h1>Nueva Etiqueta</h1>
-    <div class="div-msg" id="validation-msg"></div>
+    <div class="div-center">
+        <div class="div-msg" id="validation-msg"></div>
+    </div>
     <div class="div-center">
         <form id="form_label" autocomplete="off">
             <div class="div-union">
@@ -36,22 +39,25 @@
                 <div class="div-part quarter">
                     Fecha <input type="date" id="fecha">
                 </div>
-                <!--Input de origen
-                Origen <input type="text" id="origen" maxlength="50">-->
                 <div class="div-part quarter">
                     No. Ran <input type="text" id="no-ran" maxlength="8">
-                </div>
-                <div class="div-part quarter">
-                    Lote <input type="text" id="lote" minlength="13" maxlength="13">
                 </div>
             </div>
             <div class="div-union">
                 <div class="div-part thirty">
-                    Inspección 
-                    <input type="text" id="inspec" maxlength="15">
+                    Seleccione el No. Lote: 
+                    <input type="text" id="inspec" maxlength="22">
                     <ul id="sug-lote"></ul>        
                 </div>
                 <div class="div-center seventy" id="datos-lote"></div>
+            </div>
+            <div class="div-union">
+                <div class="div-part quarter">
+                    Lote <input type="text" id="no-lote" maxlength="13"> <!--minlength="13"-->
+                </div>
+                <div class="div-part quarter">
+                    Inspección <input type="text" id="no-inspec" maxlength="15">
+                </div>
             </div>
             <div class="div-center">
                 <input id="btn-label" type="submit" value="Generar">

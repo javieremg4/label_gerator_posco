@@ -24,11 +24,14 @@
         
         //Funciona
         $lot_date = $equal_data['fecha_lote'];
+        //$lot_date = str_pad($lot_date,13,' ');
         $continue = review_length($lot_date,13,'Fecha de Producción');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $lot_date;
 
         //Funciona
+        //Aquí se revisa que el lote tenga exactamente 13 caracteres
+        //$lote = str_pad($lote,13,' ');
         $continue = review_length($lote,13,'Lote');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $lote;
@@ -64,6 +67,7 @@
 
         //Funciona
         $roll_date = $equal_data['fecha_rollo'];
+        //$roll_date = str_pad($roll_date,13,' ');
         $continue = review_length($roll_date,13,'Fecha de Ingreso de Rollo a Planta');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $roll_date;
@@ -161,7 +165,9 @@
         return true;
     }
     function review_length($data,$maxlength,$data_name){
-        if(strlen($data)>$maxlength){
+        if(strlen($data)<$maxlength){
+            return array(false,"Error: el dato ".$data_name." tiene menos de ".$maxlength." caracteres (".$data.")<br>");
+        }else if(strlen($data)>$maxlength){
             //echo "Error: el dato ".$data_name." tiene mas de ".$maxlength." caracteres (".$data.")<br>";
             return array(false,"Error: el dato ".$data_name." tiene mas de ".$maxlength." caracteres (".$data.")<br>");
         }
