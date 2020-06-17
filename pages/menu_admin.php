@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú</title>
-
     <!--css-->
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/basics.css">
@@ -26,12 +25,12 @@
                 <li><a href="delete_part.php">Eliminar Parte</a></li>
             </ul>
         </li>
-        <li><a>Lotes<span class="flecha">&#9660</span></a>
+        <li><a>Inspección<span class="flecha">&#9660</span></a>
             <ul>
-                <li><a href="load_lots.php">Cargar Lotes</a></li>
-                <li><a href="lot.php">Nuevo Lote</a></li>
-                <li><a href="change_features_lot.php">Actualizar Lote</a></li>
-                <li><a href="delete_lot.php">Eliminar Lote</a></li>
+                <li><a href="load_lots.php">Cargar Nros. Insp</a></li>
+                <li><a href="lot.php">Nuevo No. Insp</a></li>
+                <li><a href="change_features_lot.php">Actualizar No. Insp</a></li>
+                <li><a href="delete_lot.php">Eliminar No. Insp</a></li>
             </ul>
         </li>
         <li><a href="equal_data.php">Datos Fijos</a></li>
@@ -43,7 +42,9 @@
         <?php echo "Bienvenido ".$_SESSION['user_name']; ?>
     </div>
 
-    <div class="div-msg" id="val-msg"></div>
+    <div class="div-center">
+        <div class="div-msg" id="val-msg"></div>
+    </div>
     <div class="div-center">
         <form id="form_show_labels">
             <div class="div-left">
@@ -57,11 +58,13 @@
     </div>
     <div class="div-center f14" id="label-panel"></div>
 
-    <!--js-->
+    <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
-    <script src="../js/show_labels.js"></script>
-    <script src="../js/validarFecha.js"></script>
+    <!--js-->
     <script src="../js/menu.js"></script>
+    <script src="../js/show_labels.js"></script>
+    <script src="../js/dateReview.js"></script>
+    <script src="../js/quitMsg.js"></script>
 </body>
 </html>

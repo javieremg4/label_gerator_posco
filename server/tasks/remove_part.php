@@ -1,9 +1,9 @@
 <?php
     if(isset($_POST['no-parte'])){
         require "session_modules.php";
-        require_once "../queries/delete_part.php";
-        $result = delete_part($_POST['no-parte']);
-        echo $result;
-        exit;
+        session_modules();
+        require "../queries/delete_part.php";
+        exit(delete_part($_POST['no-parte']));
     }
+    header("location:../../pages/error.html");
 ?>

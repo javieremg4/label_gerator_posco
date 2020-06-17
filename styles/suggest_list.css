@@ -10,6 +10,7 @@ ul.sug-part,ul.sug-lote{
     padding: 0;
     position: absolute;
     z-index: 999;
+    margin-bottom: 50px;
 }
 ul.sug-part > li,ul.sug-lote > li{
     padding-left: 5px;

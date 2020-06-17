@@ -78,6 +78,16 @@ input[type="text"],input[type="date"],input[type="time"],input[type="number"]{
     padding: 5px 25px 5px 10px;
     position: relative;
 }
+.div-note{
+    border: 1px solid black;
+    border-radius: 5px;
+    font-weight: normal;
+    margin: 10px 20%;
+    position: relative;
+    padding: 5px;
+    text-align: center;
+    width: 60%;
+}
 label{
     cursor: pointer;   
     font-size: 20px;

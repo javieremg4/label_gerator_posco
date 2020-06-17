@@ -5,6 +5,9 @@ form{
 .div-union{
     justify-content: center;
 }
+.div-msg{
+    width: auto;
+}
 input[type='file']{
     border: 0;
     margin-bottom: 5px;
@@ -12,7 +15,7 @@ input[type='file']{
     width: 100%;
 }
 .table-style{
-    margin: 10px 20%;
+    margin: 10px auto;
     width: 60%;
 }
 .mt10{ margin-top: 10px; }
@@ -51,10 +54,10 @@ input[type='file']{
         margin: 10px 1%;
         width: 98%;
     }
-    .div-msg{ 
+    /*.div-msg{ 
         margin: 0 25%;
         width: 50%;
-    }
+    }*/
 }
 @media (max-width: 512px){
     form{ width: 98%; }

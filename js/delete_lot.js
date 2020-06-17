@@ -1,14 +1,18 @@
+//event: hacer focus al primer input al cargar el documento
+window.onload = function(){
+    inputFocus();
+}
+//***
+//event: asignar el foco al primer input al cargar la página
 $('#eliminar-lote').on('keyup',function(event){
     if($('#eliminar-lote').val()!==''){
         if(!$('#eliminar-lote').val().search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#eliminar-lote').val()!=='0'){
             var code = event.which || event.keyCode;
             suggest_list(code,'eliminar-lote','sug-lote');
         }else{
-
             //Asignar el ancho de la lista dinámicamente a partir del ancho del input
             $('#sug-lote').width($('#eliminar-lote').width());
             //***
-
             $('#sug-lote').html('Sin sugerencias');
             $('#sug-lote').addClass('sug-lote');
         }
@@ -16,14 +20,14 @@ $('#eliminar-lote').on('keyup',function(event){
         cleanList('sug-lote');
         $('#datos-lote').html("");
     }
-    
 });
-//code: detectar «click» fuera de un elemento
+//***
+//event: detectar «click» en la página
 $('html').on('click',function(){
     cleanList('sug-lote');
 });
 //***
-//code: perder el foco de un elemento
+//event: perder el foco de un elemento
 $('#eliminar-lote').on('blur',function(event){
     document.getElementById('eliminar-lote').focus();
 });
@@ -36,47 +40,38 @@ $('#form_delete_lot').on('keypress',function(event){
     }
 });
 //***
-//function: limpiar el input el div con los datos
+//function: limpiar el input y el div con los datos
 function clean_data(){
+    cleanMsg('server_answer');
     $('#datos-lote').html("");
     $('#eliminar-lote').val("");
 }
 //***
-function showQuitMsg(msg,color){
-    $('#server_answer').html(msg);
-    $('#server_answer').addClass(color);
-    $('#btn-submit').attr("disabled",true);
-    setTimeout(() => {
-        $('#server_answer').html("");
-        $('#server_answer').removeClass(color);
-        $('#btn-submit').attr("disabled",false);
-    }, 5000);
-}
+//event: enviar formulario (eliminar el lote)
 $('#form_delete_lot').on("submit",function(e){
     e.preventDefault();
-    //Mensaje de confirmación antes de "eliminar" el lote
-    var msg = "Los datos del Lote No. "+nlot_g+" no se podrán recuperar"+"\n¿Desea continuar?";
+    cleanMsg('server_answer');
+    var msg = "Los datos del No. "+nlot_g+" no se podrán recuperar"+"\n¿Desea continuar?";
     msg = confirm(msg);
     if(!msg){ return false; }
-    //***
     $.ajax({
         type: 'POST',
         data: 'no-lote='+nlot_g,
         url: '../server/tasks/remove_lot.php',
-        success: function(result){
-            if(result==="back-error"){
-                window.location = "../pages/error.html";
+        dataType: 'json',
+        success: function(data){
+            if(data.status==="OK" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-green');
+                $('#datos-lote').html("");
+            }else if(data.status==="ERR" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-red');
             }else{
-                if(result.indexOf("Error:")!==-1 || result.indexOf("Falló")!==-1){
-                    showQuitMsg(result,'div-red');
-                }else{
-                    showQuitMsg(result,'div-green');
-                    clean_data();
-                }
+                window.location = "../pages/index.php";
             }
         },
         error: function(){
-            alert("No se pudo eliminar el Lote. Consulte al Administrador");
+            quitMsgEvent('server_answer',"No se pudieron eliminar los datos. Consulte al Administrador",'div-red');
         }
     })
 });
+//***

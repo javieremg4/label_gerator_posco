@@ -22,6 +22,9 @@ span{
     text-align: center;
     white-space: pre;
 }
+u{
+    text-decoration: underline;
+}
 /******/
 /*delete_lot*/
 .table-style{
@@ -43,11 +46,19 @@ span{
         margin: 0 25%;
         width: 50%;
     }
+    .div-note{ 
+        margin: 10px 20%;
+        width: 60%;
+    }
 }
 @media (max-width: 512px){
     .div-part,.div-left{ width: 50%; }
     .btn-cancel,input[type="submit"],input[type="reset"]{
         width: 50%;
+    }
+    .div-note{ 
+        margin: 10px 10%;
+        width: 80%;
     }
 }
 @media (max-width: 320px){

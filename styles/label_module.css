@@ -20,6 +20,23 @@ input{
 }
 .table-style{
     width: 100%;
+    margin-bottom: 10px;
+}
+.mb10{
+    margin-bottom: 10px;
+}
+button#change-lot{
+    cursor: pointer;
+    padding: 2px 2px 0 2px;
+}
+img#change-lot-img{
+    height: 12px;
+    width: 12px;
+}
+.w85{ width: 85%; }
+.span-lot{ 
+    display: block;
+    width: 100%; 
 }
 @media (max-width: 1024px){
     form{ width: 80%; }
@@ -30,9 +47,6 @@ input{
     }
 }
 @media (max-width: 512px){
-    .table-style{
-        margin-bottom: 10px;
-    }
     .seventy{ min-width: 100%; }
     .quarter,.thirty{ width: 50%; }
 }

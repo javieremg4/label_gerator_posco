@@ -1,42 +1,41 @@
 <?php
     //insert es una bandera que indica si la etiqueta se va a insertar en la BDD o no
-    function generate_label($insert,$serial,$noparte,$cantidad,$fecha,$ran,$nolote,$noinspec,$inspec){
-        require_once "data_part.php";
-        $part_data = search_part($noparte,'id_parte,no_parte,esp,kgpc');
+    function generate_label($insert,$serial,$noparte,$cantidad,$fecha,$ran,$nolote,$inspec){
+        require "data_part.php";
+        $part_data = search_part($noparte,'id_parte,no_parte,esp,kgpc',true);
         if($part_data[0]){
-            require_once "data_lote.php";
-            $lot_data = search_lote($inspec,'*');
+            require "data_lot.php";
+            $lot_data = search_lot($inspec,'*',true);
             if($lot_data[0]){
-                require_once "equal_data.php";
+                require "equal_data.php";
                 $equal_data = search_equal_data("id,fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");
                 if(!$equal_data[0]){
-                    return $equal_data[1];
-                }
+                    return jsonERR($equal_data[1]);
+               }
             }else{
-                return $lot_data[1];
+                return jsonERR($lot_data[1]);
             }
         }else{
-            return $part_data[1];
+            return jsonERR($part_data[1]);
         }
         $part_data = $part_data[1];
         $lot_data = $lot_data[1];
         $equal_data = $equal_data[1];
 
-        require_once "generate_code.php";
-        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$nolote,$noinspec,$equal_data);
+        require "generate_code.php";
+        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$nolote,$inspec,$equal_data);
         if(is_array($qr)){
-            return $qr[1];
+            return jsonERR($qr[1]);
         }
 
         $label = "";
 
         if($insert){
-            require_once "insert_label.php";
-            $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$nolote,$noinspec,$cantidad,$fecha,$equal_data['id']);
+            require "insert_label.php";
+            $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$nolote,$cantidad,$fecha,$equal_data['id']);
             if(is_array($serial_label)){
-                return $serial_label[1];
+                return jsonERR($serial_label[1]);
             }else{
-                $label .= "La etiqueta se registró con éxito||";
                 $serial_alt = $serial_label;
             }
         }else if(!empty($serial)){
@@ -45,7 +44,7 @@
         
         $label .= "<div class='div-center'><button class='btn-pdf' id='pdf'>Generar pdf</button></div>";
 
-        $label .= "<div class='div-center'>
+        $label .= "<div class='div-center mb10'>
                     <div class='letter' id='to-pdf'>
                         <div class='div-big-table'>
                             <table class='big-table top rig lef'>
@@ -116,7 +115,12 @@
                         </div>
                     </div>
                 </div>";
-        
-        return $label;
+        return json_encode(
+            array(
+                "status" => "OK",
+                "message" => "La etiqueta se registró con éxito",
+                "content" => $label
+            )
+        );
     } 
 ?>

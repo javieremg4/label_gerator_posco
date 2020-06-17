@@ -1,15 +1,18 @@
-//code: se agrega la lista al input
+//event: poner el foco al primer input al cargar la pagina
+window.onload = function(){
+    inputFocus();
+}
+//***
+//event: asignar la lista al input al teclear
 $('#buscar-parte').on('keyup',function(event){
     if($('#buscar-parte').val()!==''){
         if(!$('#buscar-parte').val().search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#buscar-parte').val()!=='0'){
             var code = event.which || event.keyCode;
             suggest_list(code,'buscar-parte','sug-part');
         }else{
-            
             //Asignar el ancho de la lista dinámicamente a partir del ancho del input
             $('#sug-part').width($('#buscar-parte').width());
             //***
-            
             $('#sug-part').html('Sin sugerencias');
             $('#sug-part').addClass('sug-part');
         }
@@ -19,22 +22,21 @@ $('#buscar-parte').on('keyup',function(event){
     }
 });
 //***
-//code: detectar «click» fuera de un elemento
+//event: detectar «click» en la página
 $('html').on('click',function(){
     if(document.getElementById('sug-part').hasChildNodes()){
         cleanList('sug-part');
     }
 });
 //***
-//code: perder el foco de un elemento
+//event: perder el foco del input con las listas desplegables
 $('#buscar-parte').on('blur',function(event){
     if(document.getElementById('sug-part').hasChildNodes()){
         document.getElementById('buscar-parte').focus();
-        //$('#buscar-parte').focus();
     }
 });
 //***
-//code: evitar que se envie el formulario al dar enter
+//event: evitar que se envie el formulario al dar enter
 $('#form_features_part').on('keypress',function(event){
     var code = event.which || event.keyCode;
     if(code===13){
@@ -44,55 +46,44 @@ $('#form_features_part').on('keypress',function(event){
 //***
 //function: limpiar el input y el div con los datos
 function clean_data(){
-    $('#datos-parte').html("");
+    cleanMsg('server_answer');
     $('#buscar-parte').val("");
+    $('#datos-parte').html("");
 }
 //***
-//code: enviar la info al servidor
+//event: enviar el formulario (actualizar la parte)
 $('#form_features_part').on('submit',function(event){
     event.preventDefault();
+    cleanMsg('server_answer');
     var postData = part_review();
     if(postData !== false){
-
-        //Validación del no. de parte
-        if(npart_g!==$('#no-parte').val()){
-            var msg = "¿Desea cambiar el No. Parte: "+npart_g+" por "+$('#no-parte').val()+"?\n"
+        var msg = "¿Desea cambiar los datos de la parte No. "+npart_g+"?\n"
+                  +"Las etiquetas generadas se modificarán";
+        var no_parte = document.getElementById('no-parte').value.toUpperCase();
+        if(npart_g!==no_parte){
+            msg = "¿Desea cambiar el No. Parte: "+npart_g+" por "+no_parte+"?\n"
                       +"Las etiquetas generadas con el No. Parte anterior se modificarán";
-            msg = confirm(msg);
-            if(!msg){ return false; }
         }
-        //***
-
+        msg = confirm(msg);
+        if(!msg){ return false; }
         postData += "&parte="+npart_g;
         $.ajax({
             type: 'post',
             url: '../server/tasks/change_part.php',
             data: postData,
-            success: function(result){
-                if(result==="back-error"){
-                    window.location = "../pages/error.html";
+            dataType: 'json',
+            success: function(data){
+                if(data.status==="OK" && data.message){
+                    quitMsgEvent('server_answer',data.message,'div-green');
+                    $('#datos-parte').html("");
+                }else if(data.status==="ERR" && data.message){
+                    quitMsgEvent('server_answer',data.message,'div-red');
                 }else{
-                    $('#server_answer').html(result);
-                    if(result.indexOf("Error")!==-1 || result.indexOf("Falló")!==-1){
-                        $('#server_answer').addClass('div-red');
-                        $('#btn-part').attr("disabled",true);
-                        setTimeout(() => {
-                        $('#server_answer').html("");
-                        $('#server_answer').removeClass('div-red');
-                        $('#btn-part').attr("disabled",false);
-                        }, 7000);
-                    }else{
-                        $('#server_answer').addClass('div-green');
-                        clean_data();
-                        setTimeout(() => {
-                        $('#server_answer').html("");
-                        $('#server_answer').removeClass('div-green');
-                        }, 7000);
-                    }
+                    window.location = "../pages/index.php";
                 }
             },
             error: function(){
-                alert("No se pudo actualizar la Parte. Consulte al Administrador");
+                quitMsgEvent('server_answer',"No se pudo actualizar la Parte. Consulte al Administrador",'div-red');
             }
         });
     }

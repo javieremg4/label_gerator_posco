@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Etiqueta</title>
-    
     <!--css-->
     <link rel="stylesheet" href="../styles/basics.css">
     <link rel="stylesheet" href="../styles/menu.css">
@@ -45,18 +44,20 @@
             </div>
             <div class="div-union">
                 <div class="div-part thirty">
-                    Seleccione el No. Lote: 
-                    <input type="text" id="inspec" maxlength="22">
-                    <ul id="sug-lote"></ul>        
+                    Introduzca el No. Lote: 
+                    <input type="text" id="lot-input" maxlength="22">
                 </div>
                 <div class="div-center seventy" id="datos-lote"></div>
             </div>
             <div class="div-union">
-                <div class="div-part quarter">
-                    Lote <input type="text" id="no-lote" maxlength="13"> <!--minlength="13"-->
+                <div class="div-part thirty" id="div-lot">
+                    <span class="span-lot">Lote</span>
+                    <input class="w85" type="text" id="no-lote" maxlength="13"> <!--minlength="13"-->
                 </div>
-                <div class="div-part quarter">
-                    Inspección <input type="text" id="no-inspec" maxlength="15">
+                <div class="div-part thirty">
+                    <!--Tenía id="no-inspec"-->
+                    Inspección <input type="text" id="inspec" maxlength="15">
+                    <ul id="sug-lote"></ul>   
                 </div>
             </div>
             <div class="div-center">
@@ -66,20 +67,19 @@
     </div>
     <div id="server_answer"></div>
     
-    <!--js-->
+    <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
-    <script src="../js/menu.js"></script>
-    <script src="../js/suggest_list.js"></script>
-    <script src="../js/validarFecha.js"></script>
-    <script src="../js/label.js"></script>
-    <script src="../js/JsBarcode.all.min.js"></script>
+    <!--librerias-->
     <script src="https://unpkg.com/html2canvas@1.0.0-rc.5/dist/html2canvas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-    <!--<script src="../js/link_menu.js"></script>-->
-    <!--<script src="../js/qrcode.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>-->
-
+    <script src="../js/JsBarcode.all.min.js"></script>
+    <!--js-->
+    <script src="../js/menu.js"></script>
+    <script src="../js/suggest_list.js"></script>
+    <script src="../js/label.js"></script>
+    <script src="../js/quitMsg.js"></script>
+    <script src="../js/dateReview.js"></script>
 </body>
 </html>

@@ -1,22 +1,44 @@
+//event: modificar la navegación con tab al cargar la página
+window.onload = function(){
+    document.getElementById('user').tabIndex = 1;
+    document.getElementById('pass').tabIndex = 2;
+    document.getElementById('confirm').tabIndex = 3;
+    document.getElementById('tuser').tabIndex = 4;
+    document.getElementById('btn-login').tabIndex = 5;
+    document.getElementById('clean_all').tabIndex = 6;
+    inputFocus();
+}
+//***
+//function: validar el tipo y las contraseñas
 function validate_type(){
     if($('#confirm').val() !== $('#pass').val()){
-        showQuitMsg("La contraseña no coincide");
+        showQuitMsg('server_answer','btn-login',"Las contraseñas no coinciden");
         return false;
     }
     var user = document.getElementsByName('type')[0];
     var admin = document.getElementsByName('type')[1];
     if(!user.checked && !admin.checked){
-        showQuitMsg("Tipo: obligatorio");
+        showQuitMsg('server_answer','btn-login',"Tipo: obligatorio");
         return false;
     }
     if(admin.checked){
         return "&type=1";
-    }else{
+    }else{  
         return "&type=0";
     }
 }
+//***
+//event: limpiar el formulario y el mensaje
+$('#clean_all').on("click",function(e){
+    e.preventDefault();
+    cleanMsg('server_answer');
+    $('#new_user_form')[0].reset();
+});
+//***
+//event: subir el formulario (registrar el usuario)
 $('#new_user_form').on('submit',function(event){
     event.preventDefault();
+    cleanMsg('server_answer');
     var postData = login_review();
     if(!postData){ return false; }
     var type = validate_type(postData);
@@ -25,34 +47,20 @@ $('#new_user_form').on('submit',function(event){
     $.ajax({
         type: 'POST',
         data: postData,
-        url: "../server/tasks/set_user.php",
-        success: function(result){
-            if(result==="back-error"){
-                window.location = "../pages/error.html";
+        url: '../server/tasks/set_user.php',
+        dataType: 'json',
+        success: function(data){
+            if(data.status==="OK" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-green');
+            }else if(data.status==="ERR" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-red');
             }else{
-                $('#server_answer').html(result);
-                if(result === "Usuario registrado con éxito"){
-                        $('#server_answer').addClass('div-green');
-                        $('#new_user_form')[0].reset();
-                        $('#btn-login').attr("disabled",true);
-                        setTimeout(() => {
-                        $('#server_answer').html("");
-                        $('#server_answer').removeClass('div-green');
-                        $('#btn-login').attr("disabled",false);
-                        }, 5000);
-                    }else{
-                        $('#server_answer').addClass('div-red');
-                        $('#btn-login').attr("disabled",true);
-                        setTimeout(() => {
-                        $('#server_answer').html("");
-                        $('#server_answer').removeClass('div-red');
-                        $('#btn-login').attr("disabled",false);
-                        }, 5000);
-                    }
+                window.location = "../pages/index.php";
             }
         },
         error: function(){
-            alert("No se puede registrar el Usuario. Revise el archivo: new_user.js");
+            quitMsgEvent('server_answer',"No se puede registrar el Usuario",'div-red');
         }
     })
 });
+//***

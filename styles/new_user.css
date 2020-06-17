@@ -2,8 +2,14 @@ form{
     margin: 9px 0;
     width: 40%;
 }
+input[type='text']{
+    text-transform: none;
+}
 input[type="radio"]{
     width: 10%;
+}
+.mt5{
+    margin-top: 5px;
 }
 .div-part{
     width: 50%;

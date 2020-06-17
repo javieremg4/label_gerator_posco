@@ -19,7 +19,7 @@
         <li><a href="menu_user.php">Inicio</a></li>
         <li><a href="label.php">Nueva Etiqueta</a></li>
         <li><a href="part.php">Nueva Parte</a></li>
-        <li><a href="lot.php">Nuevo Lote</a></li>
+        <li><a href="lot.php">Nuevo No. Insp</a></li>
         <li><a href="../server/tasks/close_session.php">Cerrar sesión</a></li>
     </ul>
 
@@ -27,7 +27,9 @@
         <?php echo "Bienvenido ".$_SESSION['user_name']; ?>
     </div>
 
-    <div class="div-msg" id="val-msg"></div>
+    <div class="div-center">
+        <div class="div-msg" id="val-msg"></div>
+    </div>
     <div class="div-center">
         <form id="form_show_labels">
             <div class="div-left">
@@ -41,11 +43,12 @@
     </div>
     <div class="div-center f14" id="label-panel"></div>
     
-    <!--js-->
+    <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
-    <script src="../js/validarFecha.js"></script>
-    <script src="../js/show_labels.js"></script>
+    <!--js-->
     <script src="../js/menu.js"></script>
+    <script src="../js/show_labels.js"></script>
+    <script src="../js/dateReview.js"></script>
 </body>
 </html>

@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Parte</title>
-
     <!--css-->
     <link rel="stylesheet" href="../styles/basics.css">
     <link rel="stylesheet" href="../styles/menu.css">
@@ -33,7 +32,7 @@
                 </div>
                 <div class="div-part">
                     Kg./Pc
-                    <input type="text" id="kgpc">
+                    <input type="text" id="kgpc" maxlength="8">
                 </div>
                 <div class="div-part">
                     SNP PZ
@@ -46,15 +45,17 @@
             </div>
             <div class="div-center">
                 <input type="submit" id="btn-part" value="Registrar">
-                <input type="reset" value="Limpiar">
+                <button class="btn-cancel" id="clean_all">Limpiar</button>            
             </div>
         </form>
     </div>
 
-    <!--js-->
+    <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <!--js-->
     <script src="../js/part.js"></script>
     <script src="../js/menu.js"></script>
+    <script src="../js/quitMsg.js"></script>
 </body>
 </html>

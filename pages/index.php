@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="../styles/login.css">
 </head>
 <body class="f14">
-    <div class="div-msg" id="server_answer"></div>
+    <div class="div-center">
+        <div class="div-msg" id="server_answer"></div>
+    </div>
     <div class="div-center">
         <form class="login_form" id="login_form" autocomplete="off">
             Usuario <input type="text" id="user" minlength="3" maxlength="15">
@@ -27,9 +29,12 @@
             </div>
         </form>
     </div>
-    <!--js-->
+    
+    <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <!--js-->
     <script src="../js/login.js"></script>
+    <script src="../js/quitMsg.js"></script>
 </body>
 </html>

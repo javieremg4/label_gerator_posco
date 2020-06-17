@@ -1,6 +1,12 @@
 body{
     text-align: center;
 }
+.nav{
+    margin-bottom: 0;
+}
+.div-msg{
+    margin: 10px 0;
+}
 .btn-pdf{
     width: 150px;
     margin-bottom: 10px;
@@ -8,9 +14,6 @@ body{
 .div-union{
     font-size: 16px;
     width: 60%;
-}
-.all{
-    width: 100%;
 }
 .half{
     font-weight: normal;
@@ -27,6 +30,15 @@ span{
     font-weight: bold;
     display: block;
     margin-top: 5px;
+}
+.span-note{
+    color: darkred;
+    cursor: pointer;
+    font-size: 13px;
+    margin-left: 10px;    
+}
+.mb10{
+    margin-bottom: 10px;
 }
 @media (max-width: 1024px){
     .div-union{ width: 80%; }

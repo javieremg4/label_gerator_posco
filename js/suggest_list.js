@@ -76,52 +76,46 @@ function suggest_list(code,idInput,idList){
             }
             $.ajax({
                 type: 'post',
-                url: '../server/tasks/suggest_part_lote.php',
+                url: '../server/tasks/suggest_part_lot.php',
                 data: postData,
-                success: function(result){
-                    if(result==="back-error"){
-                        window.location = "../pages/error.html";
-                    }else{
-                        if(result.indexOf("Error:")===-1 && result.indexOf("Falló")===-1){
-                            if(idInput==='no-parte' || idInput==='buscar-parte' || idInput==='eliminar-parte'){
-                                //code: se agregan las sugerencias a la lista y los eventos
-                                
-                                //Asignar el ancho de la lista dinámicamente a partir del ancho del input
-                                $('#sug-part').width($('#'+idInput).width());
-                                //***
-                                
-                                $('#sug-part').html(result);
-                                $('#sug-part').addClass('sug-part');
-                                $('ul#sug-part li').on('click',function(){
-                                    input.value = this.innerHTML;
-                                    if(list.hasChildNodes()){
-                                        cleanList(idList);
-                                    }
-                                    consult_part_lote(idInput);
-                                });
-                                //***
-                            }else if(idInput==='inspec' || idInput==='buscar-lote' || idInput==='eliminar-lote'){
-                                //code: se agregan las sugerencias a la lista y los eventos
-                                
-                                //Asignar el ancho de la lista dinámicamente a partir del ancho del input
-                                $('#sug-lote').width($('#'+idInput).width());
-                                //***
-
-                                $('#sug-lote').html(result);
-                                $('#sug-lote').addClass('sug-lote');
-                                $('ul#sug-lote li').on('click',function(event){
-                                    event.stopPropagation();
-                                    input.value = this.innerHTML;
-                                    if(list.hasChildNodes()){
-                                        cleanList(idList);
-                                    }
-                                    consult_part_lote(idInput);
-                                })
-                                //***
-                            }
-                        }else{
-                            alert("La lista de sugerencias no esta disponible. Consulte al Administrador");
+                dataType: 'json',
+                success: function(data){
+                    if(data.status==="OK" && data.content){
+                        if(idInput==='no-parte' || idInput==='buscar-parte' || idInput==='eliminar-parte'){
+                            //event: agregar las sugerencias a la lista y los eventos
+                            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+                            $('#sug-part').width($('#'+idInput).width());
+                            //***
+                            $('#sug-part').html(data.content);
+                            $('#sug-part').addClass('sug-part');
+                            $('ul#sug-part li').on('click',function(){
+                                input.value = this.innerHTML;
+                                if(list.hasChildNodes()){
+                                    cleanList(idList);
+                                }
+                                consult_part_lote(idInput);
+                            });
+                            //***
+                        }else if(idInput==='inspec' || idInput==='buscar-lote' || idInput==='eliminar-lote'){
+                            //event: agregar las sugerencias a la lista y los eventos
+                            //Asignar el ancho de la lista dinámicamente a partir del ancho del input
+                            $('#sug-lote').width($('#'+idInput).width());
+                            //***
+                            $('#sug-lote').html(data.content);
+                            $('#sug-lote').addClass('sug-lote');
+                            $('ul#sug-lote li').on('click',function(){
+                                input.value = this.innerHTML;
+                                if(list.hasChildNodes()){
+                                    cleanList(idList);
+                                }
+                                consult_part_lote(idInput);
+                            });
+                            //***
                         }
+                    }else if(data.status==="ERR" && data.message){
+                        alert(data.message);
+                    }else{
+                        window.location = "index.php";
                     }
                 },
                 error: function(){
@@ -134,7 +128,7 @@ function suggest_list(code,idInput,idList){
     }
 }
 //***
-//function: limpia la lista de sugerencias
+//function: limpiar la lista de sugerencias
 function cleanList(idList){
     var list = document.getElementById(idList);
     while(list.hasChildNodes()){
@@ -143,7 +137,33 @@ function cleanList(idList){
     $('#'+idList).removeClass(idList);
 }
 //***
-//function: consulta los datos de la parte o el lote
+//function: generar botón para cambiar entre las opciones del lote (sólo aplica casos 1 y 2)
+function addButton(option1,option2){
+    const button = document. createElement('button');
+    button.type = 'button';
+    button.id="change-lot";
+    document.getElementById('div-lot').appendChild(button);
+    const img = document.createElement('img');
+    img.src = "../styles/images/reload-2_icon-icons.com_69598.png";
+    img.id = "change-lot-img";
+    img.alt = "Cambiar lote";
+    button.appendChild(img);
+    img.onerror = function(){
+        button.innerText = "Cambiar lote";
+    }                    
+    let flag = true;
+    $('#change-lot').on("click",function(){
+        if(flag){
+            $('#no-lote').val(option2);
+            flag = false;
+        }else{
+            $('#no-lote').val(option1);
+            flag = true;
+        }
+    });
+}
+//***
+//function: consultar los datos de la parte o el lote
 function consult_part_lote(idInput){
     var input = document.getElementById(idInput);
     if(input.value !== ""){
@@ -174,21 +194,20 @@ function consult_part_lote(idInput){
             }
             $.ajax({
                 type: 'post',
-                url: '../server/tasks/see_part_lote.php',
+                url: '../server/tasks/see_part_lot.php',
                 data: postData,
-                success: function(result){
-                    if(result==="back-error"){
-                        window.location = "../pages/error.html";
-                    }else{
+                dataType: 'json',
+                success: function(data){
+                    if(data.status==="OK" && data.content){
                         if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte'){
-                            $('#datos-parte').html(result);
+                            $('#datos-parte').html(data.content);
 
                             //Asignación variable global
-                            npart_g = input.value;
+                            npart_g = input.value.toUpperCase();
                             //***
                             
                             if(idInput==='no-parte' && $('#cantidad').length){
-                                var array = result.split("<td>");
+                                var array = data.content.split("<td>");
                                 $('#cantidad').val(array[4]);
                             }
 
@@ -196,83 +215,41 @@ function consult_part_lote(idInput){
                                 $('#btn-cancel').on("click",function(){clean_data()});
                             }
                         }else if(idInput === 'inspec' || idInput === 'buscar-lote' || idInput === 'eliminar-lote'){
-                            $('#datos-lote').html(result);
+                            $('#datos-lote').html(data.content);
 
                             //Asignación variable global
-                            nlot_g = input.value;
+                            nlot_g = input.value.toUpperCase();
                             //***
 
                             if(idInput === 'buscar-lote' || idInput === 'eliminar-lote'){
                                 $('#btn-cancel').on("click",function(){clean_data()});
                             }
-                            
-                            //test_lot
-                            if(idInput==='inspec'){
-                                console.log("Prueba con números");
-                                const lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
-                                const guion = /\-/;
-                                const case1 = /^9A[A-Z\d]+\-[A-Z\d]+$/;
-                                const case1_1 = /^9A[A-Z\d]+$/;
-                                const case2 = /^98[A-Z\d]+\-[A-Z\d]+$/;
-                                const case3 = /^\d{2}[A-Z\d]+\-[A-Z\d]+$/;
-                                const quit1 = /-[A-Z\d]+/;
-                                var nlot = "";
-                                var ninspec = "";
-                                if(lotExp.test(nlot_g)){
-                                    if(guion.test(nlot_g)){
-                                        if(case1.test(nlot_g)){
-                                            console.log("Caso 1");                                           
-                                            nlot = nlot_g.replace(quit1,'');
-                                            ninspec = nlot;
-                                            nlot = nlot.replace('9A','');
-                                            console.log("Lote: "+nlot);         
-                                            console.log("Inspección: "+ninspec);
-                                        /*Los números que cumplen con el caso 2 también cumplen con el caso 3 
-                                        por lo que debe evaluarse primero el caso 2*/
-                                        }else if(case2.test(nlot_g)){
-                                            console.log("Caso 2");
-                                            nlot = nlot_g.replace('-','');
-                                            ninspec = nlot_g.replace(quit1,'');
-                                            console.log("Lote: "+nlot);
-                                            console.log("Inspección: "+ninspec)
-                                        }else if(case3.test(nlot_g)){
-                                            console.log("Caso 3");
-                                            nlot = nlot_g;
-                                            ninspec = nlot_g.replace(quit1,'');
-                                            console.log("Lote: "+nlot_g);                                                                                                               
-                                            console.log("Inspección: "+ninspec)
-                                        }
-                                    }else{
-                                        /*if(case1_1.test(nlot_g)){
-                                            console.log("Caso 4");
-                                            nlot = nlot_g.replace('9A','');
-                                            console.log("Lote: "+nlot);
-                                            console.log("Inspección: "+nlot_g)
-                                        }else{*/
-                                            nlot = nlot_g;
-                                            ninspec = nlot_g;
-                                            console.log("Caso 4");
-                                            console.log("Lote: "+nlot_g);
-                                            console.log("Inspección: "+nlot_g)
-                                        //}
-                                    }
-                                }
-                                if($('#no-lote').length){
-                                    $('#no-lote').val(nlot);
-                                }
-                                if($('#no-inspec').length){
-                                    $('#no-inspec').val(ninspec);
-                                }
-                            }
-                            //***
                         }
+                        if((idInput==='buscar-parte' || idInput==='buscar-lote') && $('#lblx').length){
+                            $('#lblx').on('click',function(){
+                                if($('.div-note').length){
+                                    $('.div-note').html("");
+                                    $('.div-note').removeClass('div-note');
+                                }
+                            });
+                        }
+                    }else if(data.status==="ERR" && data.message){
+                        if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte'){
+                            $('#datos-parte').html(data.message);
+                        }else if(idInput === 'inspec' || idInput === 'buscar-lote' || idInput === 'eliminar-lote'){
+                            $('#datos-lote').html(data.message);
+                        }else{
+                            window.location = "error.html";
+                        }    
+                    }else{
+                        window.location="../pages/index.php";
                     }
                 },
                 error: function(){
                     var msg = "No se pudieron consultar los datos. Consulte al Administrador";
-                    if(idInput === 'no-parte' || idInput === 'buscar-parte'){
+                    if(idInput === 'no-parte' || idInput === 'buscar-parte' || idInput==='eliminar-parte'){
                         $('#datos-parte').html(msg);
-                    }else if(idInput === 'inspec' || idInput === 'buscar-lote'){
+                    }else if(idInput === 'inspec' || idInput === 'buscar-lote' || idInput === 'eliminar-lote'){
                         $('#datos-lote').html(msg);
                     }else{
                         window.location = "error.html";

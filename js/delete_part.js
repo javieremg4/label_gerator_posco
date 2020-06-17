@@ -1,4 +1,9 @@
-//code: asignacion de la lista a los input
+//event: hacer focus al primer input al cargar el documento
+window.onload = function(){
+    inputFocus();
+}
+//***
+//event: asignar la lista al input al teclear
 $('#eliminar-parte').on('keyup',function(event){
     if($('#eliminar-parte').val()!==''){
         if(!document.getElementById('eliminar-parte').value.search(/^([a-zA-Z\d]|[a-zA-Z\d]\-)*$/) && $('#eliminar-parte').val()!=='0'){
@@ -17,12 +22,12 @@ $('#eliminar-parte').on('keyup',function(event){
     }
 });
 //***
-//code: detectar «click» fuera de un elemento
+//event: detectar «click» en la página
 $('html').on('click',function(){
     cleanList('sug-part');
 });
 //***
-//code: perder el foco de un elemento
+//event: perder el foco del input con las listas desplegables
 $('#eliminar-parte').on('blur',function(event){
     if(document.getElementById('sug-part').hasChildNodes()){
         document.getElementById('eliminar-parte').focus();
@@ -39,47 +44,36 @@ $('#form_delete_part').on('keypress',function(event){
 //***
 //function: limpiar el input y el div con los datos
 function clean_data(){
+    cleanMsg('server_answer');
     $('#datos-parte').html("");
     $('#eliminar-parte').val("");
 }
 //***
-function showQuitMsg(msg,color){
-    $('#server_answer').html(msg);
-    $('#server_answer').addClass(color);
-    $('#btn-submit').attr("disabled",true);
-    setTimeout(() => {
-        $('#server_answer').html("");
-        $('#server_answer').removeClass(color);
-        $('#btn-submit').attr("disabled",false);
-    }, 5000);
-}
-//code: enviar la info al servidor
+//event: enviar formulario (eliminar la parte)
 $('#form_delete_part').on('submit',function(e){
     e.preventDefault();
-    //Mensaje de confirmación antes de "eliminar" la parte
+    cleanMsg('server_answer');
     var msg = "Los datos de la parte No. "+npart_g+" no se podrán recuperar"+"\n¿Desea continuar?";
     msg = confirm(msg);
     if(!msg){ return false; }
-    //***
     $.ajax({
         type: 'POST',
         data: 'no-parte='+npart_g,
         url: '../server/tasks/remove_part.php',
-        success: function(result){
-            if(result==="back-error"){
-                window.location = "../pages/error.html";
+        dataType: 'json',
+        success: function(data){
+            if(data.status==="OK" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-green');
+                $('#datos-parte').html("");
+            }else if(data.status==="ERR" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-red');
             }else{
-                if(result.indexOf("Error:")!==-1 || result.indexOf("Falló")!==-1){
-                    showQuitMsg(result,'div-red');
-                }else{
-                    showQuitMsg(result,'div-green');
-                    clean_data();
-                }
+                window.location = "../pages/index.php";
             }
         },
         error: function(){
-            alert("No se pudo eliminar la Parte. Consulte al Administrador");
+            quitMsgEvent('server_answer',"No se pudo eliminar la Parte. Consulte al Administrador",'div-red');
         }
     })
 });
-
+//***

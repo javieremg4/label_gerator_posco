@@ -15,7 +15,7 @@
             $data .= "<div class='div-part third'>
                         Bloque
                         <input type='text' id='bloque' value='".$info['bloque']."' maxlength='10'>
-                    </div>";
+                    </div>"; 
             $data .= "<div class='div-part'>
                         Hora de abasto
                         <input type='time' id='hora' value='".$info['hora_abasto']."'>
@@ -28,9 +28,19 @@
             $data .= "<div class='div-center'>
                         <input type='submit' id='btn-equal' value='Actualizar'>
                     </div>";
-            return $data;
+            return json_encode(
+                array(
+                    "status" => "OK",
+                    "content" => $data
+                ) 
+            );
         }
-        return $array[1];
+        return json_encode(
+            array(
+                "status" => "ERR",
+                "message" => $array[1]
+            ) 
+        );
     }
     function search_equal_data($campos){
         require "connection.php";
@@ -43,6 +53,6 @@
                 return array(true,mysqli_fetch_array($result));
             }
         }
-        return array(false,"No se pudieron consultar los datos fijos de la etiqueta.");
+        return array(false,"No se pudieron consultar los datos fijos");
     }
 ?>
