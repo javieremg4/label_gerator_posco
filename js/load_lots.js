@@ -41,6 +41,11 @@ $('#form_load_lots').on("submit",function(e){
         cache: false,
         contentType: false,
         processData: false,
+        beforeSend: function(){
+            document.getElementById("wait-msg").appendChild(document.createTextNode("Consultando el archivo. Espere ..."));
+            $('#clean_all').hide();
+            $('#btn-submit').hide(); 
+        },
         success: function(result){
             if(result==="back-error"){
                 window.location = "../pages/error.html";
@@ -52,6 +57,7 @@ $('#form_load_lots').on("submit",function(e){
                 }
                 $('#server_answer').html(result);
                 result=$('#server_answer').html();
+                
                 if($('#send').length){
                     $('#send').on("click",function(){
                         if($('#server_answer').html()==result){
@@ -61,12 +67,18 @@ $('#form_load_lots').on("submit",function(e){
                         }
                     });
                 }
+               
             }
         },
         error: function(){
             quitMsgEvent('validation-msg',"No se pudo consultar el archivo. Inténtelo de nuevo",'div-red');
             $('#file').val("");
             $('#server_answer').html("");
+        },
+        complete: function(){
+            document.getElementById("wait-msg").removeChild(document.getElementById("wait-msg").lastChild);
+            $('#clean_all').show();
+            $('#btn-submit').show();
         }
     });
 });
@@ -88,6 +100,12 @@ function insert_lot(){
         type: 'post',
         data: "lots_array="+JSON.stringify(lotsArray),
         dataType: 'json',
+        beforeSend: function(){ 
+            document.getElementById("wait-msg").appendChild(document.createTextNode("Registrando la información. Por favor, espere ..."));
+            $('#send').attr('disabled',true);
+            $('#clean_all').hide();
+            $('#btn-submit').hide(); 
+        },
         success: function(data){
             if(data.status==="OK" && data.content){
                 $('#server_answer').html(data.content);
@@ -99,6 +117,12 @@ function insert_lot(){
         },
         error: function(){
             quitMsgEvent('validation-msg',"No se pudieron registrar los datos. Consulte al Administrador",'div-red');
+        },
+        complete: function(){
+            document.getElementById("wait-msg").removeChild(document.getElementById("wait-msg").lastChild);
+            $('#send').attr('disabled',false);
+            $('#clean_all').show();
+            $('#btn-submit').show();
         }
     });
 }

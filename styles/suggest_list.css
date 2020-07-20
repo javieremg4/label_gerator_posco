@@ -9,7 +9,7 @@ ul.sug-part,ul.sug-lote{
     margin: 0;
     padding: 0;
     position: absolute;
-    z-index: 999;
+    z-index: 997;
     margin-bottom: 50px;
 }
 ul.sug-part > li,ul.sug-lote > li{

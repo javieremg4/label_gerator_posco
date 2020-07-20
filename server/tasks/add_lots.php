@@ -1,10 +1,12 @@
 <?php
     if(isset($_POST['lots_array'])){
+        include "../tasks/jsonType.php";
+        if(empty($_POST['lots_array'])){ exit(jsonERR("Hubo un problema. Inténtelo de nuevo")); }
         require "session_modules.php";
         session_modules();
         $lots_array = json_decode($_POST['lots_array'],true);
+        if(empty($lots_array)){ exit(jsonERR("Hubo un problema. Inténtelo de nuevo")); }
         require '../queries/insert_lot.php';
-        include "../tasks/jsonType.php";
         $data = "<div class='ovx'><table class='table-style'><tr><th>Reg.<th>Resultado";
         $correct = 0;
         $fail = 0;

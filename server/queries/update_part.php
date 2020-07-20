@@ -5,7 +5,7 @@
     function update_part_module($no_parte,$desc,$esp,$kgpc,$snppz,$parte){
         require "../queries/data_part.php";
         require "../tasks/jsonType.php";
-        $result = search_part($parte,"no_parte,`desc`,esp,kgpc,snppz",false);
+        $result = search_part(null,$parte,"no_parte,`desc`,esp,kgpc,snppz",false);
         if($result[0]){
             $result = $result[1];
             if($no_parte===$result['no_parte'] && $desc===$result['desc'] && $esp===$result['esp'] && $kgpc===$result['kgpc'] && $snppz===$result['snppz']){

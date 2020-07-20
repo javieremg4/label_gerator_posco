@@ -1,4 +1,7 @@
 <?php
+    //Ocultar todas la errores (advertencias,notas,etc)
+    error_reporting(0);
+    //***
     if(isset($_FILES['file']['tmp_name'])){
 
         require "session_modules.php";
@@ -7,14 +10,29 @@
         $path = $_FILES['file']['name']; 
         $ext = pathinfo($path, PATHINFO_EXTENSION);
         if($ext!='csv' && $ext!='CSV'){
-            echo "Archivo: extensión incorrecta ||";
-            exit;
+            exit("Archivo: extensión incorrecta ||");
         }
 
-        $array = explode("\n",file_get_contents($_FILES['file']['tmp_name']));
+        $array = file_get_contents($_FILES['file']['tmp_name']);
         if($array===false){ 
-            echo "No se pudo consultar el archivo. Consulte al Administrador"; 
-            exit; 
+            exit("No se pudo consultar el archivo. Consulte al Administrador"); 
+        }
+
+        $array = explode("\r\n",$array);
+        if($array===false){ 
+            exit("No se pudo consultar el archivo. Consulte al Administrador"); 
+        }
+
+        /*Quitar lineas vacías del archivo*/
+        $array = array_filter($array,"strlen");
+        $array = array_values($array);
+
+        if(count($array)===0){
+            exit("No se detecto ningún registro. Revise el archivo");
+        }
+        
+        if(count($array)>1000){
+            exit("<span>Se detectaron ".count($array)." registros <br> EL MÁXIMO ADMITIDO ES DE  1000 REGISTROS</span>");
         }
 
         echo "<span class='i'>Se detectaron ".count($array)." registros</span>";
@@ -29,10 +47,6 @@
         for ($i=0; $i < count($array); $i++) { 
             $data .= "<tr>";
             $data .= "<td>".($i+1);
-            //Quitar el retorno de carro, el \n se "quita" en el explode anterior y la , en el explode que sigue
-            $array[$i] = str_replace("\r","",$array[$i]);
-            //Forma alternativa a lo anterior
-            //$array[$i] = preg_replace("/\s+/","",$array[$i]);
             $register = explode(",",$array[$i]);
             if(count($register)===7){
                 if(validateField($register[0],15,true)){
@@ -46,7 +60,21 @@
                             }
                             if($value){
                                 if(is_numeric($register[$j])){
-                                    $data .= "<td>".$register[$j]."</td>";
+                                    if($j!=1){
+                                        if($register[$j]>999.99){
+                                            $data .= "<td class='text-red cp'  title='Número grande (Máx. 999.99)'>".$register[$j]." {limit}";
+                                            $showBtn = false;
+                                        }else{
+                                            $data .= "<td>".$register[$j]."</td>";
+                                        }
+                                    }else{
+                                        if($register[$j]>9999.99){
+                                            $data .= "<td class='text-red cp'  title='Número grande (Máx. 9999.99)'>".$register[$j]." {limit}";
+                                            $showBtn = false;
+                                        }else{
+                                            $data .= "<td>".$register[$j]."</td>";
+                                        }
+                                    }
                                 }else{
                                     $data .= "<td  class='text-red cp' title='Valor inválido: sólo números'>".$register[$j]." {invalid}";
                                     $showBtn = false;
@@ -70,6 +98,7 @@
         
         
         if($showBtn){
+            echo "<span>No olvide revisar los datos antes de subirlos <br>(el botón de registro está abajo de la tabla)</span>";
             $data .= "<button class='btn-send-lots' id='send'>Registrar Nros. Inspección</button>";
         }else{
             echo "<span class='cp' title='Pasa el ratón sobre los errores para saber de que se trata'>Es necesario corregir los errores (?) para subir los datos</span>";

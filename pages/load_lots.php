@@ -24,8 +24,8 @@
             <!-- File input field -->
             <input type="file" name="file" id="file">
             <span class="i f12">Nota: Sólo se permite .csv</span>
-            <div class="div-center mt10">
-                <input type="submit"id="btn-submit" value="Ver registros">
+            <div id="wait-msg" class="div-center mt10">
+                <input type="submit" id="btn-submit" value="Ver registros">
                 <button class="btn-cancel" id="clean_all">Limpiar</button>
             </div>
         </form>
@@ -33,12 +33,11 @@
     <div class="div-union" id="server_answer"></div>
 
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>
     <!--js-->
     <script src="../js/load_lots.js"></script>
     <script src="../js/menu.js"></script>
     <script src="../js/quitMsg.js"></script>
-    <script src="../js/load_lots.js"></script>
 </body>
 </html>

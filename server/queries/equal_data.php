@@ -1,6 +1,6 @@
 <?php
     function equal_data(){
-        $array = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%H:%i') AS hora_abasto");
+        $array = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%H:%i') AS hora_abasto",null);
         if($array[0]){
             $info = $array[1];
             $data = "<div class='div-union'>";
@@ -42,10 +42,18 @@
             ) 
         );
     }
-    function search_equal_data($campos){
+    /* función search_equal_data: se consultan los datos fijos y retorna dos tipos de array:
+            1) array( true , datos_fijos )
+            2) array( false , mensaje_de_error )
+        Parametros:
+            - campos: datos fijos que se quieren consultar (los campos se especifican cómo si fueran en una consulta)
+            - id: número que identifica a esos datos fijos en la BDD
+              NOTA: si el parametro id es null la función regresa los campos del ultimo elemento de la tabla 'datos_fijos'
+    */
+    function search_equal_data($campos,$id){
         require "connection.php";
-        //La consulta regresa los campos del ultimo elemento de la tabla 'datos_fijos'
-        $query = "SELECT $campos FROM datos_fijos WHERE id=(SELECT MAX(id) FROM datos_fijos)";
+        $query = "SELECT $campos FROM datos_fijos WHERE id=";
+        $query .= (empty($id)) ? "(SELECT MAX(id) FROM datos_fijos)" : $id;
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         if($result){

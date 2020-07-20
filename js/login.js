@@ -1,8 +1,8 @@
 //function: revisa usuario y contraseña del input
+    const whiteExp = /^\s+$/;
+    const alphanumeric = /^[a-zA-Z\d]*$/;
     function login_review(){
         var user = $('#user').val();
-        var whiteExp = /^\s+$/;
-        var alphanumeric = /^[a-zA-Z\d]*$/;
         if(user==="" || user===null || user.length===0 || user.search(whiteExp)!==-1){
             showQuitMsg('server_answer','btn-login',"Usuario: obligatorio");
             return false;
@@ -12,7 +12,7 @@
             return false;
         }
         if(user.search(alphanumeric)===-1){
-            showQuitMsg('server_answer','btn-login',"Usuario: valor inválido (sólo alfanumérico)");
+            showQuitMsg('server_answer','btn-login',"Usuario: valor inválido");
             return false;
         }
         var pass = $('#pass').val();
@@ -24,7 +24,7 @@
             showQuitMsg('server_answer','btn-login',"Contraseña: Min. 6 caracteres y Max. 15");
             return false;
         }
-        if(pass.search(alphanumeric)===-1 || !/[a-zA-Z]/.test(pass) || !/\d/.test(pass)){
+        if(pass.search(alphanumeric)===-1){
             showQuitMsg('server_answer','btn-login',"Contraseña: valor inválido");
             return false;
         }
@@ -42,6 +42,7 @@ $('#login_form').on('submit',function(event){
             data: postData,
             url: '../server/tasks/session_start.php',
             dataType: 'json',
+            beforeSend: function(){ $('#btn-login').attr("disabled",true); },
             success: function(data){
                 if(data.status==="OK" && data.location){
                     window.location = data.location;
@@ -53,7 +54,8 @@ $('#login_form').on('submit',function(event){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se puede iniciar sesión. Consulte al Administrador",'div-red');
-            }
+            },
+            complete: function(){ $('#btn-login').attr("disabled",false); }
         });
     }
 });

@@ -10,7 +10,7 @@ function lote_review(){
     if(!char_limit(lot,15,"Nro. Inspección: Max. 15 caracteres")){ return false; };
     var lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
     if(lot.search(lotExp)){
-        showQuitMsg('server_answer','btn-lot',"Nro. Inspección: valor inválido (solo alfanumérico con máx. 1 guion medio)");
+        showQuitMsg('server_answer','btn-lot',"<pre>Nro. Inspección: valor inválido \n(solo alfanumérico con máx. 1 guion medio)</pre>");
         return false;
     }
 
@@ -18,6 +18,10 @@ function lote_review(){
     if(!white_review(wgt,"Wgt: obligatorio")){ return false; };
     if(!char_limit(wgt,7,"Wgt: Max. 7 caracteres")){ return false; };
     if(!numeric_review(wgt,'Wgt',9999.99)){ return false; };
+    if(parseFloat(wgt)===0){ 
+        showQuitMsg('server_answer','btn-lot',"Wgt: obligatorio");
+        return false;
+    }
 
     var yp = document.getElementById('yp').value;
     if(!white_review(yp,"YP: obligatorio")){ return false; };
@@ -48,8 +52,8 @@ function lote_review(){
 }
 //***
 //function: revisar que los datos sean números
+const expDecimal = /^(\d+|\d*\.\d+)$/;
 function numeric_review(variable,name,limit){
-    var expDecimal = /^(\d+|\d*.\d+)$/
     if(variable.search(expDecimal)){
         showQuitMsg('server_answer','btn-lot',name+": valor inválido (sólo números)");
         return false;
@@ -97,6 +101,10 @@ $('#form_properties').on('submit',function(e){
             url: '../server/tasks/set_lot.php',
             data: postData,
             dataType: 'json',
+            beforeSend: function(){ 
+                $('#btn-lot').attr("disabled",true);
+                $('#clean_all').attr("disabled",true);
+            },
             success: function(data){
                 if(data.status==="OK" && data.message){
                     quitMsgEvent('server_answer',data.message,'div-green');
@@ -108,6 +116,10 @@ $('#form_properties').on('submit',function(e){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se puede registrar el No. Inspección. Consulte al Administrador",'div-red');
+            },
+            complete: function(){ 
+                $('#btn-lot').attr("disabled",false);
+                $('#clean_all').attr("disabled",false);
             }
         });
     }
