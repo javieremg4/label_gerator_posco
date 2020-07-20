@@ -59,6 +59,10 @@ $('#form_delete_lot').on("submit",function(e){
         data: 'no-lote='+nlot_g,
         url: '../server/tasks/remove_lot.php',
         dataType: 'json',
+        beforeSend: function(){
+            $('#btn-submit').attr("disabled",true);
+            $('#btn-cancel').attr("disabled",true);
+        },
         success: function(data){
             if(data.status==="OK" && data.message){
                 quitMsgEvent('server_answer',data.message,'div-green');
@@ -71,6 +75,10 @@ $('#form_delete_lot').on("submit",function(e){
         },
         error: function(){
             quitMsgEvent('server_answer',"No se pudieron eliminar los datos. Consulte al Administrador",'div-red');
+        },
+        complete: function(){
+            $('#btn-submit').attr("disabled",false);
+            $('#btn-cancel').attr("disabled",false);
         }
     })
 });

@@ -12,6 +12,7 @@
                 mysqli_close($connection); 
                 return jsonERR("Ese Nombre de Usuario no esta Disponible");
             }
+            $pass = sha1($pass);
             $query = "INSERT INTO usuarios (user_name,user_pass,user_role) VALUES ('$name','$pass','$type')";
             $result = mysqli_query($connection,$query);
             if($result){

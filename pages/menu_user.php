@@ -37,15 +37,15 @@
                 <input type="date" id="date-consult">
             </div>
             <div class="div-center">
-                <input type="submit" value="Consultar">
+                <input id="btn-show" type="submit" value="Consultar">
             </div>
         </form>
     </div>
     <div class="div-center f14" id="label-panel"></div>
     
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>
     <!--js-->
     <script src="../js/menu.js"></script>
     <script src="../js/show_labels.js"></script>

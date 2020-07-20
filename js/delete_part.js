@@ -61,6 +61,10 @@ $('#form_delete_part').on('submit',function(e){
         data: 'no-parte='+npart_g,
         url: '../server/tasks/remove_part.php',
         dataType: 'json',
+        beforeSend: function(){
+            $('#btn-submit').attr("disabled",true);
+            $('#btn-cancel').attr("disabled",true);
+        },
         success: function(data){
             if(data.status==="OK" && data.message){
                 quitMsgEvent('server_answer',data.message,'div-green');
@@ -73,6 +77,10 @@ $('#form_delete_part').on('submit',function(e){
         },
         error: function(){
             quitMsgEvent('server_answer',"No se pudo eliminar la Parte. Consulte al Administrador",'div-red');
+        },
+        complete: function(){
+            $('#btn-submit').attr("disabled",false);
+            $('#btn-cancel').attr("disabled",false);
         }
     })
 });

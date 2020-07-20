@@ -11,6 +11,14 @@ window.onload = function(){
 //***
 //function: validar el tipo y las contraseñas
 function validate_type(){
+    if(!/[a-zA-Z]/.test($('#pass').val())){
+        showQuitMsg('server_answer','btn-login',"Contraseña: debe incluir una letra");
+        return false;
+    }
+    if(!/\d/.test($('#pass').val())){
+        showQuitMsg('server_answer','btn-login',"Contraseña: debe incluir un número");
+        return false;
+    }
     if($('#confirm').val() !== $('#pass').val()){
         showQuitMsg('server_answer','btn-login',"Las contraseñas no coinciden");
         return false;
@@ -49,6 +57,10 @@ $('#new_user_form').on('submit',function(event){
         data: postData,
         url: '../server/tasks/set_user.php',
         dataType: 'json',
+        beforeSend: function(){
+            $('#btn-login').attr("disabled",true);
+            $('#clean_all').attr("disabled",true);
+        },
         success: function(data){
             if(data.status==="OK" && data.message){
                 quitMsgEvent('server_answer',data.message,'div-green');
@@ -60,6 +72,10 @@ $('#new_user_form').on('submit',function(event){
         },
         error: function(){
             quitMsgEvent('server_answer',"No se puede registrar el Usuario",'div-red');
+        },
+        complete: function(){
+            $('#btn-login').attr("disabled",false);
+            $('#clean_all').attr("disabled",false);
         }
     })
 });

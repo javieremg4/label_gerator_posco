@@ -55,19 +55,25 @@ $('#form_lot').on('submit',function(event){
     cleanMsg('server_answer');
     var postData = lote_review();
     if(postData !== false){
+        var msg = "¿Desea cambiar los datos de la inspección No. "+nlot_g+"?\n"
+            +"Si hay etiquetas registradas, se modificarán";
         var no_lote = document.getElementById('lot').value.toUpperCase();
         if(nlot_g!==no_lote){
             var msg = "¿Desea cambiar el No. Inspección: "+nlot_g+" por "+no_lote+"?\n"
                         +"Las etiquetas generadas con el No. Inspección anterior se podrían modificar";
-            msg = confirm(msg);
-            if(!msg){ return false; }
         }
+        msg = confirm(msg);
+        if(!msg){ return false; }
         postData += "&no-lote="+nlot_g;
         $.ajax({
             type: 'post',
             url: '../server/tasks/change_lot.php',
             data: postData,
             dataType: 'json',
+            beforeSend: function(){ 
+                $('#btn-lot').attr("disabled",true);
+                $('#btn-cancel').attr("disabled",true);
+            },
             success: function(data){
                 if(data.status==="OK" && data.message){
                     quitMsgEvent('server_answer',data.message,'div-green');
@@ -80,6 +86,10 @@ $('#form_lot').on('submit',function(event){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se pudieron actualizar los datos. Consulte al Administrador",'div-red');
+            },
+            complete: function(){ 
+                $('#btn-lot').attr("disabled",false);
+                $('#btn-cancel').attr("disabled",false);
             }
         });
     }

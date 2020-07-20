@@ -4,6 +4,7 @@
     }
     function consult_user($user,$pass){
         require "connection.php";
+        $pass = sha1($pass);
         $query = "SELECT user_name,user_role FROM usuarios WHERE BINARY user_name='$user' AND BINARY user_pass='$pass'";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);

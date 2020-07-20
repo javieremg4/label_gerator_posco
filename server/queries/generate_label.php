@@ -1,11 +1,11 @@
 <?php
     //insert es una bandera que indica si la etiqueta se va a insertar en la BDD o no
-    function generate_label($insert,$serial,$noparte,$cantidad,$fecha,$ran,$nolote,$inspec){
+    function generate_label($insert,$serial,$parte,$cantidad,$fecha,$ran,$nolote,$inspec){
         require "data_part.php";
-        $part_data = search_part($noparte,'id_parte,no_parte,esp,kgpc',true);
+        $part_data = ($insert) ? search_part(null,$parte,'id_parte,no_parte,esp,kgpc',false) : search_part($parte,null,'id_parte,no_parte,esp,kgpc',true);
         if($part_data[0]){
             require "data_lot.php";
-            $lot_data = search_lot($inspec,'*',true);
+            $lot_data = ($insert) ? search_lot(null,$inspec,'*',false) : search_lot($inspec,null,'*',true);
             if($lot_data[0]){
                 require "equal_data.php";
                 $equal_data = search_equal_data("id,fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");

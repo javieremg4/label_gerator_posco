@@ -63,10 +63,11 @@ function equal_data_review(){
     }
     //Validación input origen
     var origen = document.getElementById('origen').value.toUpperCase();
+    if(!white_review(origen,"Origen: obligatorio")){ return false; };
     if(!char_limit(origen,8,"Origen: Max. 8 caracteres")){ return false; }
     var alphanumeric = /^([A-Z\d]|[A-Z\d]\-)*[A-Z\d]$/;
     if(origen.search(alphanumeric)){
-        showQuitMsg('server_answer','btn-equal',"Origen: valor inválido (solo alfanumerico)");
+        showQuitMsg('server_answer','btn-equal',"Origen: valor inválido (solo alfanumérico)");
         return false;
     }
 
@@ -110,6 +111,7 @@ $('#form_data').on('submit',function(event){
             data: postData,
             url: '../server/tasks/change_equal_data.php',
             dataType: 'json',
+            beforeSend: function(){ $('#btn-equal').attr("disabled",true); },
             success: function(data){
                 if(data.status==="OK" && data.message){
                     quitMsgEvent('server_answer',data.message,'div-green');
@@ -121,7 +123,8 @@ $('#form_data').on('submit',function(event){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se pueden actualizar los Datos",'div-red');
-            }
+            },
+            complete: function(){ $('#btn-equal').attr("disabled",false); }
         });
     }
 });

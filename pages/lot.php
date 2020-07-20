@@ -23,7 +23,7 @@
         <form id="form_properties">
             <div class="div-union">
                 <div class="div-part">
-                    No. Inspección<input type="text" id="lot" maxlength='15'>
+                    No. Inspección<input type="text" id="lot" minlength='4' maxlength='15'>
                 </div>
                 <div class="div-part">
                     Wgt.<input type="text" id="wgt" maxlength='7'>
@@ -52,8 +52,8 @@
     </div>
 
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>
     <!--js-->
     <script src="../js/lot.js"></script>
     <script src="../js/menu.js"></script>

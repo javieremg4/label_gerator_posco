@@ -14,6 +14,9 @@
         if(is_array($continue)) $error .= $continue[1];
         $code .= $ran;
 
+        $continue = review_numeric($quantity,"Cantidad de Plantillas");
+        if(is_array($continue)) $error .= $continue[1];
+        if($quantity==0) $error .= "Error: el dato Cantidad de Plantillas es igual a 0 <br>";
         $quantity = str_pad($quantity,4,'0',STR_PAD_LEFT);
         $continue = review_length($quantity,4,'Cantidad de Plantillas');
         if(is_array($continue)) $error .= $continue[1];
@@ -25,8 +28,6 @@
         if(is_array($continue)) $error .= $continue[1];
         $code .= $lot_date;
 
-        //Aquí se revisa que el lote tenga exactamente 13 caracteres
-        $lote = str_pad($lote,13,' ');
         $continue = review_length($lote,13,'Lote');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $lote;
@@ -37,9 +38,8 @@
         $code .= $origin;
 
         $continue = review_numeric($part_data['kgpc'],'Kg./Pc de la Parte');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        } 
+        if(is_array($continue)) $error .= $continue[1];
+        if($part_data['kgpc']==0) $error .= "Error: el dato Kg./Pc de la Parte es igual a 0 <br>";
         $bale_wgt = str_pad(totWgt($quantity,$part_data['kgpc']),7,'0',STR_PAD_LEFT);
         $continue = review_length($bale_wgt,7,'Peso de la Paca de Plantillas');
         if(is_array($continue)) $error .= $continue[1];
@@ -62,62 +62,49 @@
         $code .= $roll_date;
               
         $continue = review_numeric($lot_data['peso_rollo'],'Peso total del Rollo');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        } 
+        if(is_array($continue)) $error .= $continue[1];
+        if($lot_data['peso_rollo']==0) $error .= "Error: El dato Peso total del Rollo es igual a 0";
         $roll_wgt = str_pad(truncateValue($lot_data['peso_rollo'],2),7,'0',STR_PAD_LEFT);
         $continue = review_length($roll_wgt,7,'Peso total del Rollo');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $roll_wgt;
 
         $continue = review_numeric($lot_data['yp'],'YP del Lote');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        } 
+        if(is_array($continue)) $error .= $continue[1];
         $yp = str_pad(truncateValue($lot_data['yp'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($yp,6,'YP');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $yp;
 
         $continue = review_numeric($lot_data['ts'],'TS del Lote');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        } 
+        if(is_array($continue)) $error .= $continue[1];
         $ts = str_pad(truncateValue($lot_data['ts'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($ts,6,'TS');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $ts;
 
         $continue = review_numeric($lot_data['el'],'EL del Lote');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        }
+        if(is_array($continue)) $error .= $continue[1];
         $el = str_pad(truncateValue($lot_data['el'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($el,6,'EL');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $el;
 
         $continue = review_numeric($lot_data['tc'],'TOP del Lote');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        }
+        if(is_array($continue)) $error .= $continue[1];
         $tc = str_pad(truncateValue($lot_data['tc'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($tc,6,'TOP');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $tc;
 
         $continue = review_numeric($lot_data['bc'],'BOTTOM del Lote');
-        if(is_array($continue)){
-            $error .= $continue[1];
-        }
+        if(is_array($continue)) $error .= $continue[1];
         $bc = str_pad(truncateValue($lot_data['bc'],2),6,0,STR_PAD_LEFT);
         $continue = review_length($bc,6,'BOTTOM');
         if(is_array($continue)) $error .= $continue[1];
         $code .= $bc;
 
-        if(!empty($error)){
-            return array(false,$error);
-        }
+        if(!empty($error)) return array(false,$error);
         
         $qr_code = generate_qr_code($code);
 

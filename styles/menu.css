@@ -10,7 +10,7 @@
     height: 45px;
     margin-bottom: 20px;
     position: relative;
-    z-index: 997;
+    z-index: 999;
 }
 .nav > li {
     flex: 1;

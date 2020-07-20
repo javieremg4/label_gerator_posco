@@ -9,6 +9,7 @@ form{
 .div-part{
     width: 20%;
 }
+input{ height: auto; }
 @media (max-width: 1280px){
     .div-part{ width: 25%; }
 }

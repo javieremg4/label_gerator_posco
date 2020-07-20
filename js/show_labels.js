@@ -3,10 +3,9 @@ window.onload = function(){
     $.ajax({
         type: 'POST',
         url: '../server/tasks/view_labels.php',
-        data: 'n=10',
+        data: "n=10",
         dataType: 'json',
         success: function(data){
-            console.log(data);
             if((data.status==="OK" && data.content)){
                 $('#label-panel').html(data.content);
             }else if(data.status==="ERR" && data.message){
@@ -15,9 +14,11 @@ window.onload = function(){
                 window.location = "../pages/index.php";
             }
         },
-        error: function(data){
-            console.log(data);
+        error: function(){
             $('#label-panel').html("Seleccione una fecha");
+        },
+        complete: function(){
+            $('#date-consult').val("");
         }
     });
 }
@@ -42,8 +43,8 @@ $('#form_show_labels').on("submit",function(e){
         data: "date="+$('#date-consult').val(),
         url: "../server/tasks/view_labels.php",
         dataType: "json",
+        beforeSend: function(){ $('#btn-show').attr("disabled",true); },
         success: function(data){
-            console.log(data);
             if((data.status==="OK" && data.content)){
                 $('#label-panel').html(data.content);
             }else if(data.status==="ERR" && data.message){
@@ -52,9 +53,11 @@ $('#form_show_labels').on("submit",function(e){
                 window.location = "../pages/index.php";
             }
         },
-        error: function(data){
-            console.log(data);
+        error: function(){
             $('#label-panel').html("No se pudieron consultar las etiquetas consulte al Administrador");
+        },
+        complete: function(){
+            $('#btn-show').attr("disabled",false);
         }
     });
 });

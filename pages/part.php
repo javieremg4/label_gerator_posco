@@ -24,7 +24,7 @@
             <div class="div-union">
                 <div class="div-part">
                     No. Parte
-                    <input type="text" id="no-parte" maxlength="13">
+                    <input type="text" id="no-parte" minlength='2' maxlength="13">
                 </div>
                 <div class="div-part">
                     Descripción
@@ -51,8 +51,8 @@
     </div>
 
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>
     <!--js-->
     <script src="../js/part.js"></script>
     <script src="../js/menu.js"></script>

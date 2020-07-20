@@ -36,8 +36,9 @@ function clean_lists(){
 //***
 //function: limpiar los input de lote e inspección incluyendo el botón de cambios
 function cleanInputs(){
+    $('#inspec').val("");
+    $('#datos-lote').html("");
     $('#no-lote').val("");
-    $('#no-inspec').val("");
     if($('#change-lot').length){
         document.getElementById("div-lot").removeChild(document.getElementById("change-lot"));
     }
@@ -46,11 +47,15 @@ function cleanInputs(){
 $('#lot-input').on('keyup',function(event){
     var code = event.which || event.keyCode;
     if(code===13){
-        cleanInputs();
         getLot();
         consult_part_lote('inspec');
+    }else{
+        if($('#no-lote').val()!=='' || $('#inspec').val()!==''){
+            cleanInputs();
+        }
     }
 });
+
 // function: calcular los números de lote e inpección según los casos
 const lotExp = /^\d[A-Z\d][A-Z\d]+\-{0,1}[A-Z\d]+$/;
 const hyphen = /\-/;
@@ -65,7 +70,7 @@ const case7 = /^9A[A-Z\d]+$/;
 const case8 = /^85C[A-Z\d]+$/;
 function getLot(){
 
-    var lot_input = document.getElementById('lot-input').value;
+    var lot_input = document.getElementById('lot-input').value.toUpperCase();
     var nlot = "";
     var nlot_aux = "";
     var ninspec = "";
@@ -74,7 +79,7 @@ function getLot(){
         if(hyphen.test(lot_input)){
             /* Caso 1: Inicia con 9A y tiene guión */
             if(case1.test(lot_input)){
-                console.log("Caso 1");      
+                //console.log("Caso 1");      
                 nlot = lot_input.replace('9A','')
                 nlot = nlot.replace('-','');
                 if(nlot.length!== 13){
@@ -85,12 +90,12 @@ function getLot(){
                 ninspec = lot_input.replace(beforeHyphen,'');
             }else if(case6.test(lot_input)){
             /* Caso 6: Inicia con 98, tiene dos letras entre (A,B,C,D) y R antes del guión */
-                console.log("Caso 6");
+                //console.log("Caso 6");
                 nlot = lot_input.replace('-','');
                 ninspec = lot_input.replace(beforeHyphen,'');
             }else if(case2.test(lot_input)){
             /* Caso 2: Inicia con 98 y tiene guión */
-                console.log("Caso 2");
+                //console.log("Caso 2");
                 nlot = lot_input;
                 if(nlot.length!==13){
                     nlot_aux = lot_input.replace('-','');
@@ -99,7 +104,7 @@ function getLot(){
                 ninspec = lot_input.replace(beforeHyphen,'');
             }else if(case3.test(lot_input)){
             /* Caso 3: Inica con cualquier número (diferente a 98 y 9A) y tiene guión */
-                console.log("Caso 3");
+                //console.log("Caso 3");
                 let addZeros = 13-lot_input.length;
                 let zeros = "";
                 if(addZeros>0){
@@ -115,11 +120,11 @@ function getLot(){
         }else{
             if(case7.test(lot_input)){
             /* Caso 7: Inicia con 9A y no tiene guión */
-                console.log("Caso 7");
+                //console.log("Caso 7");
                 nlot = ninspec = lot_input;
             }else if(case4.test(lot_input)){
             /* Caso 4: Inicia con 98, termina con R y no tiene guión */
-                console.log("Caso 4");
+                //console.log("Caso 4");
                 let addZeros = 13-lot_input.length;
                 let zeros = "";
                 if(addZeros>0){
@@ -133,11 +138,20 @@ function getLot(){
                 ninspec = lot_input.substring(0,lot_input.length-1);
             }else if(case8.test(lot_input)){
             /* Caso 8: Inicia con 85C */
-                console.log("Caso 8");
-                nlot = lot_input;
+                //console.log("Caso 8");
+                let addZeros = 13-lot_input.length;
+                let zeros = "";
+                if(addZeros>0){
+                    for (let index = 0; index < addZeros; index++) {
+                        zeros += "0";
+                    }
+                    nlot = lot_input+zeros;
+                }else{
+                    nlot = lot_input;
+                }
             }else if(case5.test(lot_input)){
             /* Caso 5: Inicia con cualquier número (diferente a 98 y 9A) y no tiene guión */
-                console.log("Caso 5");
+                //console.log("Caso 5");
                 let addZeros = 13-lot_input.length;
                 let zeros = "";
                 if(addZeros>0){
@@ -150,25 +164,19 @@ function getLot(){
                 }
                 ninspec = lot_input;
             }else{
-                console.log("Caso no identificado");
+                //console.log("Caso no identificado");
             }
         }
-        /*if(case8.test(lot_input)){
-            /* Caso 8: Inicia con 85C 
-                console.log("Caso 8");
-                ninspec = lot_input;
-            }
-        */
         if($('#no-lote').length){
             $('#no-lote').val(nlot);
         }
         if($('#inspec').length){
             $('#inspec').val(ninspec);
         }
-        console.log("Lote: "+nlot);         
-        console.log("Inspección: "+ninspec);
+        //console.log("Lote: "+nlot);         
+        //console.log("Inspección: "+ninspec);
     }else{
-        console.log("Sin formato de lote \n Value="+lot_input);
+        //console.log("Sin formato de lote \n Value="+lot_input);
     }
 }
 //***
@@ -186,13 +194,17 @@ function label_review(){
     }
     var alphanumeric = /^([A-Z\d]|[A-Z\d]\-)*[A-Z\d]$/;
     if(noparte.search(alphanumeric)){
-        showQuitMsg('validation-msg','btn-label',"No. parte: valor inválido (solo alfanumerico)");
+        showQuitMsg('validation-msg','btn-label',"No. parte: valor inválido (solo alfanumérico)");
         return false;
     }
 
     var cantidad = document.getElementById('cantidad').value;
-    if(cantidad<1){
-        showQuitMsg('validation-msg','btn-label',"Cantidad: valor inválido");
+    if(!/^\d+$/.test(cantidad)){
+        showQuitMsg('validation-msg','btn-part',"Cantidad: valor inválido (sólo números)");
+        return false;
+    }
+    if(parseFloat(cantidad)===0){
+        showQuitMsg('validation-msg','btn-part',"Cantidad: obligatorio");
         return false;
     }
     if(cantidad.length>4){
@@ -224,7 +236,7 @@ function label_review(){
         return false;
     }
     if(noran.search(alphanumeric)){
-        showQuitMsg('validation-msg','btn-label',"<pre>No. Ran: valor inválido \n(solo alfanumerico)</pre>");
+        showQuitMsg('validation-msg','btn-label',"<pre>No. Ran: valor inválido \n(solo alfanumérico)</pre>");
         return false;
     }
 
@@ -303,8 +315,8 @@ $('#form_label').on('submit',function(event){
             url: '../server/tasks/set_label.php',
             data: postData,
             dataType: 'json',
+            beforeSend: function(){ $('#btn-label').attr('disabled',true); },
             success: function(data){
-                console.log(data);
                 if(data.status==="OK" && data.message && data.content){
                     quitMsgEvent('validation-msg',data.message,'div-green');
                     $('#server_answer').html(data.content);
@@ -315,9 +327,11 @@ $('#form_label').on('submit',function(event){
                     window.location="../pages/index.php";
                 }
             },
-            error: function(data){
-                console.log(data);
+            error: function(){
                 quitMsgEvent('validation-msg',"No se pudo generar la etiqueta. Consulte al Administrador",'div-red');
+            },
+            complete: function(){
+                $('#btn-label').attr('disabled',false);
             }
         });
     }
@@ -419,7 +433,7 @@ function generate_bar_codes(){
         text = 'Q'+msg;
         JsBarcode('#quantity',text,{
             format: "CODE128",// El formato
-            width: 2, // La anchura de cada barra
+            width: 1.5, // La anchura de cada barra
             height: 30, // La altura del código
             displayValue: true, // ¿Mostrar el valor (como texto) del código de barras?
             text: msg, // Texto (no código) que acompaña al barcode
@@ -437,7 +451,7 @@ function generate_bar_codes(){
         text = '15K'+$('#ran').attr('alt');
         JsBarcode('#ran',text,{
             format: "CODE128",
-            width: 2,
+            width: 1.5,
             height: 30,
             displayValue: false,
             margin: 2
@@ -450,7 +464,7 @@ function generate_bar_codes(){
         text = 'V'+msg;
         JsBarcode('#origin',text,{
             format: "CODE128",
-            width: 2,
+            width: 1.5,
             height: 30,
             displayValue: true,
             text: msg,
@@ -469,7 +483,7 @@ function generate_bar_codes(){
         text = '4S'+msg;
         JsBarcode('#serial',text,{
             format: "CODE128",
-            width: 2,
+            width: 1.5,
             height: 30,
             displayValue: true,
             text: msg,

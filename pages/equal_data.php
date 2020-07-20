@@ -25,8 +25,8 @@
     </div>
 
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/jquery-3.4.1.js"%3E%3C/script%3E'))</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>
     <!--js-->
     <script src="../js/equal_data.js"></script>
     <script src="../js/menu.js"></script>

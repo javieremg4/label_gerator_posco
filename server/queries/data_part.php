@@ -1,6 +1,6 @@
 <?php
     function data_part($no_parte,$btn){
-        $array = search_part($no_parte,"no_parte,`desc`,kgpc,esp,snppz",false);
+        $array = search_part(null,$no_parte,"no_parte,`desc`,kgpc,esp,snppz",false);
         if($array[0]){
             $info = $array[1];
             $data = "<div class='ovx'>";
@@ -41,12 +41,12 @@
         );
     }
     function update_part($no_parte){
-        $array = search_part($no_parte,"id_parte,no_parte,`desc`,kgpc,snppz,esp",false);
+        $array = search_part(null,$no_parte,"id_parte,no_parte,`desc`,kgpc,snppz,esp",false);
         if($array[0]){
             $info = $array[1];
             $data = "<div class='div-part'>
                         No. Parte 
-                        <input type='text' id='no-parte' value='".$info['no_parte']."'  maxlength='13'>
+                        <input type='text' id='no-parte' value='".$info['no_parte']."' minlength='2' maxlength='13'>
                     </div>";
             $data .= "<div class='div-part'>
                         Descripción
@@ -92,12 +92,15 @@
             "message" => $array[1]
         );
     }
-    function search_part($no_parte,$campos,$inactivos){
+    function search_part($id_parte,$no_parte,$campos,$inactivos){
+        if(empty($id_parte) && empty($no_parte)) return array(false,"No se pudieron consultar los datos de la Parte. Consulte al Administrador");
         require "connection.php";
-        $query = "SELECT $campos FROM parte WHERE no_parte='$no_parte'";
-        if(!$inactivos){ $query .= " AND activo>0"; } 
+        $query = "SELECT $campos FROM parte WHERE ";
+        $query .= (empty($id_parte)) ? "no_parte='$no_parte'" : "id_parte='$id_parte'";
+        if(!$inactivos) $query .= " AND activo>0"; 
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
+        //echo "this=>".$query;
         if($result){
             if(mysqli_num_rows($result)===1){
                 return array(true,mysqli_fetch_array($result));

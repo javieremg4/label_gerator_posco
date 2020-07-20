@@ -4,6 +4,7 @@ form{
 }
 .div-union{
     justify-content: center;
+    margin-bottom: 10px;
 }
 .div-msg{
     width: auto;
@@ -29,7 +30,6 @@ input[type='file']{
 .i{
     font-weight: normal;
     font-style: italic;
-    text-align: center;
     width: 100%;
 }
 .result-report{
@@ -44,6 +44,7 @@ input[type='file']{
     cursor: pointer;
     text-decoration: underline;
 }
+span{ text-align: center; }
 .f12{ font-size: 12px; }
 @media (max-width: 900px){
     form{ width: 60%; }
@@ -54,10 +55,6 @@ input[type='file']{
         margin: 10px 1%;
         width: 98%;
     }
-    /*.div-msg{ 
-        margin: 0 25%;
-        width: 50%;
-    }*/
 }
 @media (max-width: 512px){
     form{ width: 98%; }

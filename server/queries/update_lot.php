@@ -5,7 +5,7 @@
     function update_lot($lot,$wgt,$yp,$ts,$el,$tc,$bc,$no_lote){
         require "../queries/data_lot.php";
         require "../tasks/jsonType.php";
-        $result = search_lot($no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc',false);
+        $result = search_lot(null,$no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc',false);
         if($result[0]){
             $result = $result[1];
             if($lot===$result['no_lote'] && $wgt===$result['peso_rollo'] && $yp===$result['yp'] && $ts===$result['ts'] && $el===$result['el'] && $tc===$result['tc'] && $bc===$result['bc']){

@@ -58,7 +58,7 @@ $('#form_features_part').on('submit',function(event){
     var postData = part_review();
     if(postData !== false){
         var msg = "¿Desea cambiar los datos de la parte No. "+npart_g+"?\n"
-                  +"Las etiquetas generadas se modificarán";
+                  +"Si hay etiquetas registradas, se modificarán";
         var no_parte = document.getElementById('no-parte').value.toUpperCase();
         if(npart_g!==no_parte){
             msg = "¿Desea cambiar el No. Parte: "+npart_g+" por "+no_parte+"?\n"
@@ -72,6 +72,10 @@ $('#form_features_part').on('submit',function(event){
             url: '../server/tasks/change_part.php',
             data: postData,
             dataType: 'json',
+            beforeSend: function(){ 
+                $('#btn-part').attr("disabled",true);
+                $('#btn-cancel').attr("disabled",true);
+            },
             success: function(data){
                 if(data.status==="OK" && data.message){
                     quitMsgEvent('server_answer',data.message,'div-green');
@@ -84,6 +88,10 @@ $('#form_features_part').on('submit',function(event){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se pudo actualizar la Parte. Consulte al Administrador",'div-red');
+            },
+            complete: function(){ 
+                $('#btn-part').attr("disabled",false);
+                $('#btn-cancel').attr("disabled",false);
             }
         });
     }

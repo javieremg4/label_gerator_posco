@@ -1,6 +1,6 @@
 <?php
     function data_lot($no_lote,$btn){
-        $array = search_lot($no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc',false);
+        $array = search_lot(null,$no_lote,'no_lote,peso_rollo,yp,ts,el,tc,bc',false);
         if($array[0]){
             $info = $array[1];
             $data = "<div class='ovx'>";
@@ -17,7 +17,7 @@
             $data .= "</div>";
             if(isset($btn)){
                 $data .= "<div class='div-center mt10'>
-                        <input type='submit' id='btn-lot' value='Eliminar'>
+                        <input type='submit' id='btn-submit' value='Eliminar'>
                         <button class='btn-cancel' id='btn-cancel'>Cancelar</button>
                     </div>";
             }
@@ -43,12 +43,12 @@
         );
     }
     function  view_data_lote($no_lote){
-        $array = search_lot($no_lote,'id_lote,no_lote,peso_rollo,yp,ts,el,tc,bc',false);
+        $array = search_lot(null,$no_lote,'id_lote,no_lote,peso_rollo,yp,ts,el,tc,bc',false);
         if($array[0]){
             $info = $array[1];
             $data = "<div class='div-part'>
                         No. Inspección
-                        <input type='text' id='lot' value='".$info['no_lote']."' maxlength='15'>
+                        <input type='text' id='lot' value='".$info['no_lote']."' minlength='4' maxlength='15'>
                     </div>";
             $data .= "<div class='div-part'>
                         Wgt.
@@ -102,10 +102,15 @@
             "message" => $array[1]
         );
     }
-    function search_lot($no_lote,$campos,$inactivos){
+    function lotFormat($lot){
+
+    }
+    function search_lot($id_lote,$no_lote,$campos,$inactivos){
+        if(empty($id_lote) && empty($no_lote)) return array(false,"No se pudieron consultar los datos del No. Inspección. Consulte al Administrador");
         require "connection.php";
-        $query = "SELECT $campos FROM lote WHERE no_lote='$no_lote'";
-        if(!$inactivos){ $query .= " AND activo>0"; } 
+        $query = "SELECT $campos FROM lote WHERE ";
+        $query .= (empty($id_lote)) ? "no_lote='$no_lote'" : "id_lote='$id_lote'";
+        if(!$inactivos) $query .= " AND activo>0"; 
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         if($result){

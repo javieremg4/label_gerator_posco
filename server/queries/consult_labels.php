@@ -12,7 +12,7 @@
         mysqli_close($connection);
         if($result){
             if(mysqli_num_rows($result)>0){
-                $data .= "<table class='table-style'>
+                $data = "<table class='table-style'>
                         <tr><th>Serial<th>No. Parte<th>No. Inspección<th>Ran<th>Lote<th>Cantidad<th>Fecha<th>Origen<th>Acciones";
                 while($info = mysqli_fetch_array($result)){
                     $data .= "<tr><td>".$info['serial']."<td>".$info['no_parte']."<td>".$info['no_lote']."<td>".$info['ran']."<td>".$info['lote']."<td>".$info['cantidad']."<td>".$info['fecha_consumo']."<td>".$info['origen'];           
@@ -79,7 +79,7 @@
                 exit(jsonERR("No se pudo consultar la Etiqueta. Inténtelo de nuevo"));   
             }
             require "generate_label.php";
-            $result = json_decode(generate_label(false,$serial,$part_data['no_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lot_data['no_lote']),true); 
+            $result = json_decode(generate_label(false,$serial,$lbl_data['id_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lbl_data['id_inspec']),true); 
             if($result['status']==="OK"){
                 exit (jsonOKContent(
                     "<div class='div-center'>
@@ -90,6 +90,8 @@
                     </div>".
                     $result['content']
                 )); 
+            }else{
+                exit (jsonERR("No se pudo consultar la etiqueta debido a: <br>".$result['message']));
             }            
         }
         mysqli_close($connection);
