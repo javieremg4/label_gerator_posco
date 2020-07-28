@@ -30,7 +30,7 @@
     function consult_label($serial){
         require "connection.php";
         require "../tasks/jsonType.php";
-        $query = "select l.id_parte,l.id_inspec,l.ran,l.lote,l.cantidad,l.fecha_consumo,df.fecha_lote,df.fecha_rollo,df.bloque,df.hora_abasto,df.origen from etiqueta l,datos_fijos df where l.serial=".$serial." and l.id_fijos=df.id";
+        $query = "select l.id_parte,l.id_inspec,l.ran,l.lote,l.cantidad,l.fecha_consumo,l.id_fijos,df.fecha_lote,df.fecha_rollo,df.bloque,df.hora_abasto,df.origen from etiqueta l,datos_fijos df where l.serial=".$serial." and l.id_fijos=df.id";
         $lbl_data = mysqli_query($connection,$query);
         if($lbl_data = mysqli_fetch_array($lbl_data)){
             $div3 = "<div class='div-part half'>".
@@ -79,7 +79,7 @@
                 exit(jsonERR("No se pudo consultar la Etiqueta. Inténtelo de nuevo"));   
             }
             require "generate_label.php";
-            $result = json_decode(generate_label(false,$serial,$lbl_data['id_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lbl_data['id_inspec']),true); 
+            $result = json_decode(generate_label($serial,$lbl_data['id_fijos'],$lbl_data['id_parte'],$lbl_data['cantidad'],$lbl_data['fecha_consumo'],$lbl_data['ran'],$lbl_data['lote'],$lbl_data['id_inspec']),true); 
             if($result['status']==="OK"){
                 exit (jsonOKContent(
                     "<div class='div-center'>

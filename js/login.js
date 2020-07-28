@@ -42,6 +42,7 @@ $('#login_form').on('submit',function(event){
             data: postData,
             url: '../server/tasks/session_start.php',
             dataType: 'json',
+            beforeSend: function(){ $('#btn-login').attr("disabled",true); },
             success: function(data){
                 if(data.status==="OK" && data.location){
                     window.location = data.location;
@@ -53,7 +54,8 @@ $('#login_form').on('submit',function(event){
             },
             error: function(){
                 quitMsgEvent('server_answer',"No se puede iniciar sesión. Consulte al Administrador",'div-red');
-            }
+            },
+            complete: function(){ $('#btn-login').attr("disabled",false); }
         });
     }
 });

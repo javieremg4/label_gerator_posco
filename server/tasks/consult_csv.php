@@ -30,6 +30,10 @@
         if(count($array)===0){
             exit("No se detecto ningún registro. Revise el archivo");
         }
+        
+        if(count($array)>1000){
+            exit("<span>Se detectaron ".count($array)." registros <br> EL MÁXIMO ADMITIDO ES DE  1000 REGISTROS</span>");
+        }
 
         echo "<span class='i'>Se detectaron ".count($array)." registros</span>";
 

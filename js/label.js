@@ -200,11 +200,11 @@ function label_review(){
 
     var cantidad = document.getElementById('cantidad').value;
     if(!/^\d+$/.test(cantidad)){
-        showQuitMsg('validation-msg','btn-part',"Cantidad: valor inválido (sólo números)");
+        showQuitMsg('validation-msg','btn-label',"Cantidad: valor inválido (sólo números)");
         return false;
     }
     if(parseFloat(cantidad)===0){
-        showQuitMsg('validation-msg','btn-part',"Cantidad: obligatorio");
+        showQuitMsg('validation-msg','btn-label',"Cantidad: obligatorio");
         return false;
     }
     if(cantidad.length>4){
@@ -287,6 +287,11 @@ function label_review(){
         return false;
     }
     
+    /* 
+       Se construye la secuencia de datos que se le va a pasar al servidor la sintaxis es:
+       nombre_del_dato = valor 
+       NOTA: Los datos se concatenan con &
+    */
     return "noparte="+noparte+"&cantidad="+cantidad+"&fecha="+fecha+"&noran="+noran+"&nolote="+nolote+"&inspec="+inspec;
 }   
 //***
@@ -301,37 +306,50 @@ $('#form_label').on('keypress',function(event){
 //event: enviar el formulario (registrar y generar la etiqueta)
 $('#form_label').on('submit',function(event){
     event.preventDefault();
+    /*Para limpiar el mensaje que muestra los errores*/
+    /********/
     cleanMsg('validation-msg');
     /*Para quitar la etiqueta con el boton de pdf*/
     $('#server_answer').html("");
     /********/
+    /*Revisar los datos del formulario*/
     var postData = label_review();
-    if(postData !== false){
-        /*var msg= "¿Está seguro que los datos son correctos?";
-        msg = confirm(msg);
-        if(!msg){ return false; }*/
+    /********/
+    if(postData !== false){ // Si no hay ningún error se inicia la llamada Ajax
         $.ajax({
-            type: 'post',
-            url: '../server/tasks/set_label.php',
-            data: postData,
-            dataType: 'json',
-            beforeSend: function(){ $('#btn-label').attr('disabled',true); },
-            success: function(data){
-                if(data.status==="OK" && data.message && data.content){
-                    quitMsgEvent('validation-msg',data.message,'div-green');
-                    $('#server_answer').html(data.content);
-                    pdfBtnEvent();
-                }else if(data.status==="ERR" && data.message){
-                    quitMsgEvent('validation-msg',data.message,'div-red');
+            type: 'post', // tipo de petición
+            url: '../server/tasks/set_label.php', // archivo del back de devolverá la respuesta (consultar el archivo set_label.php)
+            data: postData, // datos que se pasan al servidor
+            dataType: 'json', // tipo de dato que se espera en la respuesta
+            beforeSend: function(){ $('#btn-label').attr('disabled',true); }, // desactiva el botón del formulario después de enviar la llamada
+            success: function(data){ // en caso de éxito, se recibe la respuesta
+                
+                if(data.status==="OK" && data.message && data.content){ // éxito
+
+                    quitMsgEvent('validation-msg',data.message,'div-green'); // mensaje verde (consultar función quitMsgEvent)
+                    $('#server_answer').html(data.content); // se muestra la etiqueta y el botón
+
+                    pdfBtnEvent(); // Consultar función pdfBtnEvent
+
+                }else if(data.status==="ERR" && data.message){ // error
+
+                    quitMsgEvent('validation-msg',data.message,'div-red'); // mensaje rojo (consultar función quitMsgEvent)
+
                 }else{
-                    window.location="../pages/index.php";
+
+                    window.location="../pages/index.php"; // redirección a inicio
+
                 }
             },
-            error: function(){
+            error: function(){ // en caso de error en la llamada
+                // mensaje rojo (consultar función quitMsgEvent)
                 quitMsgEvent('validation-msg',"No se pudo generar la etiqueta. Consulte al Administrador",'div-red');
+            
             },
-            complete: function(){
-                $('#btn-label').attr('disabled',false);
+            complete: function(){ // sin importar si falla o no llamada
+
+                $('#btn-label').attr('disabled',false); // el botón del formulario se activa
+
             }
         });
     }
@@ -420,8 +438,8 @@ function generate_bar_codes(){
         var text = 'P'+$('#part').attr('alt');
         JsBarcode('#part',text,{
             format: "CODE128",
-            width: 2,
-            height: 30,
+            width: 2.5,
+            height: 35,
             displayValue: false,
             margin: 2
         });
@@ -451,8 +469,8 @@ function generate_bar_codes(){
         text = '15K'+$('#ran').attr('alt');
         JsBarcode('#ran',text,{
             format: "CODE128",
-            width: 1.5,
-            height: 30,
+            width: 1.8,
+            height: 35,
             displayValue: false,
             margin: 2
         });

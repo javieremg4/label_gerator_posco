@@ -27,15 +27,15 @@ window.onload = function(){
 $('#form_show_labels').on("submit",function(e){
     e.preventDefault();
     if($('#date-consult').val()===null || $('#date-consult').val()===""){
-        showQuitMsg('val-msg',null,"Fecha: obligatorio");
+        showQuitMsg('val-msg','btn-show',"Fecha: obligatorio");
         return false;
     }
     if(!dateFormat($('#date-consult').val())){
-        showQuitMsg('val-msg',null,"Fecha: formato inválido");
+        showQuitMsg('val-msg','btn-show',"Fecha: formato inválido");
         return false;
     }
     if(!dateExists($('#date-consult').val())){
-        showQuitMsg('val-msg',null,"Fecha: valor inválido");
+        showQuitMsg('val-msg','btn-show',"Fecha: valor inválido");
         return false;
     }
     $.ajax({

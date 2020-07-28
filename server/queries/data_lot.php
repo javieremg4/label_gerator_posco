@@ -102,9 +102,16 @@
             "message" => $array[1]
         );
     }
-    function lotFormat($lot){
-
-    }
+    /* función search_part: se consultan los datos de una parte y retorna dos tipos de array:
+        1) array( true , datos_del_lote )
+        2) array( false , mensaje_de_error ) 
+        Parametros:
+            - id_lote: id que identifica el lote en la BDD
+            - no_lote: número que identifica el lote
+            NOTA: la función sólo debe recibir uno de estos dos parametros (id o no. lote)
+            - campos: datos del lote que se quieren consultar (los campos se especifican cómo si fueran en una consulta)
+            - inactivos: bandera (true/false) que especifica si se van a incluir los lotes inactivos en la consulta
+    */
     function search_lot($id_lote,$no_lote,$campos,$inactivos){
         if(empty($id_lote) && empty($no_lote)) return array(false,"No se pudieron consultar los datos del No. Inspección. Consulte al Administrador");
         require "connection.php";

@@ -50,5 +50,6 @@
     <script src="../js/menu.js"></script>
     <script src="../js/show_labels.js"></script>
     <script src="../js/dateReview.js"></script>
+    <script src="../js/quitMsg.js"></script>
 </body>
 </html>

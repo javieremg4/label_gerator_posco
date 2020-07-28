@@ -14,7 +14,8 @@ window.onload = function(){
                 window.location = "../pages/index.php";
             }
         },
-        error: function(){
+        error: function(data){
+            console.log(data);
             $('#form_data').html("No se pudieron consultar los datos fijos");
         }
     });
@@ -121,7 +122,8 @@ $('#form_data').on('submit',function(event){
                     window.location = "../pages/index.php";
                 }
             },
-            error: function(){
+            error: function(data){
+                console.log(data);
                 quitMsgEvent('server_answer',"No se pueden actualizar los Datos",'div-red');
             },
             complete: function(){ $('#btn-equal').attr("disabled",false); }

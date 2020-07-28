@@ -6,7 +6,7 @@
         require "equal_data.php";
         require "connection.php";
         require "../tasks/jsonType.php";
-        $result = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%H:%i') AS hora_abasto");
+        $result = search_equal_data("fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%H:%i') AS hora_abasto",null);
         if($result[0]){
             $result = $result[1];
             if($fecha_rollo!==$result['fecha_rollo'] || $fecha_lote!==$result['fecha_lote'] || $bloque!==$result['bloque'] || $hora!==$result['hora_abasto'] || $origen!==$result['origen']){

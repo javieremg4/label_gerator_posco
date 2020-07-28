@@ -92,6 +92,16 @@
             "message" => $array[1]
         );
     }
+    /* función search_part: se consultan los datos de una parte y retorna dos tipos de array:
+        1) array( true , datos_de_la_parte )
+        2) array( false , mensaje_de_error ) 
+        Parametros:
+            - id_parte: id que identifica a la parte en la BDD
+            - no_parte: número que identifica a la parte
+            NOTA: la función sólo debe recibir uno de estos dos parametros (id o no. parte)
+            - campos: datos de la parte que se quieren consultar (los campos se especifican cómo si fueran en una consulta)
+            - inactivos: bandera (true/false) que especifica si se van a incluir a las partes inactivas en la consulta
+    */
     function search_part($id_parte,$no_parte,$campos,$inactivos){
         if(empty($id_parte) && empty($no_parte)) return array(false,"No se pudieron consultar los datos de la Parte. Consulte al Administrador");
         require "connection.php";

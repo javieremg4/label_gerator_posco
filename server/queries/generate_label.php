@@ -1,49 +1,106 @@
 <?php
-    //insert es una bandera que indica si la etiqueta se va a insertar en la BDD o no
-    function generate_label($insert,$serial,$parte,$cantidad,$fecha,$ran,$nolote,$inspec){
-        require "data_part.php";
-        $part_data = ($insert) ? search_part(null,$parte,'id_parte,no_parte,esp,kgpc',false) : search_part($parte,null,'id_parte,no_parte,esp,kgpc',true);
-        if($part_data[0]){
-            require "data_lot.php";
-            $lot_data = ($insert) ? search_lot(null,$inspec,'*',false) : search_lot($inspec,null,'*',true);
-            if($lot_data[0]){
-                require "equal_data.php";
-                $equal_data = search_equal_data("id,fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto");
-                if(!$equal_data[0]){
-                    return jsonERR($equal_data[1]);
-               }
+    /*función generate_label: genera toda la etiqueta para mostrarla en el navegador
+        Nota: está función se usa en dos casos: 
+        1) al momento de generar una nueva etiqueta y 2) al consultar la info. de una etiqueta ya registrada
+        Parametros: 
+            - serial: es el id de la etiqueta pero el valor varia segun el caso:
+                1) el serial es null por que la etiqueta apenas se va registrar en la BDD
+                2) el serial es el número de la etiqueta que se quiere consultar
+            - ideqData: es el id de los datos fijos que le corresponden a la etiqueta (es null en el caso 1)
+            - parte: su valor depende de los casos
+                1) el no. de parte ingresado en el formulario
+                2) el id. de la parte
+            - cantidad: la cantidad que irá en la etiqueta
+            - fecha: es la fecha de consumo (hoy) que irá en la etiqueta
+            - ran: es el ran que irá en la etiqueta
+            - nolote: no. de lote que irá en la etiqueta
+            - inspec: su valor depende de los casos
+                1) el no. de inspección ingresado en el formulario
+                2) el id. de la inspección (lote)
+    */ 
+    function generate_label($serial,$ideqData,$parte,$cantidad,$fecha,$ran,$nolote,$inspec){
+        
+        /* Se consultan los datos ya sea por id (caso 2) o no. de parte (caso 1) */  
+        require "data_part.php"; // Consultar función search_part en archivo data_part.php
+       
+        //Si no hay serial los datos de la parte se consultan por no_parte, de lo contrario, se consultan por id
+        $part_data = (empty($serial)) ? search_part(null,$parte,'id_parte,no_parte,esp,kgpc',false) : search_part($parte,null,'id_parte,no_parte,esp,kgpc',true);
+        
+        if($part_data[0]){ // si la primera posición del array el true la consulta se realizó con éxito
+
+            /* Se consultan los datos ya sea por id (caso 2) o no. de lote (caso 1) */
+            require "data_lot.php"; // Consultar función search_lot en archivo data_lot.php
+            
+            //Si no hay serial los datos del lote se consultan por no_lote, de lo contrario, se consultan por id
+            $lot_data = (empty($serial)) ? search_lot(null,$inspec,'*',false) : search_lot($inspec,null,'*',true);
+            
+            if($lot_data[0]){ // si la primera posición del array el true la consulta se realizó con éxito
+                
+                /* Se consultan los datos fijos que le corresponden a la etiqueta */
+                require "equal_data.php"; // Consultar la función search_equal_data en archivo equal_data.php
+                $equal_data = "id,fecha_lote,fecha_rollo,bloque,origen,DATE_FORMAT(hora_abasto,'%h:%i') AS hora_abasto";
+                
+                //Si no hay serial se consultan los datos del ultimo registro, de lo contrario, se consultan por id
+                $equal_data = (empty($serial)) ? search_equal_data($equal_data,null) : search_equal_data($equal_data,$ideqData);
+                
+                if(!$equal_data[0]){ // si la primera posición del array es false ocurrió un error en la consulta
+                    
+                    return jsonERR($equal_data[1]); // consultar función jsonERR en archivo jsonType.php
+                
+                }
             }else{
-                return jsonERR($lot_data[1]);
+
+                // si la primera posición del array es false se retorna el error en formato json
+                return jsonERR($lot_data[1]); // consultar función jsonERR en archivo jsonType.php
+
             }
+
         }else{
-            return jsonERR($part_data[1]);
+
+            // si la primera posición del array es false se retorna el error en formato json
+            return jsonERR($part_data[1]); // consultar función jsonERR en archivo jsonType.php
+
         }
+        // Los datos que se necesitan estan en la segunda posición del array
         $part_data = $part_data[1];
         $lot_data = $lot_data[1];
         $equal_data = $equal_data[1];
 
-        require "generate_code.php";
-        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$nolote,$inspec,$equal_data);
-        if(is_array($qr)){
-            return jsonERR($qr[1]);
+        /* Se genera el código QR */
+        require "generate_code.php"; // consultar función generate_code en archivo generate_code.php
+        
+        $qr = generate_code($part_data,$cantidad,$ran,$lot_data,$nolote,$lot_data['no_lote'],$equal_data);
+        
+        if(is_array($qr)){ // si la función generate_code retorna un array ocurrió uno o varios errores durante la generación del QR
+            return jsonERR($qr[1]); // consultar función jsonERR en archivo jsonType.php
         }
 
-        $label = "";
+        $label = ""; // String que contendrá el formato de la etiqueta y el botón que genera el pdf
 
-        if($insert){
-            require "insert_label.php";
+        if(empty($serial)){ // Si no hay serial, la etiqueta se registra en la BDD
+
+            require "insert_label.php"; // Consultar la función insert_label en archivo insert_label.php
             $serial_label = insert_label($part_data['id_parte'],$lot_data['id_lote'],$ran,$nolote,$cantidad,$fecha,$equal_data['id']);
-            if(is_array($serial_label)){
-                return jsonERR($serial_label[1]);
+            
+            if(is_array($serial_label)){ // si la función insert_label retorna un array, ocurrió un error al registrar la etiqueta en la BDD
+                
+                return jsonERR($serial_label[1]); // consultar función jsonERR en archivo jsonType.php
+
             }else{
-                $serial_alt = $serial_label;
+
+                $serial_alt = $serial_label; // si no hubo, errores la etiqueta contendrá el serial que retorno la función insert_label
+
             }
-        }else if(!empty($serial)){
-            $serial_alt = $serial;
+        }else{
+
+            $serial_alt = $serial; // Si se pasó un serial cómo parametro, ese irá en la etiqueta
+
         }
         
+        // Se concatena el código del botón
         $label .= "<div class='div-center'><button class='btn-pdf' id='pdf'>Generar pdf</button></div>";
 
+        // Se concatena el código html de la etiqueta
         $label .= "<div class='div-center mb10'>
                     <div class='letter' id='to-pdf'>
                         <div class='div-big-table'>
@@ -58,7 +115,7 @@
                                     </td>
                                 </tr>
                                 <tr class='h62 bot'>
-                                    <td colspan='3' class='relative'>
+                                    <td colspan='3' class='relative pd5015'>
                                         <img id='part' alt='".$part_data['no_parte']."' />
                                         <span class='span-text-bottom'>DRIVE ASSY-WS WIPER</span>
                                     </td>
@@ -115,6 +172,8 @@
                         </div>
                     </div>
                 </div>";
+    
+        /* Se retorna un json con status=OK, el mensaje de éxito y la vista previa de la etiqueta*/
         return json_encode(
             array(
                 "status" => "OK",

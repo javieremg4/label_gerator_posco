@@ -85,4 +85,7 @@ table.big-table td, table.inline-table td{
 .lef{
     border-left: 2px solid black;
 }
+.pd5015{
+    padding: 5px 0 15px !important;
+}
 /*------*/

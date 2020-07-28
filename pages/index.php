@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="../styles/login.css">
 </head>
 <body class="f14">
+    <h1>Generador de Etiquetas</h1>
+    <h1>POSCO</h1>
     <div class="div-center">
         <div class="div-msg" id="server_answer"></div>
     </div>
