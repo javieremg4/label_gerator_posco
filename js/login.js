@@ -1,35 +1,17 @@
 //function: revisa usuario y contraseña del input
-    const whiteExp = /^\s+$/;
-    const alphanumeric = /^[a-zA-Z\d]*$/;
-    function login_review(){
-        var user = $('#user').val();
-        if(user==="" || user===null || user.length===0 || user.search(whiteExp)!==-1){
-            showQuitMsg('server_answer','btn-login',"Usuario: obligatorio");
-            return false;
-        }
-        if(user.length<3 || user.length>15){
-            showQuitMsg('server_answer','btn-login',"Usuario: Min. 3 caracteres y Max. 15");
-            return false;
-        }
-        if(user.search(alphanumeric)===-1){
-            showQuitMsg('server_answer','btn-login',"Usuario: valor inválido");
-            return false;
-        }
-        var pass = $('#pass').val();
-        if(pass==="" || pass===null || pass.length===0){
-            showQuitMsg('server_answer','btn-login',"Contraseña: obligatoria");
-            return false;
-        }
-        if(pass.length<6 || pass.length>15){
-            showQuitMsg('server_answer','btn-login',"Contraseña: Min. 6 caracteres y Max. 15");
-            return false;
-        }
-        if(pass.search(alphanumeric)===-1){
-            showQuitMsg('server_answer','btn-login',"Contraseña: valor inválido");
-            return false;
-        }
-        return "user="+user+"&pass="+pass;
+function login_review(){
+    var user = $('#user').val();
+    if(user==="" || user===null || user.length===0 || /^\s+$/.test(user)){
+        showQuitMsg('server_answer','btn-login',"Usuario: obligatorio");
+        return false;
     }
+    var pass = $('#pass').val();
+    if(pass==="" || pass===null || pass.length===0){
+        showQuitMsg('server_answer','btn-login',"Contraseña: obligatoria");
+        return false;
+    }
+    return "user="+user+"&pass="+encodeURIComponent(pass);
+}
 //***
 //event: subir el formulario (revisar credenciales y dar acceso)
 $('#login_form').on('submit',function(event){

@@ -341,8 +341,7 @@ $('#form_label').on('submit',function(event){
 
                 }
             },
-            error: function(data){ // en caso de error en la llamada
-                console.log(data)
+            error: function(){ // en caso de error en la llamada
                 // mensaje rojo (consultar función quitMsgEvent)
                 quitMsgEvent('validation-msg',"No se pudo generar la etiqueta. Consulte al Administrador",'div-red');
             
