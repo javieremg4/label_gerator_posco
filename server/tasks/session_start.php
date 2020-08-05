@@ -1,7 +1,7 @@
 <?php
     if(isset($_POST['user'],$_POST['pass'])){
         require "../queries/consult_user.php";
-        $result = consult_user(trim($_POST['user']),$_POST['pass']);
+        $result = consult_user_pass(trim($_POST['user']),$_POST['pass']);
         if($result[0]){
             $result = $result[1];
             session_start();

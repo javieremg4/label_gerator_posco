@@ -24,14 +24,16 @@
     </div>
     <div class="div-center">
         <form class="login_form" id="login_form" autocomplete="off">
-            Usuario <input type="text" id="user" minlength="3" maxlength="15">
-            Contraseña <input type="password" id="pass" minlength="6" maxlength="15">
+            Usuario <input type="text" id="user" minlength="3" maxlength="50">
+            Contraseña <input type="password" id="pass" minlength="3" maxlength="50">
             <div class="div-center">
                 <input id="btn-login" type="submit" value="Ingresar">
             </div>
         </form>
     </div>
-    
+    <div class="div-center">
+        <a href="send_mail.html">¿Olvidó su contraseña?</a>
+    </div>
     <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>window.jQuery || document.write(unescape('%3Cscript src="../js/libraries/jquery-3.4.1.min.js"%3E%3C/script%3E'))</script>

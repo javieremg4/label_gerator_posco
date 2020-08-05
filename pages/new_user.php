@@ -23,10 +23,16 @@
         <form id="new_user_form" autocomplete="off">
             <div class="div-union">
                 <div class="div-part">
-                    Usuario: <input type="text" id="user" minlength='3' maxlength='15' >
+                    Usuario: <input type="text" id="user" minlength='3' maxlength='50'>
                 </div>
                 <div class="div-part">
-                    Contraseña: <input type="password" id="pass" minlength='6' maxlength='15'>
+                    Contraseña: <input type="password" id="pass">
+                </div>
+                <div class="div-part">
+                    Correo electrónico: <input type="email" id="email" maxlength='50'>
+                </div>
+                <div class="div-part">
+                    Confirmación: <input type="password" id="confirm">
                 </div>
                 <div class="div-part">
                     Tipo: 
@@ -36,9 +42,6 @@
                     <div class="div-union">
                         <input type="radio" name="type" value="1"> Administrador
                     </div>
-                </div>
-                <div class="div-part">
-                    Confirmación: <input type="password" id="confirm" minlength='6' maxlength='15'>
                 </div>
             </div>
             <div class="div-center">
