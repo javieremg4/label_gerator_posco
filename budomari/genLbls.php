@@ -13,14 +13,13 @@
     </style>
 </head>
 <body>
-    <div id="server_answer" style = "border: 1px solid red;">
-
-    </div>
+    <div id="server_answer" style = "border: 1px solid red;"></div>
     <?php
+        echo "<button onclick='pdfGenerator(".json_encode($lbls).")'>Generar todas las etiquetas</button>";
         $curPart = null;
-        foreach($groupArray as $groupLbls) {
+        foreach($groupArray as $index => $groupLbls) {
             $curPart = $groupLbls[0];
-            echo "<button onclick='pdfGenerator(".json_encode($groupLbls).")'>".$curPart['part']."</button>";
+            echo "<button id='".$index."' onclick='pdfGenerator(".json_encode($groupLbls).")'>".$curPart['part']."</button>";
         }
     ?>
     <button onclick="download()">Ver pdf</button>

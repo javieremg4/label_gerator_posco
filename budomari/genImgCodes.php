@@ -1,6 +1,7 @@
 <?php
     require '../vendor/autoload.php';
     require "getSerial.php";
+    require "../server/tasks/jsonType.php";
 
     use Picqer\Barcode\BarcodeGeneratorPNG;
     /*use Endroid\QrCode\QrCode;
@@ -11,51 +12,110 @@
 
     if(isset($_POST['data'])){
         $groupLbls = json_decode($_POST['data'],true);
+        if(!is_array($groupLbls) || empty($groupLbls)){ exit(jsonERR("No se pueden generar las etiquetas")); }
         $codeArray[] = "";
+        $serial = getSerial();
         foreach ($groupLbls as $index => $data) {
-            $codeArray[$index] = genLblCodes($data);
+            if(isset($data['supplier'],$data['part'],$data['desc'],$data['date'],$data['ran'],$data['quant'],$data['time'],$data['loc1'],$data['loc2'],$data['loc3'],$data['loc4'])){
+                $codeArray[$index] = genLblCodes($data,$serial+$index);
+            }else{
+                exit(jsonERR("No se recibieron todos los datos"));
+            }
         }
+        setSerial($serial+$index+1);
         //var_dump($codeArray);
-        exit(json_encode($codeArray));
+        exit(json_encode(
+            array(
+                "status" => "OK",
+                "labels" => $codeArray
+            )
+        ));
     }
-    function genLblCodes($data){
+    function genLblCodes($data,$serial){
 
-        $part = str_pad("P".$data['part'],15,'*');
-        $snp = "Q".str_pad($data['quant'],6,'0',STR_PAD_LEFT);
-        $ran = str_pad("15K".$data['ran'],11,'*');
-        $supplier = str_pad("V".$data['supplier'],7,'*');
-
-        $serial = getSerial($data['ran']);
-        if(is_array($serial) && $serial[0]){
-            $serial = str_pad($serial[1],18,'0',STR_PAD_LEFT);
-            $serial = "4S".$serial;
-        }else{
-            exit(json_encode(
-                array(
-                    "status" => "ERR",
-                    "message" => "No se pudo obtener serial"
-                )
-            ));
+        //Revisión del serial
+        if(empty($serial) || !is_numeric($serial) || $serial<0){
+            exit(jsonERR("Hay un error con el serial"));
         }
 
-        $loc1 = str_pad($data['loc1'],5,'*');
-        $loc2 = str_pad($data['loc2'],5,'*');
-        $loc3 = str_pad($data['loc3'],5,'*');
-        $loc4 = str_pad($data['loc4'],5,'*');
-        $free = str_pad("",41,'#');
-        $code =  start.$part.$snp.$ran.$supplier.$serial.$loc1.$loc2.$loc3.$loc4.$data['date'].$data['time'].$free.end;
+        //Revisión del ran
+        if(empty($data['ran']) || strlen($data['ran'])>8){
+            exit(jsonERR("Hay un error con el ran"));
+        }
+
+        //Revisión de la parte 
+        if(empty($data['part']) || strlen($data['part'])>14){
+            exit(jsonERR("Hay un error con la parte"));
+        }
+
+        //Revisión de la cantidad
+        if(empty($data['quant']) || !is_numeric($data['quant']) || strlen($data['quant'])>6){
+            exit(jsonERR("Hay un error con la cantidad"));
+        }
+
+        //Revisión del proveedor
+        if(empty($data['supplier']) || strlen($data['supplier'])>6){
+            exit(jsonERR("Hay un error con el código de proveedor"));
+        }
+
+        //Revisión de las ubicaciones
+        if(strlen($data['loc1'])>5){
+            exit(jsonERR("Hay un error con la ubicación 1"));
+        }
+        if(strlen($data['loc2'])>5){
+            exit(jsonERR("Hay un error con la ubicación 2"));
+        }
+        if(strlen($data['loc3'])>5){
+            exit(jsonERR("Hay un error con la ubicación 3"));
+        }
+        if(strlen($data['loc4'])>5){
+            exit(jsonERR("Hay un error con la ubicación 4"));
+        }
+
+        //Revisión de la fecha
+        if(empty($data['date']) || !is_numeric($data['date']) || strlen($data['date'])!=8){
+            exit(jsonERR("Hay un error con la fecha"));
+        }
+
+        //Revisión de la hora
+        if(empty($data['time']) || !is_numeric($data['time']) || strlen($data['time'])!=4){
+            exit(jsonERR("Hay un error con la hora"));
+        }
+
+        //Creación del texto del QR
+        $code = start;
+        $code .= str_pad("P".$data['part'],15,' ');
+        $code .= "Q".str_pad($data['quant'],6,'0',STR_PAD_LEFT);
+        $code .= str_pad("15K".$data['ran'],11,' ');
+        $code .= str_pad("V".$data['supplier'],8,' ');
+        $code .= "4S".str_pad($serial,18,'0',STR_PAD_LEFT);
+        $code .= str_pad($data['loc1'],5,' ');
+        $code .= str_pad($data['loc2'],5,' ');
+        $code .= str_pad($data['loc3'],5,' ');
+        $code .= str_pad($data['loc4'],5,' ');
+        $code .= $data['date'];
+        $code .= $data['time'];
+        $code .= str_pad("",41,' ');
+        $code .= end;
+
+        //$code =  start.$part.$snp.$ran.$supplier.$serial.$loc1.$loc2.$loc3.$loc4.$data['date'].$data['time'].$free.end;
+        
+        //Creación del QR y las barras
         return array(
                 "qr"    => genQRCode($code),
-                "part"  => genBarImg("P".$data['part']),
-                "quant" => genBarImg("Q".$data['quant']),
-                "ran"   => genBarImg("15K".$data['ran']),
-                "sup"   => genBarImg("V".$data['supplier']),
-                "serial"=> genBarImg($serial)
+                "part"  => genBarImg("P".$data['part'],2,30),
+                "quant" => genBarImg("Q".$data['quant'],1,38),
+                "ran"   => genBarImg("15K".$data['ran'],1,30),
+                "sup"   => genBarImg("V".$data['supplier'],2,30),
+                "serial" => strval($serial),
+                "serialCode"=> genBarImg("4S".$serial,1,30),
+                "code" => $code
             );
     }
-    function genBarImg($text){
+    
+    function genBarImg($text,$width,$height){
         $generator = new BarcodeGeneratorPNG();
-        return "data:image/png;base64,".base64_encode($generator->getBarcode($text, $generator::TYPE_CODE_128));
+        return "data:image/png;base64,".base64_encode($generator->getBarcode($text, $generator::TYPE_CODE_39,$width,$height));
     }
     function genQRCode($code){
 
@@ -79,7 +139,7 @@
     
         // Generando la imagen con el qr
         if(!file_exists($pngAbsoluteFilePath)){
-            QRcode::png($code, $pngAbsoluteFilePath,QR_ECLEVEL_L, 2.5);
+            QRcode::png($code, $pngAbsoluteFilePath,QR_ECLEVEL_L,3,0);
         }else{
             return false;
         }
