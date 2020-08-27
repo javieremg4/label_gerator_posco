@@ -17,7 +17,12 @@
     <button id="btn-menu" class="btn-menu">Menú</button>
     <ul class="nav" id="menu">
         <li><a href="menu_user.php">Inicio</a></li>
-        <li><a href="label.php">Nueva Etiqueta</a></li>
+        <li><a>Etiquetas<span class="flecha">&#9660</span></a>
+            <ul>
+                <li><a href="label.php">NISSAN</a></li>
+                <li><a href="budomari.php">Budomari</a></li>
+            </ul>
+        </li>
         <li><a href="part.php">Nueva Parte</a></li>
         <li><a href="lot.php">Nuevo No. Insp</a></li>
         <li><a href="../server/tasks/close_session.php">Cerrar sesión</a></li>

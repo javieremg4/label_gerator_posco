@@ -1,70 +1,88 @@
-let doc;
-function pdfGenerator(groupLbls){
-    console.log("No. de etiquetas = "+groupLbls.length)
-    doc = new jsPDF('p', 'mm', 'letter')
-    doc.setFontSize(8);
-    $.ajax({
+//function: revisar la extensión del archivo cargado
+function fileValidation(){
+    var fileInput = document.getElementById('file-862');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(.txt)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        showQuitMsg('server_answer','btn-submit','Archivo: sólo extensión .txt');
+        fileInput.value = '';
+        return false;
+    }
+    return true;
+}
+//***
+//event: validar cada vez que se cambia el archivo
+$('#file-862').change(
+    function(){
+        fileValidation();
+    }
+);
+//***
+$('#clean-all').click(
+    function(e){
+        e.preventDefault();
+        cleanMsg('server_answer');
+        $('#file-862').val("");
+        $('#pdfFrame').attr('src',"");
+    }
+);
+$('#load-file').submit(function(e){
+    e.preventDefault();
+    let fileInput = document.getElementById('file-862');
+    if(fileInput.files.length <= 0){ showQuitMsg('server_answer','btn-submit',"Archivo: obligatorio"); return false; }
+    if(!fileValidation()){ return false; }
+    let call = $.ajax({
         type: 'post',
-        url: 'genImgCodes.php',
-        data: "data="+JSON.stringify(groupLbls),
+        url: '../server/tasks/edi_review.php',
+        data: new FormData(document.getElementById('load-file')),
         dataType: 'json',
-        success: function(data){
-            if(data.status==="OK" && Array.isArray(data.labels) && data.labels.length==groupLbls.length){
-                console.log("ajax success!");
-                doFile(groupLbls,data.labels);         
-            }else if(data.status==="ERR" && data.message){
-                console.log("ajax mistake");
-                console.log(data.message);
-                $('#pdfFrame').html("Ocurrió un error");
-            }else{
-                console.log("incorrect answer!");
-            }
-        },
-        error: function(data){
-            console.log("ajax fail!");
-            console.log(data);
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function(){
+            cleanMsg('server_answer');
+            $('#clean-all').hide();
+            $('#btn-submit').val("Espere...");
+            $('#pdfFrame').attr('src',"");
+            $('#btn-submit').attr('disabled',true);
         }
     });
-    //Ajax para generar una etiqueta
-    /*for (let index = 0; index < groupLbls.length; index++) {
-        $.ajax({
-            type: 'post',
-            url: 'genImgCodes.php',
-            data: 'data='+JSON.stringify(groupLbls[index]),
-            dataType: 'json',
-            success: function(data){
-                console.log(index);
-                if(data.qr && data.part && data.quant && data.ran && data.sup && data.serial){
-                    doc.addPage();
-                    //drawLines();
-                    console.log("ajax success");
-                    doc.addImage(data.qr,'PNG',10,10);
-                    doc.addImage(data.part,'PNG',10,50);
-                    doc.addImage(data.quant,'PNG',10,60);
-                    doc.addImage(data.ran,'PNG',10,70);
-                    doc.addImage(data.sup,'PNG',10,80);
-                    doc.addImage(data.serial,'PNG',10,90);
-                }else{
-                    console.log("ajax fail");
-                }
-                //$('#server_answer').html($('#server_answer').html()+"<br>"+data);
-            },
-            error: function(data){
-                console.log("FAIL");
-                doc.text(35,25,"No se pudo generar la etiqueta");
-            },
-            complete: function(){  }
-        });
-    }*/
-}
+    call.done(
+        function(data){
+            if(data.status==="OK" && Array.isArray(data.labels) && Array.isArray(data.codes) && (data.labels.length===data.codes.length)){ 
+                doFile(data.labels,data.codes);         
+            }else if(data.status==="ERR" && data.message){
+                quitMsgEvent('server_answer',data.message,'div-red');
+            }else{
+                window.location = "../pages/index.php";
+            }
+        }
+    );
+    call.fail(
+        function(){
+            quitMsgEvent('server_answer',"Por favor, presione Limpiar y seleccione el archivo de nuevo",'div-red');
+            console.log("ajax fail!");
+        }
+    );
+    call.always(
+        function(data){ 
+            console.log(data);
+            $('#btn-submit').val("Generar");
+            $('#btn-submit').attr('disabled',false);
+            $('#clean-all').show();
+        }
+    );
+});
+
 let label;
 let date;
 function doFile(groupLbls,codesArray){
+    let doc = new jsPDF('l', 'mm', 'letter');
     if(Array.isArray(codesArray)){
         codesArray.forEach(function(codeArray,index){
             label = groupLbls[index];
             if(index!=0){   doc.addPage();  }
-            drawLines();   
+            drawLines(doc);   
             
             doc.setTextColor("1");       
             doc.setFontSize(40);
@@ -107,12 +125,12 @@ function doFile(groupLbls,codesArray){
 
             doc.addImage(codeArray.qr,'PNG',127,65);
         }); 
-        download();
+        download(doc);
     }else{
         console.log("Hubo un error con los datos");
     }
 }
-function drawLines(){
+function drawLines(doc){
     doc.setLineWidth(0.5);
 
     doc.rect(2,3,160,95);
@@ -160,7 +178,7 @@ function drawLines(){
 
     doc.rect(122,62,40,36); //C8
 }
-function download(){
+function download(doc){
     doc.setProperties({
         title: 'PDF Title',
         subject: 'Info about PDF',
@@ -168,9 +186,6 @@ function download(){
         keywords: 'generated, javascript, web 2.0, ajax',
         creator: 'My Company'
     });
-    console.log(doc.getFontList());
 
     $('#pdfFrame').attr('src',doc.output('datauristring'));
-    //doc.save("test.pdf");
-    //doc.output('save','text.pdf');
 }

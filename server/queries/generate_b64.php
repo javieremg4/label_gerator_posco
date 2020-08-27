@@ -1,36 +1,34 @@
 <?php
-    require '../vendor/autoload.php';
+    if(!isset($_FILES['file-862']['tmp_name'])){
+        header("location:../../pages/error.html");
+    }
+
+    require '../../vendor/autoload.php';
     require "getSerial.php";
-    require "../server/tasks/jsonType.php";
 
     use Picqer\Barcode\BarcodeGeneratorPNG;
-    /*use Endroid\QrCode\QrCode;
-    use Endroid\QrCode\ErrorCorrectionLevel;*/
-
+    
     const start = "!GP?";
     const end = "!END?";
 
-    if(isset($_POST['data'])){
-        $groupLbls = json_decode($_POST['data'],true);
-        if(!is_array($groupLbls) || empty($groupLbls)){ exit(jsonERR("No se pueden generar las etiquetas")); }
-        $codeArray[] = "";
-        $serial = getSerial();
-        foreach ($groupLbls as $index => $data) {
-            if(isset($data['supplier'],$data['part'],$data['desc'],$data['date'],$data['ran'],$data['quant'],$data['time'],$data['loc1'],$data['loc2'],$data['loc3'],$data['loc4'])){
-                $codeArray[$index] = genLblCodes($data,$serial+$index);
-            }else{
-                exit(jsonERR("No se recibieron todos los datos"));
-            }
+    if(!is_array($lbls) || empty($lbls)){ exit(jsonERR("No se pueden generar las etiquetas")); }
+    $codeArray[] = "";
+    $serial = getSerial();
+    foreach ($lbls as $index => $data) {
+        if(isset($data['supplier'],$data['part'],$data['desc'],$data['date'],$data['ran'],$data['quant'],$data['time'],$data['loc1'],$data['loc2'],$data['loc3'],$data['loc4'])){
+            $codeArray[$index] = genLblCodes($data,$serial+$index);
+        }else{
+            exit(jsonERR("No se recibieron todos los datos"));
         }
-        setSerial($serial+$index+1);
-        //var_dump($codeArray);
-        exit(json_encode(
-            array(
-                "status" => "OK",
-                "labels" => $codeArray
-            )
-        ));
     }
+    setSerial($serial+$index+1);
+    exit(json_encode(
+        array(
+            "status" => "OK",
+            "codes" => $codeArray,
+            "labels" => $lbls
+        )
+    ));
     function genLblCodes($data,$serial){
 
         //Revisión del serial
@@ -120,7 +118,7 @@
     function genQRCode($code){
 
         //Inclusión de la librería que genera el código qr
-        require_once "../server/phpqrcode/qrlib.php";
+        require_once "../phpqrcode/qrlib.php";
 
         //Directorio donde estará el archivo
         $tempDir = '../qr/';
@@ -157,11 +155,5 @@
         unlink($pngAbsoluteFilePath);
 
         return $base64;
-    }
-    function genQRImg($code){
-        $qrCode = new QrCode($code);
-        $qrCode->setSize(120);
-        $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::LOW());
-        echo "<img src='".$qrCode->writeDataUri()."'>";
     }
 ?>

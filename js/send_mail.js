@@ -21,12 +21,12 @@ $('#send_mail_form').on('submit',function(e){
     cleanMsg('server_answer');
     let to = to_review();
     if(!to){ return false; }
-    $('#btn-to-send').attr("disabled",true);
     $.ajax({
         type: 'post',
         data: to,
         url: '../server/tasks/consult_user.php',
         dataType: 'json',
+        beforeSend: function(){ $('#btn-to-send').attr("disabled",true); },
         success: function(data){
             if(data.status==="OK" && data.email && data.message){
                 sendMail(data.email,data.message);
@@ -38,6 +38,9 @@ $('#send_mail_form').on('submit',function(e){
         },
         error: function(){
             quitMsgEvent('server_answer',"No se pudo consultar la información. Por favor, inténtelo de nuevo",'div-red');
+        },
+        complete: function(){
+            $('#btn-to-send').attr("disabled",false);
         }
     });
 });
