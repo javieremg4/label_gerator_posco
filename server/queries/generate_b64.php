@@ -5,6 +5,7 @@
 
     require '../../vendor/autoload.php';
     require "getSerial.php";
+    require "barcode.php";
 
     use Picqer\Barcode\BarcodeGeneratorPNG;
     
@@ -32,7 +33,7 @@
     function genLblCodes($data,$serial){
 
         //Revisión del serial
-        if(empty($serial) || !is_numeric($serial) || $serial<0){
+        if((empty($serial) && $serial!=0) || !is_numeric($serial) || $serial<0){
             exit(jsonERR("Hay un error con el serial"));
         }
 
@@ -101,24 +102,59 @@
         //Creación del QR y las barras
         return array(
                 "qr"    => genQRCode($code),
-                "part"  => genBarImg("P".$data['part'],2,30),
-                "quant" => genBarImg("Q".$data['quant'],1,38),
-                "ran"   => genBarImg("15K".$data['ran'],1,30),
-                "sup"   => genBarImg("V".$data['supplier'],2,30),
+                "part"  => genBarCode("P".$data['part'],2),//genBarImg("P".$data['part'],2,30),
+                "quant" => genBarCode("Q".$data['quant'],1.1),//genBarImg("Q".$data['quant'],1,38),
+                "ran"   => genBarCode("15K".$data['ran'],1.5),//genBarImg("15K".$data['ran'],1,30),
+                "sup"   => genBarCode("V".$data['supplier'],2),//genBarImg("V".$data['supplier'],2,30),
                 "serial" => strval($serial),
-                "serialCode"=> genBarImg("4S".$serial,1,30),
-                "code" => $code
+                "serialCode"=> genBarCode("4S".$serial,1.3),//genBarImg("4S".$serial,1,30),
             );
     }
     
+    // La funcion genBarImg usa la libreria picquer/php-barcode-generator (versión php >= 7.2)
     function genBarImg($text,$width,$height){
         $generator = new BarcodeGeneratorPNG();
         return "data:image/png;base64,".base64_encode($generator->getBarcode($text, $generator::TYPE_CODE_39,$width,$height));
     }
-    function genQRCode($code){
 
-        //Inclusión de la librería que genera el código qr
-        require_once "../phpqrcode/qrlib.php";
+    // La funcion genBarCode usa el archivo barcode.php (versión php <= 7.2)
+    function genBarCode($code,$sizeFactor){
+        //Directorio donde estará el archivo
+        $tempDir = '../bars/';
+
+        //Se genera el nombre del archivo
+        $fileName = md5($code).'.png';
+
+        //Se revisa si existe el directorio si no se crea
+        if(!is_dir($tempDir)){
+            if(!mkdir($tempDir, 0777)){
+                exit(jsonERR("No se pudo crear la carpeta"));
+            }
+        }
+    
+        $pngAbsoluteFilePath = $tempDir.$fileName;
+    
+        // Generando la imagen del código de barras
+        if(!file_exists($pngAbsoluteFilePath)){
+            barcode( $pngAbsoluteFilePath , $code , "30" , "horizontal", "code39", false, $sizeFactor );
+        }
+
+        // Cargando la imagen
+        $data = file_get_contents($pngAbsoluteFilePath);
+        if($data === false) { exit(jsonERR("No se pudo consultar la imagen")); }
+
+        // Decodificando la imagen en base64
+        $base64 = base64_encode($data);
+        if(!$base64){ exit(jsonERR("No se pudo codificar la imagen")); }
+        $base64 = 'data:image/png;base64,'.$base64;
+    
+        // Eliminando la imagen
+        unlink($pngAbsoluteFilePath);
+
+        return $base64;
+    }
+
+    function genQRCode($code){
 
         //Directorio donde estará el archivo
         $tempDir = '../qr/';
@@ -129,7 +165,7 @@
         //Se revisa si existe el directorio si no se crea
         if(!is_dir($tempDir)){
             if(!mkdir($tempDir, 0777)){
-                return false;
+                exit(jsonERR("No se pudo crear la carpeta"));
             }
         }
     
@@ -138,17 +174,15 @@
         // Generando la imagen con el qr
         if(!file_exists($pngAbsoluteFilePath)){
             QRcode::png($code, $pngAbsoluteFilePath,QR_ECLEVEL_L,3,0);
-        }else{
-            return false;
         }
 
         // Cargando la imagen
         $data = file_get_contents($pngAbsoluteFilePath);
-        if($data === false) { return false; }
+        if($data === false) { exit(jsonERR("No se pudo consultar la imagen")); }
 
         // Decodificando la imagen en base64
         $base64 = base64_encode($data);
-        if(!$base64){ return false; }
+        if(!$base64){ exit(jsonERR("No se pudo codificar la imagen")); }
         $base64 = 'data:image/png;base64,'.$base64;
     
         // Eliminando la imagen

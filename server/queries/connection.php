@@ -3,7 +3,6 @@
     error_reporting(0);
     //***
     $connection = mysqli_connect("localhost","root","root1234","poscoetiq");
-    //mysqli_close($connection);
     /* verificar la conexión */
     if (mysqli_connect_errno()){
         exit(json_encode(

@@ -32,15 +32,15 @@ $('#send_mail_form').on('submit',function(e){
                 sendMail(data.email,data.message);
             }else if(data.status==="ERR" && data.message){
                 quitMsgEvent('server_answer',data.message,'div-red');
+                $('#btn-to-send').attr("disabled",false)
             }else{
                 quitMsgEvent('server_answer',"No se pudo consultar la información. Por favor, inténtelo de nuevo",'div-red');
+                $('#btn-to-send').attr("disabled",false)
             }
         },
         error: function(){
             quitMsgEvent('server_answer',"No se pudo consultar la información. Por favor, inténtelo de nuevo",'div-red');
-        },
-        complete: function(){
-            $('#btn-to-send').attr("disabled",false);
+            $('#btn-to-send').attr("disabled",false)
         }
     });
 });
