@@ -43,7 +43,6 @@
             if(strpos($line,"LIN*")===0){ break; }
             if(strpos($line,"N1*SU*")===0){
                 $line = explode("*",$line);
-                //echo "Array proveedor: =>".count($line)."<br>";
                 if(empty($line) || count($line)<5){
                     exit(jsonERR("No se encontró el código de proveedor"));
                 }
@@ -55,13 +54,11 @@
 
         $srch = "LIN*";
         for($i=$index; $i<count($content); $i++) {
-            //echo "<hr>Se busca: ".$srch." en => ".$content[$i]."<hr>";
             if(strpos($content[$i],$srch)===false){
                 if($srch==="REF*82"){
                     $line = $content[$i];
                     if(strpos($line,"REF*KK")===0){
                         $line = explode("*",$line);
-                        //echo "Array ubicaciones: =>".count($line)."<br>";
                         if(empty($line) || count($line)<3){
                             exit(jsonERR("No se encontraron las localizaciones"));
                         }
@@ -73,13 +70,12 @@
                         if(empty($curLoc[1])){ $curLoc[1]=""; }
                         if(empty($curLoc[2])){ $curLoc[2]=""; }
                         if(empty($curLoc[3])){ $curLoc[3]=""; }
-                        //echo $curLoc[0]."||".$curLoc[1]."||".$curLoc[2]."||".$curLoc[3]."<br>";
                         continue;
                     }else{
-                        exit(jsonERR("bag 1 Hay un error en el archivo"));
+                        exit(jsonERR("Hay un error en el archivo"));
                     }
                 }else{
-                    exit(jsonERR("bag 2 Hay un error en el archivo"));
+                    exit(jsonERR("Hay un error en el archivo"));
                 }
             }
             $line = $content[$i];
@@ -87,7 +83,6 @@
                 //Revisión del RAN y la Fecha
                 case "FST*":
                     $line = explode("*",$line);
-                    //echo "Array ran => ".count($line)."<br>";
                     if(empty($line) || count($line)<10){
                         exit(jsonERR("No se encontró el RAN"));
                     }
@@ -107,7 +102,6 @@
                 //Revisión de Cantidad y Hora
                 case "JIT*": 
                     $line = explode("*",$line);
-                    //echo "Array cantidad => ".count($line)."<br>";
                     if(empty($line) || count($line)<3){
                         exit(jsonERR("No se encontró la Hora"));
                     }
@@ -151,7 +145,6 @@
                 //Revisión de la parte
                 case "LIN*":
                     $line = explode("*",$line);
-                    //echo "Array parte => ".count($line)."<br>";
                     if(empty($line) || count($line)<4){
                         exit(jsonERR("No se encontró el No. de parte"));
                     }
@@ -171,7 +164,6 @@
                 //Revisión de la descripción
                 case "REF*82":
                     $line = explode("*",$line);
-                    //echo "Array desc => ".count($line)."<br>";
                     if(empty($line) || count($line)<3){
                         exit(jsonERR("No se encontró la Descripción"));
                     }

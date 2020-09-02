@@ -41,14 +41,17 @@ $('#load-file').submit(function(e){
         processData: false,
         beforeSend: function(){
             cleanMsg('server_answer');
+            $('#file-862').attr('disabled',true);
             $('#clean-all').hide();
             $('#btn-submit').val("Espere...");
             $('#pdfFrame').attr('src',"");
             $('#btn-submit').attr('disabled',true);
+            $('#server_answer').html("No recargue la página mientras se muestre el mensaje de espera");
         }
     });
     call.done(
         function(data){
+            cleanMsg('server_answer');
             if(data.status==="OK" && Array.isArray(data.labels) && Array.isArray(data.codes) && (data.labels.length===data.codes.length)){ 
                 doFile(data.labels,data.codes);         
             }else if(data.status==="ERR" && data.message){
@@ -60,13 +63,14 @@ $('#load-file').submit(function(e){
     );
     call.fail(
         function(){
+            cleanMsg('server_answer');
             quitMsgEvent('server_answer',"Por favor, presione Limpiar y seleccione el archivo de nuevo",'div-red');
-            console.log("ajax fail!");
         }
     );
     call.always(
         function(data){ 
             console.log(data);
+            $('#file-862').attr('disabled',false);
             $('#btn-submit').val("Generar");
             $('#btn-submit').attr('disabled',false);
             $('#clean-all').show();
@@ -78,7 +82,7 @@ let label;
 let date;
 function doFile(groupLbls,codesArray){
     let doc = new jsPDF('l', 'mm', 'letter');
-    if(Array.isArray(codesArray)){
+    if(Array.isArray(codesArray) && Array.isArray(groupLbls) && groupLbls.length==codesArray.length){
         codesArray.forEach(function(codeArray,index){
             label = groupLbls[index];
             if(index!=0){   doc.addPage();  }
@@ -104,7 +108,7 @@ function doFile(groupLbls,codesArray){
 
             doc.text(59,49.5,label['time'].slice(0,2)+":"+label['time'].slice(2));
 
-            doc.addImage(codeArray.ran,'PNG',87,34.5);
+            doc.addImage(codeArray.ran,'PNG',85,34.5);
             doc.setTextColor("1");
             doc.setFontSize(38);
             doc.text(83,60,label['ran']);
@@ -114,7 +118,7 @@ function doFile(groupLbls,codesArray){
             doc.setFontSize(15);
             doc.text(32,69,label['supplier']);
 
-            doc.addImage(codeArray.serialCode,'PNG',15,86);
+            doc.addImage(codeArray.serialCode,'PNG',12,86);
             doc.setFontSize(13);
             doc.text(32,85,codeArray.serial);
 
@@ -125,9 +129,20 @@ function doFile(groupLbls,codesArray){
 
             doc.addImage(codeArray.qr,'PNG',127,65);
         }); 
-        download(doc);
+        doc.setProperties({
+            title: 'Etiquetas NMEX Budomari',
+            author: 'Sistemas POSCO Ags',
+            creator: 'POSCO MPPC S.A. DE C.V.'
+        });
+        if(groupLbls.length>400){
+            //Mostrar pdf en una nueva pestaña
+            window.open(doc.output('bloburl'));
+        }else{
+            //Mostrar pdf en iframe
+            $('#pdfFrame').attr('src',doc.output('datauristring'));
+        }
     }else{
-        console.log("Hubo un error con los datos");
+        quitMsgEvent('server_answer',"No se pueden generar las etiquetas. Inténtelo de nuevo",'div-red');
     }
 }
 function drawLines(doc){
@@ -177,15 +192,4 @@ function drawLines(doc){
     doc.line(82,89,122,89); //L3
 
     doc.rect(122,62,40,36); //C8
-}
-function download(doc){
-    doc.setProperties({
-        title: 'PDF Title',
-        subject: 'Info about PDF',
-        author: 'PDFAuthor',
-        keywords: 'generated, javascript, web 2.0, ajax',
-        creator: 'My Company'
-    });
-
-    $('#pdfFrame').attr('src',doc.output('datauristring'));
 }

@@ -8,8 +8,9 @@
         $query = "SELECT serial FROM budomari LIMIT 1";
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
+        $serial = "";
         if($result = mysqli_fetch_array($result)){
-            if(empty($result['serial']) || !is_numeric($result['serial']) || $result['serial']<0){
+            if((empty($result['serial']) && $serial!=0) || !is_numeric($result['serial']) || $result['serial']<0){
                 exit(jsonERR("No se pudo obtener el serial (".$result['serial'].")"));
             }
             return $result['serial'];

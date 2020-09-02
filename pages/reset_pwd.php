@@ -1,7 +1,7 @@
 <?php
-    if(isset($_GET['user'])){ 
+    if(isset($_GET['token']) && !empty($_GET['token'])){ 
         require "../server/queries/consult_user.php";
-        checkId($_GET['user'],'error.html'); 
+        checkToken($_GET['token']); 
     }else{
         exit(header("location:error.html"));
     }
@@ -44,7 +44,7 @@
             $.ajax({
                 type: 'post',
                 url: '../server/tasks/set_pwd.php',
-                data: new_pwd+'&user='+'<?php echo $_GET['user']; ?>',
+                data: new_pwd+'&token='+'<?php echo $_GET['token']; ?>',
                 dataType: 'json',
                 beforeSend: function(){ $('#btn-reset-pwd').attr('disabled',true); },
                 success: function(data){
@@ -59,7 +59,7 @@
                     }
                 },
                 error: function(){
-                    window.location = "index.php"
+                    location.reload();
                 },
             });
         });

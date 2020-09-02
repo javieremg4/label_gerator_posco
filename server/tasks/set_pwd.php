@@ -1,9 +1,9 @@
 <?php
-    if(isset($_POST['new-pwd'],$_POST['user'])){
+    if(isset($_POST['new-pwd'],$_POST['token'])){
         require "../queries/consult_user.php";
-        checkId($_POST['user'],"../../pages/error.html");
-        require "../queries/update_email.php";
-        $result = update_email($_POST['new-pwd'],$_POST['user']);
+        checkToken($_POST['token']);
+        require "../queries/update_pwd.php";
+        $result = update_pwd($_POST['new-pwd'],$_POST['token']);
         return $result;
     }
     header("location:../../pages/error.html");

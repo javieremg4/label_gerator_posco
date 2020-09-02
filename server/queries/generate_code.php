@@ -175,7 +175,8 @@
     function generate_qr_code($code){
 
         //Inclusión de la librería que genera el código qr
-        require_once __DIR__."/../phpqrcode/qrlib.php";
+        //require_once __DIR__."/../phpqrcode/qrlib.php";
+        require '../../vendor/autoload.php';
 
         //Directorio donde estará el archivo
         $tempDir = '../qr/';
