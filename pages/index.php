@@ -32,7 +32,7 @@
         </form>
     </div>
     <div class="div-center">
-        <a href="send_mail.html">¿Olvidó su contraseña?</a>
+        <a href="send_mail.html">¿Contraseña olvidada?</a>
     </div>
     <!--jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

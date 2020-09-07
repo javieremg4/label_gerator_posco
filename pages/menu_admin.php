@@ -17,7 +17,12 @@
     <button id="btn-menu" class="btn-menu">Menú</button>
     <ul id="menu" class="nav">
         <li><a href="menu_admin.php">Inicio</a></li>
-        <li><a href="label.php">Nueva Etiqueta</a></li>
+        <li><a>Etiquetas<span class="flecha">&#9660</span></a>
+            <ul>
+                <li><a href="label.php">NISSAN</a></li>
+                <li><a href="budomari.php">Budomari</a></li>
+            </ul>
+        </li>
         <li><a>Partes<span class="flecha">&#9660</span></a>
             <ul>
                 <li><a href="part.php">Nueva Parte</a></li>

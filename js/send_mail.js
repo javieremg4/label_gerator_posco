@@ -21,23 +21,26 @@ $('#send_mail_form').on('submit',function(e){
     cleanMsg('server_answer');
     let to = to_review();
     if(!to){ return false; }
-    $('#btn-to-send').attr("disabled",true);
     $.ajax({
         type: 'post',
         data: to,
         url: '../server/tasks/consult_user.php',
         dataType: 'json',
+        beforeSend: function(){ $('#btn-to-send').attr("disabled",true); },
         success: function(data){
             if(data.status==="OK" && data.email && data.message){
                 sendMail(data.email,data.message);
             }else if(data.status==="ERR" && data.message){
                 quitMsgEvent('server_answer',data.message,'div-red');
+                $('#btn-to-send').attr("disabled",false)
             }else{
                 quitMsgEvent('server_answer',"No se pudo consultar la información. Por favor, inténtelo de nuevo",'div-red');
+                $('#btn-to-send').attr("disabled",false)
             }
         },
         error: function(){
             quitMsgEvent('server_answer',"No se pudo consultar la información. Por favor, inténtelo de nuevo",'div-red');
+            $('#btn-to-send').attr("disabled",false)
         }
     });
 });

@@ -1,0 +1,7 @@
+{
+    "name": "javieremg4/label_generator_posco",
+    "require": {
+        "picqer/php-barcode-generator": "^2.0",
+        "giansalex/phpqrcode": "dev-master"
+    }
+}

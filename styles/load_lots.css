@@ -46,6 +46,11 @@ input[type='file']{
 }
 span{ text-align: center; }
 .f12{ font-size: 12px; }
+iframe{
+    height: 500px;
+    margin: 0 10%;
+    width: 80%;
+}
 @media (max-width: 900px){
     form{ width: 60%; }
 }
