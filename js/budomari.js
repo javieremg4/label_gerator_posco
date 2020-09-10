@@ -129,7 +129,18 @@ function doFile(groupLbls,codesArray){
 
             doc.addImage(codeArray.qr,'PNG',127,65);
         }); 
-        download(doc);
+        doc.setProperties({
+            title: 'Etiquetas NMEX Budomari',
+            author: 'Sistemas POSCO Ags',
+            creator: 'POSCO MPPC S.A. DE C.V.'
+        });
+        if(groupLbls.length>400){
+            //Mostrar pdf en una nueva pestaña
+            window.open(doc.output('bloburl'));
+        }else{
+            //Mostrar pdf en iframe
+            $('#pdfFrame').attr('src',doc.output('datauristring'));
+        }
     }else{
         quitMsgEvent('server_answer',"No se pueden generar las etiquetas. Inténtelo de nuevo",'div-red');
     }
@@ -181,12 +192,4 @@ function drawLines(doc){
     doc.line(82,89,122,89); //L3
 
     doc.rect(122,62,40,36); //C8
-}
-function download(doc){
-    doc.setProperties({
-        title: 'Etiquetas NMEX Budomari',
-        author: 'Sistemas POSCO Ags',
-        creator: 'POSCO MPPC S.A. DE C.V.'
-    });
-    $('#pdfFrame').attr('src',doc.output('datauristring'));
 }
